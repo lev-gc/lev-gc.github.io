@@ -1,2 +1,1 @@
-# lev-gc.github.io
-GitHub Page
+## My GitHub Page
