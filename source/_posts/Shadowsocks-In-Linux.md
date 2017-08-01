@@ -76,20 +76,20 @@ $ netstat -lnp
 
 - ## 加速
   一、增加系统文件描述符的最大限数：
-    `vi /etc/security/limits.conf`
 
-  添加下面两行：
+  ​	`vi /etc/security/limits.conf`
+
+  ​	添加下面两行：
 
 ```bash
 soft nofile 51200
 hard nofile 51200
 ```
- 	 保存后执行一下命令：
-​	`ulimit -n 51200`	
 
-  	二、使用ServerSpeeder进行TCP加速
-> 修改版ServerSpeeder教程：[ServerSpeeder](https://github.com/91yun/serverspeeder/)
-> 内含一键安装教程
+​		保存后执行一下命令：`ulimit -n 51200`
+
+​	二、使用ServerSpeeder进行TCP加速
+​		修改版ServerSpeeder教程：[ServerSpeeder](https://github.com/91yun/serverspeeder/)
 
 ​		需要注意的是ServerSpeeder并非自持所有的内核，如非适用的内核可选择更换。
 
