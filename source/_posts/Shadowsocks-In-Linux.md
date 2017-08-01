@@ -45,7 +45,7 @@ $ pip install shadowsocks
 ​	具体各项配置说明：
 
 |     Field     | Explanation                              |
-| :---------: | :--------------------------------- |
+| :-----------: | :--------------------------------------- |
 |    server     | the ip of your server                    |
 | local_address | the address your local listens [127.0.0.1] |
 |  local_port   | local port                               |
@@ -64,14 +64,42 @@ stop:
 $ ssserver -d stop
 restart:
 $ ssserver -c /etc/shadowsocks.json -d restart
+port listening:
+$ netstat -lnp
 ```
 
 ​	如需设置开机自启动，只需把上面的启动命令加到 `vi /etc/rc.local` 里即可。
 
 - ## 客户端配置
 
-  ​客户端直接到 [GitHub](https://github.com/shadowsocks) 上下，安装好后编辑服务器，填上服务器地址和 `/etc/shadowsocks.json` 配置文件里写的对应端口和密码等就能使用了，关于PAC可以直接选择**从GFWList更新本地PAC**，这里的`GWFList`是GitHub上一个开源项目，专门收集惨遭GFW黑手的ip，理论上是最全的PAC文件了。
+  客户端直接到 [GitHub](https://github.com/shadowsocks) 上下，安装好后编辑服务器，填上服务器地址和 `/etc/shadowsocks.json` 配置文件里写的对应端口和密码等就能使用了，关于PAC可以直接选择**从GFWList更新本地PAC**，这里的`GWFList`是GitHub上一个开源项目，专门收集惨遭GFW毒手的ip，理论上是较全的PAC文件了。
 
 - ## 加速
+  一、增加系统文件描述符的最大限数：
+    `vi /etc/security/limits.conf`
 
-  ​[参考](http://wuchong.me/blog/2015/02/02/shadowsocks-install-and-optimize/)
+  添加下面两行：
+
+```bash
+soft nofile 51200
+hard nofile 51200
+```
+ 	 保存后执行一下命令：
+​	`ulimit -n 51200`	
+
+  	二、使用ServerSpeeder进行TCP加速
+> 修改版ServerSpeeder教程：[ServerSpeeder](https://github.com/91yun/serverspeeder/)
+> 内含一键安装教程
+
+​		需要注意的是ServerSpeeder并非自持所有的内核，如非适用的内核可选择更换。
+
+```bash
+install:
+$ wget -N --no-check-certificate https://github.com/91yun/serverspeeder/raw/master/serverspeeder.sh && bash serverspeeder.sh
+uninstall:
+$ chattr -i /serverspeeder/etc/apx* && /serverspeeder/bin/serverSpeeder.sh uninstall -f
+status:
+$ /serverspeeder/bin/serverSpeeder.sh status
+start/stop/restart:
+$ /serverspeeder/bin/serverSpeeder.sh start/stop/restart
+```
