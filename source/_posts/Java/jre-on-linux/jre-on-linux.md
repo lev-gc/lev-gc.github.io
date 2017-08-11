@@ -28,4 +28,4 @@ export PATH=$JAVA_HOME/bin:$JRE_HOME/bin:$PATH
    - 重启Linux命令：`reboot`
    - 查看配置结果：`echo $JAVA_HOME`
 
-![效果图](https://github.com/lev-gc/lev-gc.github.io/blob/source/source/_posts/Java/jre-on-linux/result.png)
+![效果图](https://raw.githubusercontent.com/lev-gc/lev-gc.github.io/source/source/_posts/Java/jre-on-linux/result.png)
