@@ -1,9 +1,9 @@
 ---
-title: 在Linux上搭建Java环境
+title: Linux上配置Java环境
 date: 2016-08-11 15:20:00
 tags: [Java,Linux]
 ---
-## **简单描述一下Linux下搭建Java环境的流程。**
+## **简单描述一下Linux下配置Java环境的流程。**
 
 1. 下载
    - 解压版比较灵活，这里我选择了下载tar版。
