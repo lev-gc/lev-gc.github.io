@@ -1,5 +1,5 @@
 ---
-title: 简单使用FIO测试磁盘性能
+title: 磁盘性能测试工具FIO的简单使用
 date: 2017-10-24 18:09:00
 tags: [Performance]
 ---
