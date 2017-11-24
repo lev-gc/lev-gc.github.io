@@ -5,7 +5,7 @@ tags: [Java]
 ---
 > `java.math.BigDecimal`是由任意精度的整数非标度值和32位的整数标度(`scale`)组成的不可变的、任意精度的有符号十进制数。在计算的时候`BigDecimal`提供了精确的数值计算，所以也理所当然地经常会需要进行数值的舍入。
 
-### 赋值
+### 赋值：
 
 1. 传入字符串的赋值方式：
 
@@ -19,7 +19,7 @@ tags: [Java]
 
   `new BigDecimal(1.22);` = `1.2199999999999999733546474089962430298328399658203125`
 
-### 舍入模式 (RoundingMode)： 
+### 舍入模式 (RoundingMode)：
 
 1. *ROUND_UP*
 
@@ -53,7 +53,7 @@ tags: [Java]
 
    不做舍入，具有断言的作用，指定后如出现需要舍入的情况则会抛出`ArithmeticException`异常。
 
-### 运算
+### 运算：
 
 ```java
 public BigDecimal add(BigDecimal augend);						//加法
