@@ -1,11 +1,9 @@
-# Configuration: https://hexo.io/docs/configuration.html
-
 # Site
 title: Elivs's Blog
-subtitle:
+subtitle: Und wenn du lange in einen Abgrund blickst, blickt der Abgrund auch in dich hinein.
 description:
 author: Elvis
-language: en
+language: default
 timezone:
 
 # URL
@@ -55,7 +53,7 @@ per_page: 8
 pagination_dir: page
 
 # Extensions
-theme: landscape
+theme: jasmine
 
 # Deployment
 deploy:
