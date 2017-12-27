@@ -49,7 +49,7 @@ date_format: YYYY-MM-DD
 time_format: HH:mm:ss
 
 # Pagination
-per_page: 8
+per_page: 5
 pagination_dir: page
 
 # Extensions
