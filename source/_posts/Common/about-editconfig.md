@@ -4,7 +4,7 @@ date: 2017-12-14 19:47:00
 tags: [Lint]
 ---
 
-[EditorConfig][http://editorconfig.org/] 是一套用于统一代码风格的方案，可以帮助开发者在不同的编辑器和IDE之间定义和维护一致的代码风格，同时有利于团队的合作，避免不必要的格式重构。
+[EditorConfig](http://editorconfig.org/) 是一套用于统一代码风格的方案，可以帮助开发者在不同的编辑器和IDE之间定义和维护一致的代码风格，同时有利于团队的合作，避免不必要的格式重构。
 
 #### 原理：
 
@@ -33,4 +33,4 @@ tags: [Lint]
 | trim_trailing_whitespace | [true/false] 是否将行尾空格自动删除                 |
 |   insert_final_newline   | [true/false]是否使文件以一个空白行结尾                |
 |           root           | [true]表明是最顶层的配置文件，发现设为true时，才会停止继续查找     |
-> 设置为unset时可以把配置重置为编辑器默认配置，另外有一些适配不同编辑器的属性，详见[wiki][https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties] 。
+> 设置为unset时可以把配置重置为编辑器默认配置，另外有一些适配不同编辑器的属性，详见[wiki](https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties) 。
