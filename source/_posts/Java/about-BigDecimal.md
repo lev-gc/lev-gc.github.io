@@ -56,8 +56,8 @@ tags: [Java]
 ### 运算：
 
 ```java
-public BigDecimal add(BigDecimal augend);						//加法
-public BigDecimal subtract(BigDecimal subtrahend);				//减法 
-public BigDecimal multiply(BigDecimal multiplicand);			//乘法
-public BigDecimal divide(BigDecimal divisor, int roundingMode);	//除法，一般都需要指定舍入模式
+public BigDecimal add(BigDecimal augend);                       //加法
+public BigDecimal subtract(BigDecimal subtrahend);              //减法
+public BigDecimal multiply(BigDecimal multiplicand);            //乘法
+public BigDecimal divide(BigDecimal divisor, int roundingMode); //除法，一般都需要指定舍入模式
 ```
