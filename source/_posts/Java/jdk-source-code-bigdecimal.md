@@ -1,9 +1,9 @@
 ---
-title: 关于BigDecimal
+title: JDK源码分析-BigDecimal
 date: 2015-11-22 18:19:00
-tags: [Java]
+tags: [Java,JDK]
 ---
-> `java.math.BigDecimal`是由任意精度的整数非标度值和32位的整数标度(`scale`)组成的不可变的、任意精度的有符号十进制数。在计算的时候`BigDecimal`提供了精确的数值计算，所以也理所当然地经常会需要进行数值的舍入。
+> `java.math.BigDecimal`是由任意精度的整数非标度值和32位的整数标度(`scale`)组成的不可变的、任意精度的有符号十进制数，表示的数值是 `unscaledValue × 10^(-scale)` 。在计算的时候`BigDecimal`提供了精确的数值计算，所以也理所当然地经常会需要进行数值的舍入。
 
 ### 赋值：
 
@@ -15,7 +15,7 @@ tags: [Java]
 
   `BigDecimal.valueOf(1.22);`
 
-3. JDK描述对参数类型为`double`的构造方法结果有一定的不可预知性，大部分情况下这种构造方式的结果不会正好等于传入的`double`值：
+3. JDK源码注释里描述对参数类型为`double`的构造方法要求参数是`double` 的二进制浮点值准确的十进制表示形式，因此直接传入double值结果有一定的不可预知性，大部分情况下这种构造方式的结果不会正好等于传入的`double`值（因为不能表示为任何有限长度的二进制小数）：
 
   `new BigDecimal(1.22);` = `1.2199999999999999733546474089962430298328399658203125`
 
@@ -53,7 +53,7 @@ tags: [Java]
 
    不做舍入，具有断言的作用，指定后如出现需要舍入的情况则会抛出`ArithmeticException`异常。
 
-### 运算：
+### 基本运算：
 
 ```java
 public BigDecimal add(BigDecimal augend);                       //加法
