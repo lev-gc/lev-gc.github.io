@@ -1,11 +1,3 @@
-# Site
-title: Jasmine
-subtitle: Fear always springs from ignorance.
-description:
-author: Elvis Chan
-language: default
-timezone:
-
 # URL
 url: https://lev-gc.github.io/
 root: /
@@ -52,9 +44,6 @@ time_format: HH:mm:ss
 per_page: 5
 pagination_dir: page
 
-# Extensions
-theme: jasmine
-
 # Deployment
 deploy:
   type: git
@@ -64,3 +53,15 @@ deploy:
   email: levgcsc@gmail.com
 #  message: Site updated: {{ now('YYYY-MM-DD HH:mm:ss') }}
 
+# Site
+title: Jasmine
+subtitle: Fear always springs from ignorance.
+description:
+author: Elvis Chan
+language: default
+timezone:
+
+# Extensions
+theme: jasmine
+## config of theme jasmine
+github_link: https://github.com/lev-gc
