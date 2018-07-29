@@ -10,4 +10,4 @@ For Hexo:
  - compile project: `hexo generate` or `hexo g`
  - clean project: `hexo clean`
  - start server on [localhost](http://localhost:4000/): `hexo server` or `hexo s`
- - deploy to GitHub: `hexo deploy` or `or hexo d`
+ - deploy to GitHub: `hexo deploy` or `hexo d`
