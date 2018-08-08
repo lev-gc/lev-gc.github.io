@@ -1,34 +1,34 @@
 ---
-title: Ê¹ÓÃRVM°²×°¹ÜÀíRuby
+title: ä½¿ç”¨RVMå®‰è£…ç®¡ç†Ruby
 date: 2018-08-07 23:36:00
 tags: [Ruby]
 ---
 
-> RVM(Ruby Version Manager)ÊÇÒ»¸ö¸ºÔğ°²×°¡¢¹ÜÀí²»Í¬°æ±¾µÄRuby»·¾³µÄÃüÁîĞĞ¹¤¾ß¡£
+> RVM(Ruby Version Manager)æ˜¯ä¸€ä¸ªè´Ÿè´£å®‰è£…ã€ç®¡ç†ä¸åŒç‰ˆæœ¬çš„Rubyç¯å¢ƒçš„å‘½ä»¤è¡Œå·¥å…·ã€‚
 
-### °²×°RVM
+### å®‰è£…RVM
 
-- È·ÈÏÊÇ·ñÒÑ°²×°`curl`£¬Ã»ÓĞÔòÖ´ĞĞÃüÁî`yum install curl`½øĞĞ°²×°£»
-- ´ò¿ª[RVM¹ÙÍø](https://www.rvm.io/)£¬Ê¹ÓÃÉÏÃæÌá¹©µÄÃüÁî°²×°RVM£º
+- ç¡®è®¤æ˜¯å¦å·²å®‰è£…`curl`ï¼Œæ²¡æœ‰åˆ™æ‰§è¡Œå‘½ä»¤`yum install curl`è¿›è¡Œå®‰è£…ï¼›
+- æ‰“å¼€[RVMå®˜ç½‘](https://www.rvm.io/)ï¼Œä½¿ç”¨ä¸Šé¢æä¾›çš„å‘½ä»¤å®‰è£…RVMï¼š
 ```shell
 $ gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
 $ \curl -sSL https://get.rvm.io | bash -s stable
 ```
-- Ê¹ÅäÖÃÎÄ¼şÉúĞ§£º
-  - ²éÕÒÅäÖÃÎÄ¼şÎ»ÖÃ£º `find / -name rvm.sh`
-  - ÅäÖÃÎÄ¼şÉúĞ§£º `source /etc/profile.d/rvm.sh`
+- ä½¿é…ç½®æ–‡ä»¶ç”Ÿæ•ˆï¼š
+  - æŸ¥æ‰¾é…ç½®æ–‡ä»¶ä½ç½®ï¼š `find / -name rvm.sh`
+  - é…ç½®æ–‡ä»¶ç”Ÿæ•ˆï¼š `source /etc/profile.d/rvm.sh`
 
-- ÏÂÔØRVMÒÀÀµ£º `rvm requirements`
+- ä¸‹è½½RVMä¾èµ–ï¼š `rvm requirements`
 
 
 
-### °²×°Ruby
-- ²é¿´RVM¿âËùÓĞRuby°æ±¾£º `rvm list known`
-- Ö¸¶¨°²×°ÆäÖĞÄ³¸ö°æ±¾µÄRuby £º`rvm install ruby-2.5.1`
+### å®‰è£…Ruby
+- æŸ¥çœ‹RVMåº“æ‰€æœ‰Rubyç‰ˆæœ¬ï¼š `rvm list known`
+- æŒ‡å®šå®‰è£…å…¶ä¸­æŸä¸ªç‰ˆæœ¬çš„Ruby ï¼š`rvm install ruby-2.5.1`
 
-### ³£ÓÃÃüÁî
-- ²é¿´ËùÓĞÒÑ°²×°µÄRuby°æ±¾ĞÅÏ¢£º`rvm list`
-- ÉèÖÃRubyµÄµ±Ç°ĞèÒª°æ±¾£º `rvm use 2.5.1`
-- ÉèÖÃÎªÄ¬ÈÏ°æ±¾£º`rvm use 2.5.1 default`
-- É¾³ıÆäÖĞÄ³¸ö°æ±¾£º`rvm remove 2.5.1`
+### å¸¸ç”¨å‘½ä»¤
+- æŸ¥çœ‹æ‰€æœ‰å·²å®‰è£…çš„Rubyç‰ˆæœ¬ä¿¡æ¯ï¼š`rvm list`
+- è®¾ç½®Rubyçš„å½“å‰éœ€è¦ç‰ˆæœ¬ï¼š `rvm use 2.5.1`
+- è®¾ç½®ä¸ºé»˜è®¤ç‰ˆæœ¬ï¼š`rvm use 2.5.1 default`
+- åˆ é™¤å…¶ä¸­æŸä¸ªç‰ˆæœ¬ï¼š`rvm remove 2.5.1`
 
