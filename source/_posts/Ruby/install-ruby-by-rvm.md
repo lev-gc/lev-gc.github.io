@@ -17,10 +17,7 @@ $ \curl -sSL https://get.rvm.io | bash -s stable
 - 使配置文件生效：
   - 查找配置文件位置： `find / -name rvm.sh`
   - 配置文件生效： `source /etc/profile.d/rvm.sh`
-
 - 下载RVM依赖： `rvm requirements`
-
-
 
 ### 安装Ruby
 - 查看RVM库所有Ruby版本： `rvm list known`
@@ -31,4 +28,3 @@ $ \curl -sSL https://get.rvm.io | bash -s stable
 - 设置Ruby的当前需要版本： `rvm use 2.5.1`
 - 设置为默认版本：`rvm use 2.5.1 default`
 - 删除其中某个版本：`rvm remove 2.5.1`
-
