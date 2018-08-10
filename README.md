@@ -1,5 +1,7 @@
 ## GitHub Pages
 
+[![Build Status](https://travis-ci.org/lev-gc/lev-gc.github.io.svg?branch=source)](https://travis-ci.org/lev-gc/lev-gc.github.io)
+
 The project is the source file of my [GitHub Pages](https://lev-gc.github.io/).
 
 After cloning the project:
