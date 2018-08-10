@@ -1,0 +1,21 @@
+language: node_js
+node_js: stable
+
+install:
+  - npm install
+
+script:
+  - hexo clean
+  - hexo g
+  - cp ./CNAME ./public/CNAME
+  - cd ./public
+  - git init
+  - git config user.name "Elvis"
+  - git config user.email "levgcsc@gmail.com"
+  - git add .
+  - git commit -m "Feat/deploy Jasmine"
+  - git push --force --quiet "https://${GITHUB_TOKEN}@github.com/lev-gc/lev-gc.github.io.git" master:master
+
+branches:
+  only:
+    - source
