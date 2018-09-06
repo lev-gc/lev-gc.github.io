@@ -3,3 +3,4 @@ public/
 db.json
 .deploy*/
 .idea
+.vscode
