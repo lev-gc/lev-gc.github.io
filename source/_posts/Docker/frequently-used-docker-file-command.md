@@ -4,7 +4,7 @@ date: 2018-02-22 03:27:00
 tags: [Docker]
 ---
 
-> 介绍Dockerfile部分较为常用的语法，关于Docker常用命令参考[Docker常用命令](https://www.0x0f0f.com/Docker/frequently-used-docker-file-command/)。
+> 介绍Dockerfile部分较为常用的语法，关于Docker常用命令参考[Docker常用命令](https://www.0x0f0f.com/Docker/frequently-used-docker-command-line/)。
 
 #### FROM ${IMAGE}[:${TAG}]
 - 仅且必须出现在Dockerfile的第一个指令，指定构建镜像的基础源镜像；
@@ -29,16 +29,16 @@ tags: [Docker]
 #### EXPOSE ${CONTAINER_PORT}
 - 指定容器需要与外部进行映射的端口，允许使用多个`EXPOSE`进行多端口映射，在启动添加OPTION`-P`时生效；
 
-#### ENV ${key} ${value}
+#### ENV ${KEY} ${VALUE}
 - 设置环境变量，提供给后面的`RUN`命令使用；
-- 上面的写法可设置一个环境变量，需要一行设置多个环境变量时可以写成`${key}=${value}`的形式；
+- 上面的写法可设置一个环境变量，需要一行设置多个环境变量时可以写成`${KEY}=${VALUE}`的形式；
 
 #### ADD ${SOURCE} ${DEST}
 - 把本地或者远程文件或文件夹复制到容器中；
 - 如果传输的是压缩包则会自动解压；
 
 #### COPY ${SOURCE} ${DEST}
-- 功能同`ADD`，但不能处理网络文件，也不会自动解压压缩文件;
+- 功能同`ADD`，但不能处理网络文件，也不会自动解压压缩文件；
 
 #### VOLUME ${PATH}
 - 指定容器内要挂载到主机的目录；
