@@ -1,5 +1,5 @@
 ---
-title: Jenkins
+title: Jenkins项目中配置Git分支
 date: 2018-11-26 20:04:00
 tags: [CI,Jenkins]
 ---
