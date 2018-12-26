@@ -1,4 +1,3 @@
 [submodule "themes/jasmine"]
 	path = themes/jasmine
 	url = https://github.com/lev-gc/jasmine.git
-    branch = develop
