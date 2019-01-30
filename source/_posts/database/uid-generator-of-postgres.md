@@ -1,15 +1,16 @@
 ---
-title: 一种数据库ID的生成策略[PostgreSQL]
+title: 分布式数据库UID的一种生成策略 [PostgreSQL]
 date: 2017-08-28 23:14:00
 tags: [DataBase]
 ---
-本文提供了一种PostgreSQL的ID生成策略，基本来自于[Instagram公开的一种方案](https://instagram-engineering.com/sharding-ids-at-instagram-1cf5a71e5a5c)，除了可以确定产生的ID是唯一值以外，还有以下几种优点：
+本文提供一种PostgreSQL的UID生成策略，参考自[Instagram公开的一种方案](https://instagram-engineering.com/sharding-ids-at-instagram-1cf5a71e5a5c)，除了可以确定产生的ID是唯一值以外，还有以下几种优点：
 
 - 生成的ID按照时间排序（但排序结果跟插入顺序不一定一致）
 - ID长度为64bit，不会过大
 - 支持分布式数据库（通过定义分片ID保证不同分片之间生成的ID不会重复）
 
 可以为数据库字段赋予默认值为下面的`next_id()`函数，即可为每条记录产生唯一的值：
+
 ```sql
 -- CREATE SEQUENCE
 CREATE SEQUENCE public.table_id_seq
