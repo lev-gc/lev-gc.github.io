@@ -9,6 +9,8 @@ script:
   - hexo g
   - cp ./CNAME ./public/CNAME
   - cd ./public
+  - sed -i "/<meta charset=\"UTF-8\">/a\    <meta name=\"google-site-verification\" content=\"${GOOGLE_VERIFICATION}\"/>" index.html
+  - sed -i "/<meta charset=\"UTF-8\">/a\    <meta name=\"baidu-site-verification\" content=\"${BAIDU_VERIFICATION}\"/>" index.html
   - git init
   - git config user.name "Elvis"
   - git config user.email "levgcsc@gmail.com"
