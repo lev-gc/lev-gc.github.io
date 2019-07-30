@@ -15,8 +15,8 @@ tags: [Docker]
 - `docker search ${KEYWORD}` : 在线查找镜像
 
 - `docker login [${SERVER}]` : 登录某个Docker仓库，默认为官方仓库DockerHub
-    - `-u ${USERNAME}` : 指定登录用户名
-    - `-p ${PASSWORD}` : 指定登录用户的密码
+  - `-u ${USERNAME}` : 指定登录用户名
+  - `-p ${PASSWORD}` : 指定登录用户的密码
 
 - `docker logout [${SERVER}]` : 退出登录
 
@@ -37,9 +37,9 @@ tags: [Docker]
 - `docker tag ${IMAGE}:${TAG} ${NEWIMAGE}:${NEWTAG}` : 为某个镜像增加新的镜像名和TAG
 
 - `docker commit ${CONTAINER_ID} ${IMAGE}:${TAG}` : 提交对某个容器的更改操作，输出为新的镜像
-    - `-m="${COMMIT_MESSAGE}"` : 填写提交信息
-    - `-a="${AUTHOR}"` : 填写镜像作者
-    - `-p` : commit时暂停容器
+  - `-m="${COMMIT_MESSAGE}"` : 填写提交信息
+  - `-a="${AUTHOR}"` : 填写镜像作者
+  - `-p` : commit时暂停容器
 
 - `docker build ${DOCKER_FILE_PATH} -t ${IMAGE}:${TAG}` : 通过Dockerfile创建镜像
 
@@ -48,13 +48,13 @@ tags: [Docker]
 > 对容器进行操作时需要指定该容器的ID，另外也可以通过分配的或自定义的容器名来确定容器。
 
 - `docker run` : 启动一个新的容器
-    - `-t` : 在新容器内指定一个伪终端或终端
-    - `-i` : 允许对容器内的标准输入(STDIN)进行交互
-	- `-d` : 后台运行
-	- `-P` : 选取主机的随机端口对容器端口进行映射
-	- `-p ${HOST_PORT}:${CONTAINER_PORT}` : 指定端口的映射，可以使用多次`-p`以映射多个端口
-	- `--name ${CONTAINER_NAME}` : 指定容器的NAME
-	- `-v ${HOST_PATH}:${CONTAINER_PATH}` : 把本机某个目录挂载到容器的某个目录下
+  - `-t` : 在新容器内指定一个伪终端或终端
+  - `-i` : 允许对容器内的标准输入(STDIN)进行交互
+  - `-d` : 后台运行
+  - `-P` : 选取主机的随机端口对容器端口进行映射
+  - `-p ${HOST_PORT}:${CONTAINER_PORT}` : 指定端口的映射，可以使用多次`-p`以映射多个端口
+  - `--name ${CONTAINER_NAME}` : 指定容器的NAME
+  - `-v ${HOST_PATH}:${CONTAINER_PATH}` : 把本机某个目录挂载到容器的某个目录下
 
 - `docker stop ${CONTAINER_ID}` : 停止某个Docker容器
 
@@ -73,13 +73,13 @@ tags: [Docker]
 - `docker unpause ${CONTAINER_ID}` : 恢复被暂停的容器
 
 - `docker ps` : 查看当前正在运行的容器的信息
-    - `-a` : 查看包括已关闭的容器
-    - `-q` : 只列出容器的ID，可以与其他需要容器ID的命令组合使用，如[docker rm `docker ps -a -q`]可以删除全部的容器
+  - `-a` : 查看包括已关闭的容器
+  - `-q` : 只列出容器的ID，可以与其他需要容器ID的命令组合使用，如[docker rm \`docker ps -a -q\`]可以删除全部的容器
 
 - `docker port ${CONTAINER_ID}` : 查看容器的端口映射情况
 
 - `docker logs ${CONTAINER_ID}` : 查看容器内的标准输出
-    - `-f` : tail形式输出log
+  - `-f` : tail形式输出log
 
 - `docker top ${CONTAINER_ID}` : 查看容器内部运行的进程
 
