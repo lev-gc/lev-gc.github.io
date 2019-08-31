@@ -1,7 +1,7 @@
 ---
 title: Java注释说明
 date: 2019-08-22 00:34:00
-tags: [Java,Linux]
+tags: [Java]
 ---
 
 ## 目的
