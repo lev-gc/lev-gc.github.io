@@ -4,43 +4,42 @@ date: 2017-10-24 18:09:00
 tags: [Performance]
 ---
 
-#### 简介
+## 简介
 
 FIO是一个用来进行磁盘IO压力测试的工具，可以产生足够多的任意类型的负载 (arbitrary load)，测试并得出对应的比较详细而易懂的报告。FIO支持13种不同的I/O引擎，包括：sync,mmap, libaio, posixaio, SG v3, splice, null, network, syslet,guasi, solarisaio 等等。
 
-​	[FIO官网](http://freecode.com/projects/fio)
+[FIO官网](http://freecode.com/projects/fio)
 
-​	[2.1.10版本下载](http://brick.kernel.dk/snaps/fio-2.1.10.tar.gz)
+[2.1.10版本下载](http://brick.kernel.dk/snaps/fio-2.1.10.tar.gz)
 
-#### 安装
+## 安装
 
 官方默认提供的版本是源码安装，安装前需要确认是否有安装GCC。以下是安装步骤：
 
 ```shell
 # wget直接下载
-$ wget http://brick.kernel.dk/snaps/fio-2.1.10.tar.gz
+wget http://brick.kernel.dk/snaps/fio-2.1.10.tar.gz
 # 解压：
-$ tar -zxvf fio-2.1.10.tar.gz
+tar -zxvf fio-2.1.10.tar.gz
 # 编译安装：
-$ cd fio-2.1.10
-$ ./configure
-$ make
-$ make install
+cd fio-2.1.10
+./configure
+make
+make install
 # 检查是否安装成功：
-$ fio
+fio
 ```
 
-### 使用
+## 使用
 
-简单例子：
+### 简单例子
 
 ```shell
 # 当前目录下，建立5G大小的test文件进行顺序读，单个线程以4k一个块大小执行，最大执行时间为1000秒，最后结果汇总输出报告，报告名为reportName
 $ fio -filename=./test -direct=1 -iodepth 1 -thread -rw=read -ioengine=psync -bs=4k -size=5G -numjobs=1 -runtime=1000 -group_reporting -name=reportName
 ```
 
-参数说明：
-
+### 参数说明
 
 | 参数              | 解析                                       |
 | --------------- | ---------------------------------------- |
@@ -56,9 +55,9 @@ $ fio -filename=./test -direct=1 -iodepth 1 -thread -rw=read -ioengine=psync -bs
 | group_reporting | 显示结果汇总每个进程的信息                            |
 | name            | 输出报告的名称                                  |
 
-报告例子：
+### 报告例子
 
-```
+```log
 read : io=40960MB, bw=238459KB/s, iops=59614, runt=175892msec
     clat (usec): min=35, max=22978, avg=131.27, stdev=61.13
      lat (usec): min=35, max=22979, avg=131.49, stdev=61.14
@@ -80,14 +79,11 @@ read : io=40960MB, bw=238459KB/s, iops=59614, runt=175892msec
      latency   : target=0, window=0, percentile=100.00%, depth=1
 ```
 
-报告的重要指标解析：
+### 报告的重要指标解析
 
-```
-1. read/write 表示是读或者写部分的报告
-2. io表示当次执行完毕的io文件大小，bw表示带宽，iops表示每秒io次数，runt表示执行时间
-3. clat percentiles表示提交延时的排名分部
-4. lat表示响应时间，slat是提交延时，clat是完成延时
-5. lat部分的数据表示完成时延具体分布在那些时间段，可以用来直观对比不同磁盘的响应时延分步
-5. util表示磁盘利用率
-```
-
+- read/write 表示是读或者写部分的报告；
+- io表示当次执行完毕的io文件大小，bw表示带宽，iops表示每秒io次数，runt表示执行时间；
+- clat percentiles表示提交延时的排名分布；
+- lat表示响应时间，slat是提交延时，clat是完成延时；
+- lat部分的数据表示完成时延具体分布在那些时间段，可以用来直观对比不同磁盘的响应时延；
+- util表示磁盘利用率；
