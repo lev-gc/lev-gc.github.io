@@ -6,6 +6,7 @@ tags: [Java]
 获取服务器Tomcat目录下webapps(项目发布的位置)的根路径，对Linux和Windows系统下分别使用斜杠和反斜杠的问题进行了处理。
 
 具体实现如下：
+
 ```java
 /**
  * Gets the root path of server.
