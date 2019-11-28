@@ -52,7 +52,7 @@ private static final int DEFAULT_CAPACITY = 10; // 默认最小长度为10
 private void ensureCapacityInternal(int minCapacity) {
     if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) {
         // 如果小于默认长度10，则取默认长度
-        minCapacity = Math.max(DEFAULT_CAPACITY, minCapacity); 
+        minCapacity = Math.max(DEFAULT_CAPACITY, minCapacity);
     }
     ensureExplicitCapacity(minCapacity);
 }
