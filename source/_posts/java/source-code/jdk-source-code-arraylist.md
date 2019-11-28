@@ -4,7 +4,7 @@ date: 2016-02-01 20:23:00
 tags: [Java,JDK]
 ---
 
-### 基本概述：
+## 基本概述
 
 - `ArrayList`的本质是数组，占用一块连续的内存空间，可以动态扩容；
 - 没有实现同步，并非线程安全的；
@@ -12,7 +12,7 @@ tags: [Java,JDK]
 - 实现了接口`Cloneable`，可以被克隆；
 - 实现了接口`Serializable`，支持序列化；
 
-### 构造方法：
+## 构造方法
 
 三种构造方法：
 
@@ -41,7 +41,7 @@ public ArrayList() {
 }
 ```
 
-### 动态扩容
+## 动态扩容
 
 当数组的实际长度将要比当前预留的要大时，需要对数组进行扩容。
 
@@ -76,7 +76,7 @@ private void grow(int minCapacity) {
 
 另外，`ArrayList`有一个设置数组长度为当前实际长度的`trimToSize()`方法：
 
-```
+```java
 public void trimToSize() {
     modCount++;
     if (size < elementData.length) {
@@ -85,9 +85,7 @@ public void trimToSize() {
 }
 ```
 
-
-
-### 线程安全
+## 线程安全
 
 `ArrayList`没有实现同步，所以不是线程安全的。代码文档中提到，`ArrayList`类大致等同于`Vector`类，而`Vector`是线程安全的，所以是可以使用`Vector`来做多线程的实现。另外也提到可以使用`Collections.synchronizedList`方法将`ArrayList`“包装”起来：
 
