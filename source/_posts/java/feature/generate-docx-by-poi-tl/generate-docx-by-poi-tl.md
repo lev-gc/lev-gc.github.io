@@ -24,10 +24,12 @@ tags: [Java]
 
 该组件对模版文档内的语法结构要求都是以 {{ 开始，以 }} 结束，具体如下：
 
-- 普通文本：`{{template}}`，渲染类为String或者TextRenderData
-- 图片：`{{@template}}`，渲染类为PictureRenderData
-- 表格：`{{#template}}`，渲染类为TableRenderData
-- 列表：`{{*template}}`，渲染类为NumbericRenderData
+```text
+> 普通文本：{{template}}，渲染类为String或者TextRenderData
+> 图片：{{@template}}，渲染类为PictureRenderData
+> 表格：{{#template}}，渲染类为TableRenderData
+> 列表：{{*template}}，渲染类为NumbericRenderData
+```
 
 另外，关于文档样式的问题，默认会使用模版占位符的样式，如果需要动态变化样式，可以在构造渲染类的时候注入样式。
 
