@@ -1,12 +1,24 @@
+# Site
+title: Jasmine
+subtitle: Fear always springs from ignorance.
+description:
+keywords:
+author: Elvis Chan
+language: default
+timezone: Asia/Shanghai
+
 # URL
 url: https://lev-gc.github.io/
 root: /
 permalink: :title/
 permalink_defaults:
+pretty_urls:
+  trailing_index: false
+  trailing_html: false
 
 # Directory
 source_dir: source
-public_dir: public
+public_dir: dist
 tag_dir: tags
 archive_dir: archives
 category_dir: categories
@@ -19,17 +31,22 @@ new_post_name: :title.md
 default_layout: post
 auto_spacing: false
 titlecase: false
-external_link: true
+external_link:
+  enable: true
+  field: site
+  exclude: []
 filename_case: 0
 render_drafts: false
-post_asset_folder: false
-relative_link: false
-future: true
+post_asset_folder: true
+relative_link: true
+future: false
 highlight:
   enable: true
-  line_number: true
   auto_detect: false
-  tab_replace:
+  line_number: true
+  tab_replace: ''
+  wrap: true
+  hljs: false
 
 # Category & Tag
 default_category: uncategorized
@@ -39,6 +56,7 @@ tag_map:
 # Date/Time format
 date_format: YYYY-MM-DD
 time_format: HH:mm:ss
+updated_option: date
 
 # Pagination
 per_page: 5
@@ -51,17 +69,12 @@ deploy:
   branch: master
   name: Elvis
   email: levgcsc@gmail.com
-#  message: Site updated: {{ now('YYYY-MM-DD HH:mm:ss') }}
-
-# Site
-title: Jasmine
-subtitle: Fear always springs from ignorance.
-description:
-author: Elvis Chan
-language: default
-timezone:
+  # message: Site updated: {{ now('YYYY-MM-DD HH:mm:ss') }}
 
 # Extensions
 theme: jasmine
 ## config of theme jasmine
+theme_config:
 github_link: https://github.com/lev-gc
+
+meta_generator: true
