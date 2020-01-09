@@ -1,14 +1,14 @@
 language: node_js
-node_js: 8.12.0
+node_js: 12.18.3
 
 install:
   - npm install
 
 script:
-  - hexo clean
-  - hexo g
-  - cp ./CNAME ./public/CNAME
-  - cd ./public
+  - npm run clean
+  - npm run build
+  - cp ./CNAME ./dist/CNAME
+  - cd ./dist
   - sed -i "/<meta charset=\"UTF-8\">/a\    <meta name=\"google-site-verification\" content=\"${GOOGLE_VERIFICATION}\"/>" index.html
   - git init
   - git config user.name "Elvis"
