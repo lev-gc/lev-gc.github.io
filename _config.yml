@@ -71,10 +71,8 @@ deploy:
   email: levgcsc@gmail.com
   # message: Site updated: {{ now('YYYY-MM-DD HH:mm:ss') }}
 
-# Extensions
+# Theme
 theme: jasmine
 ## config of theme jasmine
 theme_config:
-github_link: https://github.com/lev-gc
-
-meta_generator: true
+  github_link: https://github.com/lev-gc
