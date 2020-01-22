@@ -12,10 +12,10 @@ Maybe some old articles.
 
 After cloning the project:
 - change directory to the root path of the project
-- execute command `npm i`
+- install yarn first: `npm i -g yarn`
+- execute command `yarn`
 
 For Hexo:
-- compile project: `hexo generate` or `hexo g`
-- clean project: `hexo clean`
-- start server on [localhost](http://localhost:4000/): `hexo server` or `hexo s`
-- deploy to GitHub: `hexo deploy` or `hexo d`
+- clean project: `yarn c` or `hexo clean`
+- compile project: `yarn b` or `hexo generate` or `hexo g`
+- start server on [localhost](http://localhost:4000/): `yarn s` or `hexo server` or `hexo s`
