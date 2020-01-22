@@ -2,11 +2,11 @@ language: node_js
 node_js: 12.18.3
 
 install:
-  - npm install
+  - yarn
 
 script:
-  - npm run clean
-  - npm run build
+  - yarn c
+  - yarn b
   - cp ./CNAME ./dist/CNAME
   - cd ./dist
   - sed -i "/<meta charset=\"UTF-8\">/a\    <meta name=\"google-site-verification\" content=\"${GOOGLE_VERIFICATION}\"/>" index.html
