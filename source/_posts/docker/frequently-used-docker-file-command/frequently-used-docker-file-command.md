@@ -29,9 +29,13 @@ tags: [Docker]
 - `EXPOSE ${CONTAINER_PORT}`
   - 指定容器需要与外部进行映射的端口，允许使用多个`EXPOSE`进行多端口映射，在启动添加OPTION`-P`时生效；
 
-- `ENV ${KEY} ${VALUE}`
+- `ENV ${KEY}=${VALUE}`
   - 设置容器的环境变量，也可以提供给后面的`RUN`命令使用；
-  - 上面的写法可设置一个环境变量，如需要一行设置多个环境变量时可以写成`${KEY}=${VALUE}`的形式；
+  - 如需要一行设置多个环境变量时可以用空格分隔；
+
+- `ARG ${KEY}`
+  - 设置构建镜像时需要使用的参数，`ARG ${KEY}=${VALUE}`可以设置默认值；
+  - 使用方式为在`docker build`时通过`--build-arg ${KEY}=${VALUE}`传入参数；
 
 - `ADD ${SOURCE} ${DEST}`
   - 把本地或者远程文件或文件夹复制到容器中；
