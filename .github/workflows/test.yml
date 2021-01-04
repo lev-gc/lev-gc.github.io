@@ -36,4 +36,10 @@ jobs:
           sed -i "/<meta charset=\"UTF-8\">/a\    <meta name=\"google-site-verification\" content=\"${GOOGLE_VERIFICATION}\"/>" index.html
 
       - name: deploy
-        run: yarn d
+        run: |
+          git init
+          git config user.name "Elvis"
+          git config user.email "levgcsc@gmail.com"
+          git add .
+          git commit -m "Feat/deploy Jasmine"
+          git push --force --quiet "https://${{ secrets.GITHUB_TOKEN }}@github.com/lev-gc/lev-gc.github.io.git" master:master
