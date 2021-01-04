@@ -42,4 +42,4 @@ jobs:
           git config user.email "levgcsc@gmail.com"
           git add .
           git commit -m "Feat/deploy Jasmine"
-          git push --force --quiet "https://${{secrets.GITHUB_TOKEN}}@github.com/lev-gc/lev-gc.github.io.git" master:master
+          git push --force --quiet "https://${{ secrets.GITHUB_TOKEN }}@github.com/lev-gc/lev-gc.github.io.git" master:master
