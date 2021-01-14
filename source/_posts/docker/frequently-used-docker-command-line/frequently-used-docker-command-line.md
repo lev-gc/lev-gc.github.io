@@ -83,6 +83,8 @@ tags: [Docker]
 
 - `docker top ${CONTAINER_ID}` : 查看容器内部运行的进程
 
+- `docker stats` : 查看容器资源使用状态
+
 - `docker inspect ${CONTAINER_ID}` : 查看容器的底层信息
 
 - `docker rm ${CONTAINER_ID}` : 移除不需要的容器
