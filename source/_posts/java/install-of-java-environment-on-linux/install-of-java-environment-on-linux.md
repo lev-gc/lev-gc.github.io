@@ -29,4 +29,4 @@ tags: [Java,Linux]
   - 使用`source`命令使之生效：`source /etc/profile`；
   - 查看配置结果：`echo $JAVA_HOME`；
 
-    ![效果图](https://raw.githubusercontent.com/lev-gc/lev-gc.github.io/source/source/_posts/java/environment-of-java-on-linux/java_env.png)
+    ![效果图](./java_env.png)
