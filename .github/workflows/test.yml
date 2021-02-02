@@ -3,17 +3,16 @@ name: github-pages
 # Triggers
 on:
   push:
-    branches: [ test ]
+    branches:
+      - test
   pull_request:
-    branches: [ test ]
-
-  # Allows to run from the Actions tab
-  workflow_dispatch:
+    branches:
+      - test
+  workflow_dispatch
 
 # workflow
 jobs:
   build:
-    name: build-test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -27,14 +26,14 @@ jobs:
       - name: Dependencies
         run: yarn
 
-      - name: build
+      - name: Generate
         run: |
           yarn c
           yarn b
           cp ./CNAME ./dist/CNAME
           sed -i "/<meta charset=\"UTF-8\">/a\    <meta name=\"google-site-verification\" content=\"${GOOGLE_VERIFICATION}\"/>" ./dist/index.html
 
-      - name: deploy
+      - name: Deploy
         run: |
           cd ./dist
           git init
