@@ -8,7 +8,7 @@ on:
   pull_request:
     branches:
       - test
-  workflow_dispatch
+  workflow_dispatch:
 
 # workflow
 jobs:
