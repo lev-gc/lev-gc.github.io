@@ -21,7 +21,7 @@ jobs:
       - name: Environment
         uses: actions/setup-node@v2.1.4
         with:
-          node-version: 12.x
+          node-version: 12.16.1
 
       - name: Dependencies
         run: yarn
