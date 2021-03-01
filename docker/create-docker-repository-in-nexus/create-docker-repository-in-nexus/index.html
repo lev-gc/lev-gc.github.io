@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    
+
+    
+    <title>
+        
+        Nexus上配置Docker仓库 |
+        
+        Jasmine
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="本文主要介绍如何在Nexus上配置Docker的仓库，以及如何配置本地Docker使用搭建好的Docker仓库。  环境 服务器的Nexus版本为3.x以上，可下载安装，也可以直接使用Docker镜像的版本； 使用方的系统及Docker版本没有限制，但因为不同版本的系统能兼容的Docker版本区别较大，此处仅以Centos7搭配Docker17为例说明；  关于Docker仓库Nexus中的Do">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nexus上配置Docker仓库">
+<meta property="og:url" content="https://lev-gc.github.io/docker/create-docker-repository-in-nexus/create-docker-repository-in-nexus/">
+<meta property="og:site_name" content="Jasmine">
+<meta property="og:description" content="本文主要介绍如何在Nexus上配置Docker的仓库，以及如何配置本地Docker使用搭建好的Docker仓库。  环境 服务器的Nexus版本为3.x以上，可下载安装，也可以直接使用Docker镜像的版本； 使用方的系统及Docker版本没有限制，但因为不同版本的系统能兼容的Docker版本区别较大，此处仅以Centos7搭配Docker17为例说明；  关于Docker仓库Nexus中的Do">
+<meta property="og:locale">
+<meta property="og:image" content="https://raw.githubusercontent.com/lev-gc/lev-gc.github.io/source/source/_posts/docker/create-docker-repository-in-nexus/create_repositories.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lev-gc/lev-gc.github.io/source/source/_posts/docker/create-docker-repository-in-nexus/select_recipe.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lev-gc/lev-gc.github.io/source/source/_posts/docker/create-docker-repository-in-nexus/proxy_repository_configure.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lev-gc/lev-gc.github.io/source/source/_posts/docker/create-docker-repository-in-nexus/hosted_repository_configure.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/lev-gc/lev-gc.github.io/source/source/_posts/docker/create-docker-repository-in-nexus/group_repository_configure.png">
+<meta property="article:published_time" content="2018-08-15T14:25:00.000Z">
+<meta property="article:modified_time" content="2018-08-15T14:25:00.000Z">
+<meta property="article:author" content="Elvis Chan">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lev-gc/lev-gc.github.io/source/source/_posts/docker/create-docker-repository-in-nexus/create_repositories.png">
+    
+    
+    <link rel="icon" href="/css/images/favicon.png">
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+    
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+
+    
+<link rel="stylesheet" href="../../../css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+<div id="container">
+    <div id="wrap">
+        <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer" class="outer">
+        <div id="header-title" class="inner">
+            <h1 id="logo-wrap">
+                <a href="../../../index.html" id="logo">Jasmine</a>
+            </h1>
+            
+            <h2 id="subtitle-wrap">
+                <span id="subtitle">Fear always springs from ignorance.</span>
+            </h2>
+            
+        </div>
+
+        <div id="header-inner" class="inner">
+
+            <nav id="main-nav">
+                <a id="main-nav-toggle" class="fab fa-bars nav-icon"></a>
+                
+                <a class="main-nav-link" href="../../../index.html">Home</a>
+                
+                <a class="main-nav-link" href="../../../archives">Archives</a>
+                
+            </nav>
+
+            <nav id="sub-nav">
+                
+                <a class="fab fa-github nav-icon" href="../../../https:/github.com/lev-gc"
+                   title="GitHub"></a>
+                
+                <!-- search -->
+                <a id="nav-search-btn" class="far fa-search nav-icon" title="Search"></a>
+            </nav>
+
+            <div id="search-form-wrap">
+                <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://lev-gc.github.io"></form>
+            </div>
+
+        </div>
+
+    </div>
+</header>
+
+        <div class="outer">
+            <section id="main"><article id="post-docker/create-docker-repository-in-nexus/create-docker-repository-in-nexus" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="" class="article-date">
+  <time datetime="2018-08-15T14:25:00.000Z" itemprop="datePublished">2018-08-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Nexus上配置Docker仓库
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>本文主要介绍如何在Nexus上配置Docker的仓库，以及如何配置本地Docker使用搭建好的Docker仓库。</p>
+</blockquote>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><ul>
+<li>服务器的Nexus版本为3.x以上，可下载安装，也可以直接使用Docker镜像的版本；</li>
+<li>使用方的系统及Docker版本没有限制，但因为不同版本的系统能兼容的Docker版本区别较大，此处仅以Centos7搭配Docker17为例说明；</li>
+</ul>
+<h2 id="关于Docker仓库"><a href="#关于Docker仓库" class="headerlink" title="关于Docker仓库"></a>关于Docker仓库</h2><p>Nexus中的Docker仓库分为三种类型：</p>
+<table>
+<thead>
+<tr>
+<th align="center">Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">proxy</td>
+<td>代理仓库，提供代理其他仓库，一旦下载过的镜像会被存储在该仓库，下次无需再从外部网络重新下载</td>
+</tr>
+<tr>
+<td align="center">hosted</td>
+<td>私有仓库，提供本地私服功能，上传的镜像可与使用该Nexus的用户共享</td>
+</tr>
+<tr>
+<td align="center">group</td>
+<td>组合仓库，实际为多个仓库的组合，但只能使用原来仓库存在的镜像，不能直接通过对组合仓库操作来添加镜像</td>
+</tr>
+</tbody></table>
+<h2 id="配置步骤"><a href="#配置步骤" class="headerlink" title="配置步骤"></a>配置步骤</h2><ul>
+<li><p>首先，打开Nexus的系统页面，按图中步骤开始创建仓库：</p>
+<p><img src="https://raw.githubusercontent.com/lev-gc/lev-gc.github.io/source/source/_posts/docker/create-docker-repository-in-nexus/create_repositories.png" alt="点击创建仓库"></p>
+</li>
+<li><p>选择不同Docker仓库类型后进入各自的创建页面：</p>
+<p><img src="https://raw.githubusercontent.com/lev-gc/lev-gc.github.io/source/source/_posts/docker/create-docker-repository-in-nexus/select_recipe.png" alt="选择仓库类型"></p>
+<ul>
+<li><p>proxy</p>
+<p><img src="https://raw.githubusercontent.com/lev-gc/lev-gc.github.io/source/source/_posts/docker/create-docker-repository-in-nexus/proxy_repository_configure.png" alt="proxy仓库配置"></p>
+<p>关键步骤：</p>
+<ul>
+<li>输入唯一的仓库名称；</li>
+<li>选择协议及对应端口，该端口会在后面配置Docker镜像时会用到，注意所选端口不要被占用；</li>
+<li>填写本仓库所代理的远程仓库，可使用国内的镜像进行加速；</li>
+</ul>
+</li>
+<li><p>hosted</p>
+<p><img src="https://raw.githubusercontent.com/lev-gc/lev-gc.github.io/source/source/_posts/docker/create-docker-repository-in-nexus/hosted_repository_configure.png" alt="hosted仓库配置"></p>
+<p>关键步骤：</p>
+<ul>
+<li>输入唯一的仓库名称；</li>
+<li>选择协议及对应端口，会在配置Docker登录、上传下载私服仓库镜像时会用到，注意所选端口不要被占用；</li>
+</ul>
+</li>
+<li><p>group</p>
+<p><img src="https://raw.githubusercontent.com/lev-gc/lev-gc.github.io/source/source/_posts/docker/create-docker-repository-in-nexus/group_repository_configure.png" alt="group仓库配置"></p>
+<p>关键步骤：</p>
+<ul>
+<li>输入唯一的仓库名称；</li>
+<li>选择协议及对应端口，该端口会在后面配置Docker镜像时会用到，注意所选端口不要被占用；</li>
+<li>选择该组合仓库需要包括的仓库，镜像会从所选的仓库里获取；</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="配置使用Nexus的Docker仓库"><a href="#配置使用Nexus的Docker仓库" class="headerlink" title="配置使用Nexus的Docker仓库"></a>配置使用Nexus的Docker仓库</h2><ul>
+<li><p>新建或修改配置文件<code>/etc/docker/daemon.json</code>，添加</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;registry-mirrors&quot;</span>: [<span class="string">&quot;http://xxx.xxx.xxx.xxx:8099&quot;</span>],</span><br><span class="line">  <span class="attr">&quot;insecure-registries&quot;</span>:[<span class="string">&quot;http://xxx.xxx.xxx.xxx:8098&quot;</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中：</p>
+<ul>
+<li><code>http://xxx.xxx.xxx.xxx:8099</code>为Nexus上的proxy仓库或group仓库，配置生效后会默认通过该仓库获取镜像；</li>
+<li><code>http://xxx.xxx.xxx.xxx:8098</code>为私服仓库，即镜像push的目标仓库，使用前需要先通过<code>docker login</code>登陆；</li>
+<li>注意<code>registry-mirrors</code>的地址必须要加上协议类型[http/https]；</li>
+</ul>
+</li>
+<li><p>使配置生效</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>登录Nexus私服帐号</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker login xxx.xxx.xxx.xxx:8098</span><br><span class="line"><span class="comment"># 使用Nexus帐号登录，Nexus默认帐号密码: admin/admin123</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="使用Nexus仓库"><a href="#使用Nexus仓库" class="headerlink" title="使用Nexus仓库"></a>使用Nexus仓库</h2><ul>
+<li><p>使用Nexus的proxy仓库</p>
+<p>当配置好环境后默认即使用Nexus的proxy仓库，每次本地pull新的镜像时，proxy仓库就会下载并缓存该镜像，下次再pull的时候就会直接从proxy仓库取而不必再通过外部网络获取。</p>
+</li>
+<li><p>使用Nexus的hosted仓库</p>
+<p>对于自构建的镜像，需要通过Nexus的hosted仓库上传下载，以下为具体步骤：</p>
+<ul>
+<li>使用<code>docker tag</code>命令对构建完的镜像进行命名，命名规则为在镜像名前添加hosted仓库地址（即<code>xxx.xxx.xxx.xxx:8098</code>），如<code>java:1.8</code>应该命名为<code>xxx.xxx.xxx.xxx:8098/java:1.8</code>，因为如果不重命名则会默认提交到Docker Hub上；</li>
+<li>确认已登录后把重命名的镜像上传，如 <code>docker push xxx.xxx.xxx.xxx:8098/java:1.8</code>；</li>
+<li>push成功后可在Nexus上查看到上传的镜像；</li>
+<li>需要使用时通过<code>docker pull xxx.xxx.xxx.xxx:8098/java:1.8</code>命令可从hosted仓库下载该镜像；</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/docker/create-docker-repository-in-nexus/create-docker-repository-in-nexus/" data-id="cklqcjd3n00033wn7ez7y8ysd" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../tags/Docker/" rel="tag">Docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../../middleware/zookeeper/zookeeper-installation-guide/zookeeper-installation-guide/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          zookeeper安装指引
+        
+      </div>
+    </a>
+  
+  
+    <a href="../../../ruby/install-ruby-by-rvm/install-ruby-by-rvm/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">使用RVM安装管理Ruby</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+            
+            <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="../../../tags/CI/" style="font-size: 10px;">CI</a> <a href="../../../tags/DataBase/" style="font-size: 10px;">DataBase</a> <a href="../../../tags/Design-Pattern/" style="font-size: 10px;">Design Pattern</a> <a href="../../../tags/DevOps/" style="font-size: 15px;">DevOps</a> <a href="../../../tags/Docker/" style="font-size: 15px;">Docker</a> <a href="../../../tags/ElasticSearch/" style="font-size: 10px;">ElasticSearch</a> <a href="../../../tags/Git/" style="font-size: 15px;">Git</a> <a href="../../../tags/JDK/" style="font-size: 12.5px;">JDK</a> <a href="../../../tags/Java/" style="font-size: 20px;">Java</a> <a href="../../../tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="../../../tags/Lint/" style="font-size: 12.5px;">Lint</a> <a href="../../../tags/Linux/" style="font-size: 17.5px;">Linux</a> <a href="../../../tags/Maven/" style="font-size: 10px;">Maven</a> <a href="../../../tags/Network/" style="font-size: 10px;">Network</a> <a href="../../../tags/Performance/" style="font-size: 10px;">Performance</a> <a href="../../../tags/Ruby/" style="font-size: 10px;">Ruby</a> <a href="../../../tags/Server/" style="font-size: 10px;">Server</a> <a href="../../../tags/middleware/" style="font-size: 12.5px;">middleware</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2015/05/">May 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="../../../middleware/nacos/nacos-installation-guide/nacos-installation-guide/">Nacos安装指引</a>
+          </li>
+        
+          <li>
+            <a href="../../../java/about-javadoc/about-javadoc/">Java注释说明</a>
+          </li>
+        
+          <li>
+            <a href="../../../devops/git/about-git-lfs/about-git-lfs/">Git LFS简介</a>
+          </li>
+        
+          <li>
+            <a href="../../../devops/git/git-commit-standardization/git-commit-standardization/">Git Commit规范化</a>
+          </li>
+        
+          <li>
+            <a href="../../../linux/root_directory_of_linux/root_directory_of_linux/">Linux目录说明</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+            
+        </div>
+        <footer id="footer">
+	
+	<div class="outer">
+		<div id="footer-info" class="inner">
+			&copy; 2021 Elvis Chan<br>
+		</div>
+	</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="../../../fancybox/jquery.fancybox.css">
+
+  
+<script src="../../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="../../../js/script.js"></script>
+
+
+
+
+</div>
+
+<!-- Load canvas-nest -->
+
+
+<script src="../../../js/canvas-nest.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    
+
+    
+    <title>
+        
+        Jasmine
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta property="og:type" content="website">
+<meta property="og:title" content="Jasmine">
+<meta property="og:url" content="https://lev-gc.github.io/page/4/">
+<meta property="og:site_name" content="Jasmine">
+<meta property="og:locale">
+<meta property="article:author" content="Elvis Chan">
+<meta name="twitter:card" content="summary">
+    
+    
+    <link rel="icon" href="/css/images/favicon.png">
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+    
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+
+    
+<link rel="stylesheet" href="../../css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+<div id="container">
+    <div id="wrap">
+        <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer" class="outer">
+        <div id="header-title" class="inner">
+            <h1 id="logo-wrap">
+                <a href="../../index.html" id="logo">Jasmine</a>
+            </h1>
+            
+            <h2 id="subtitle-wrap">
+                <span id="subtitle">Fear always springs from ignorance.</span>
+            </h2>
+            
+        </div>
+
+        <div id="header-inner" class="inner">
+
+            <nav id="main-nav">
+                <a id="main-nav-toggle" class="fab fa-bars nav-icon"></a>
+                
+                <a class="main-nav-link" href="../../index.html">Home</a>
+                
+                <a class="main-nav-link" href="../../archives">Archives</a>
+                
+            </nav>
+
+            <nav id="sub-nav">
+                
+                <a class="fab fa-github nav-icon" href="../../https:/github.com/lev-gc"
+                   title="GitHub"></a>
+                
+                <!-- search -->
+                <a id="nav-search-btn" class="far fa-search nav-icon" title="Search"></a>
+            </nav>
+
+            <div id="search-form-wrap">
+                <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://lev-gc.github.io"></form>
+            </div>
+
+        </div>
+
+    </div>
+</header>
+
+        <div class="outer">
+            <section id="main">
+  
+    <article id="post-middleware/elastic/install-elasticsearch-cluster/install-elasticsearch-cluster" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="../../middleware/elastic/install-elasticsearch-cluster/install-elasticsearch-cluster/" class="article-date">
+  <time datetime="2017-08-28T15:46:30.000Z" itemprop="datePublished">2017-08-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="../../middleware/elastic/install-elasticsearch-cluster/install-elasticsearch-cluster/">ElasticSearch集群搭建</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>由于ElasticSearch不同版本的配置有所不同，特指出本文所用版本为5.5.2.</p>
+</blockquote>
+<h2 id="安装配置"><a href="#安装配置" class="headerlink" title="安装配置"></a>安装配置</h2><h3 id="一、建立Linux用户【ES不允许直接使用root帐号】"><a href="#一、建立Linux用户【ES不允许直接使用root帐号】" class="headerlink" title="一、建立Linux用户【ES不允许直接使用root帐号】"></a>一、建立Linux用户【ES不允许直接使用root帐号】</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">groupadd app</span><br><span class="line">useradd -g app elastic</span><br><span class="line">passwd elastic</span><br><span class="line">      [pw:e1asticsearch]</span><br><span class="line"></span><br><span class="line">mkdir /elastic</span><br><span class="line">chown -R elastic:app /elastic</span><br><span class="line">chmod 755 /elastic</span><br></pre></td></tr></table></figure>
+
+<p>建立用户并授权目录后使用新的用户进行后续操作。</p>
+<h3 id="二、下载解压并放到适当位置"><a href="#二、下载解压并放到适当位置" class="headerlink" title="二、下载解压并放到适当位置"></a>二、下载解压并放到适当位置</h3><p>解压命令：</p>
+<p><code>tar -zxvf elasticsearch-5.5.2.tar.gz</code></p>
+<h3 id="三、修改配置文件"><a href="#三、修改配置文件" class="headerlink" title="三、修改配置文件"></a>三、修改配置文件</h3><p>修改配置文件参数：</p>
+<p><code>vim ./elasticsearch-5.5.2/config/elasticsearch.yml</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 集群名称，同一集群内必须设置相同的名称</span></span><br><span class="line">cluster.name: 自定义</span><br><span class="line"><span class="comment"># 节点名称，同一集群内设置不同名称</span></span><br><span class="line">node.name: 自定义</span><br><span class="line"><span class="comment"># host地址，可以为0.0.0.0，一般直接设置为本机IP</span></span><br><span class="line">network.host: 本机IP</span><br><span class="line"><span class="comment"># 默认端口9200</span></span><br><span class="line">http.port: 9200</span><br><span class="line"><span class="comment"># 集群内的机器IP，需要添加集群内节点通讯端口，端口默认为9300, 如 &quot;127.0.0.1:9300&quot;</span></span><br><span class="line">discovery.zen.ping.unicast.hosts: [<span class="string">&quot;&quot;</span>,<span class="string">&quot;&quot;</span>,<span class="string">&quot;&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="四、启动"><a href="#四、启动" class="headerlink" title="四、启动"></a>四、启动</h3><p>使用一下命令启动，可添加参数-d后台启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/elasticsearch [-d]</span><br></pre></td></tr></table></figure>
+
+<h2 id="各类报错"><a href="#各类报错" class="headerlink" title="各类报错"></a>各类报错</h2><h3 id="一、-root用户启动"><a href="#一、-root用户启动" class="headerlink" title="一、 root用户启动"></a>一、 root用户启动</h3><ul>
+<li><p>报错信息：<code>java.lang.RuntimeException: can not run elasticsearch as root</code></p>
+<p>解决方法：设置一个非root用户，用于管理elastic</p>
+</li>
+</ul>
+<h3 id="二、-节点数不足"><a href="#二、-节点数不足" class="headerlink" title="二、 节点数不足"></a>二、 节点数不足</h3><ul>
+<li><p>报错信息：<code>max file descriptors [4096] for elasticsearch process is too low, increase to at least [65536]</code></p>
+<p>解决方法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">ulimit</span> -Hn  <span class="comment"># 查看硬限制</span></span><br><span class="line">$ vim /etc/security/limits.conf</span><br><span class="line">    <span class="comment"># 添加以下两行【elastic是用户名】：</span></span><br><span class="line">    elastic soft nofile 65536</span><br><span class="line">    elastic hard nofile 65536</span><br></pre></td></tr></table></figure>
+
+<p>重新登录检查是否生效。</p>
+</li>
+<li><p>报错信息：<code>max number of threads [1024] for user [elastic] is too low, increase to at least [2048]</code></p>
+<p> 解决方法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ vim /etc/security/limits.d/xx-nproc.conf</span><br><span class="line"><span class="comment">#【文件名会有所不同,且节点数不一定为1024，大于需求值就不需要改】</span></span><br><span class="line">  <span class="comment"># 修改：</span></span><br><span class="line">  * soft nproc 1024 -&gt; * soft nproc 2048</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>报错信息：<code>max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]</code></p>
+<p>解决方法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ vim /etc/sysctl.conf</span><br><span class="line">    <span class="comment"># 添加：</span></span><br><span class="line">    vm.max_map_count=655360</span><br><span class="line"><span class="comment"># 检查：</span></span><br><span class="line">$ sysctl -p</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="三、-使用公网IP无法访问-无法绑定路由"><a href="#三、-使用公网IP无法访问-无法绑定路由" class="headerlink" title="三、 使用公网IP无法访问/无法绑定路由"></a>三、 使用公网IP无法访问/无法绑定路由</h3><ul>
+<li><p>原因：防火墙未开放端口</p>
+<p>解决方法（此处举例为CentOS7）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 添加9200端口开放传输：</span></span><br><span class="line">$ firewall-cmd --zone=public --add-port=9200/tcp --permanent</span><br><span class="line"><span class="comment"># 添加9200端口开放集群通讯：</span></span><br><span class="line">$ firewall-cmd --zone=public --add-port=9300/tcp --permanent</span><br><span class="line"><span class="comment"># 重启防火墙：</span></span><br><span class="line">$ firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/middleware/elastic/install-elasticsearch-cluster/install-elasticsearch-cluster/" data-id="cklqcjd4g001c3wn7ctkjehrt" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/ElasticSearch/" rel="tag">ElasticSearch</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-database/uid-generator-of-postgres/uid-generator-of-postgres" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="../../database/uid-generator-of-postgres/uid-generator-of-postgres/" class="article-date">
+  <time datetime="2017-08-28T15:14:00.000Z" itemprop="datePublished">2017-08-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="../../database/uid-generator-of-postgres/uid-generator-of-postgres/">数据库UID的一种生成策略 [PostgreSQL]</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文提供一种PostgreSQL的UID生成策略，参考自<a target="_blank" rel="noopener" href="https://instagram-engineering.com/sharding-ids-at-instagram-1cf5a71e5a5c">Instagram公开的一种方案</a>，除了可以确定产生的ID是唯一值以外，还有以下几种优点：</p>
+<ul>
+<li>生成的ID按照时间排序（但排序结果跟插入顺序不一定一致）</li>
+<li>ID长度为64bit，不会过大</li>
+<li>支持数据库集群（通过定义分片ID保证不同分片之间生成的ID不会重复）</li>
+</ul>
+<p>可以为数据库字段赋予默认值为下面的<code>next_id()</code>函数，即可为每条记录产生唯一的值：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- CREATE SEQUENCE</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">SEQUENCE</span> public.table_id_seq</span><br><span class="line"> <span class="keyword">INCREMENT</span> <span class="number">1</span></span><br><span class="line"> <span class="keyword">MINVALUE</span> <span class="number">1</span></span><br><span class="line"> MAXVALUE <span class="number">9223372036854775807</span></span><br><span class="line"> <span class="keyword">START</span> <span class="number">1</span></span><br><span class="line"> <span class="keyword">CACHE</span> <span class="number">1</span></span><br><span class="line"> <span class="keyword">CYCLE</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- RESET VALUE OF SEQUENCE</span></span><br><span class="line"><span class="keyword">SELECT</span> setval(<span class="string">&#x27;public.table_id_seq&#x27;</span>, <span class="number">1</span>, <span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- CREATE FUNCTION</span></span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">OR</span> <span class="keyword">REPLACE</span> <span class="keyword">FUNCTION</span> public.next_id(<span class="keyword">OUT</span> <span class="keyword">result</span> <span class="built_in">bigint</span>) <span class="keyword">AS</span> $$</span><br><span class="line"><span class="keyword">DECLARE</span></span><br><span class="line">    our_epoch <span class="built_in">bigint</span> := <span class="number">1451577600000</span>;</span><br><span class="line">    now_millis bigint;</span><br><span class="line">    seq_id bigint;  </span><br><span class="line">    shard_id int := 1;</span><br><span class="line"><span class="keyword">BEGIN</span></span><br><span class="line">    <span class="keyword">SELECT</span> <span class="keyword">nextval</span>(<span class="string">&#x27;public.table_id_seq&#x27;</span>) % <span class="number">1024</span> <span class="keyword">INTO</span> seq_id;</span><br><span class="line">    <span class="keyword">SELECT</span> <span class="keyword">FLOOR</span>(<span class="keyword">EXTRACT</span>(EPOCH <span class="keyword">FROM</span> clock_timestamp()) * <span class="number">1000</span>) <span class="keyword">INTO</span> now_millis;</span><br><span class="line">    result := (now_millis - our_epoch) &lt;&lt; 23;</span><br><span class="line">    result := result | (shard_id &lt;&lt; 10);</span><br><span class="line">    result := result | (seq_id);</span><br><span class="line"><span class="keyword">END</span>;</span><br><span class="line">$$ LANGUAGE PLPGSQL;</span><br></pre></td></tr></table></figure>
+
+<p>第一部分SQL是创建一个循环的SEQUENCE，第二部分是用来重置SEQUENCE的值，第三部分是创建供调用的函数。其中函数部分，<code>now_millis</code>用来获取当前时间的毫秒值；<code>our_epoch</code>定义了一个指代业务开始的时间毫秒值，可自定义，为了降低毫秒数的初始值；<code>shard_id</code>是为分布式数据库定义的一个分片ID，每个数据库（分片）的ID不能一样，为了确保多个数据库（分片）之间不会生成相同的ID；<code>seq_id</code>是通过SEQUENCE生成的一个自增长的序列。具体数据存储如下：</p>
+<ul>
+<li>41bits存储毫秒时间</li>
+<li>13bits存储逻辑分片的ID</li>
+<li>10bits存储序列对1024求模的结果</li>
+</ul>
+<p>可以让每个分片在每毫秒里能产生1024个唯一的ID，对RDBMS的性能来说是足够的。当然日后如果有并发量达到每秒10万以上的性能，也可以调整后面求模的数值并调整存储位的分布。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/database/uid-generator-of-postgres/uid-generator-of-postgres/" data-id="cklqcjd3g00003wn707hxhg48" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/DataBase/" rel="tag">DataBase</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-server/tomcat/server-ports-in-tomcat/server-ports-in-tomcat" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="../../server/tomcat/server-ports-in-tomcat/server-ports-in-tomcat/" class="article-date">
+  <time datetime="2017-07-11T11:15:00.000Z" itemprop="datePublished">2017-07-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="../../server/tomcat/server-ports-in-tomcat/server-ports-in-tomcat/">Tomcat的端口作用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p><code>Apache Tomcat</code>是我们最常使用到的应用服务器，一般来说，Tomcat默认的配置已经足以支撑我们正常的使用，无需做更多的修改。但是当一台机器上需要启动多个Tomcat服务的时候，我们会发现服务因为端口冲突而启动失败，这时候我们就需要手动修改配置文件中的端口配置了。</p>
+</blockquote>
+<p>Tomcat所使用到的端口主要包括4个，默认分别为8005、8080、8009和8443，其配置都在Tomcat目录的<code>conf/server.xml</code>里，下面分别对几个端口的作用进行说明：</p>
+<ul>
+<li><code>8005</code>：Tomcat服务监听关闭操作的端口，多个服务时需要修改该端口以防止服务在其他Tomcat服务关闭的同时被关闭；</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Server</span> <span class="attr">port</span>=<span class="string">&quot;8005&quot;</span> <span class="attr">shutdown</span>=<span class="string">&quot;SHUTDOWN&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>8080</code>：Tomcat的连接端口；</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Connector</span> <span class="attr">port</span>=<span class="string">&quot;8080&quot;</span> <span class="attr">protocol</span>=<span class="string">&quot;HTTP/1.1&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">connectionTimeout</span>=<span class="string">&quot;20000&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">redirectPort</span>=<span class="string">&quot;8443&quot;</span> <span class="attr">server</span>=<span class="string">&quot;APP Srv1.0&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>8009</code>：Tomcat接受其他服务器转发过来的请求；</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Connector</span> <span class="attr">port</span>=<span class="string">&quot;8009&quot;</span> <span class="attr">protocol</span>=<span class="string">&quot;AJP/1.3&quot;</span> <span class="attr">redirectPort</span>=<span class="string">&quot;8443&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>8443</code>：上面8080和8009端口接收到SSL请求的时候重定向的端口，修改时以上两处都要同时修改；</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/server/tomcat/server-ports-in-tomcat/server-ports-in-tomcat/" data-id="cklqcjd4m001j3wn7fytug77b" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Server/" rel="tag">Server</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-tools/install-shadowsocks-in-linux/install-shadowsocks-in-linux" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="../../tools/install-shadowsocks-in-linux/install-shadowsocks-in-linux/" class="article-date">
+  <time datetime="2017-05-03T09:00:00.000Z" itemprop="datePublished">2017-05-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="../../tools/install-shadowsocks-in-linux/install-shadowsocks-in-linux/">Linux上搭建Shadowsocks</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><blockquote>
+<p>​为了搭建通畅的网络通道，首先需要一台境外的服务器/VPS，安装Linux系统（CentOS或者Ubuntu都行），配置不需要很高，最基础的就能用，重点是自己的常用设备和该服务器的网络连接延时要低，Linode等都有提供测试节点速度，可以先测下速度再决定买哪里的服务器。</p>
+</blockquote>
+<h2 id="服务器端配置"><a href="#服务器端配置" class="headerlink" title="服务器端配置"></a>服务器端配置</h2><ul>
+<li><p>需要安装的是python版本的<code>shadowsocks</code>，因此首先需要安装<code>python</code>及其包管理工具<code>pip</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Debian / Ubuntu:</span></span><br><span class="line">apt-get install python-pip</span><br><span class="line"><span class="comment"># CentOS:</span></span><br><span class="line">yum install python-setuptools &amp;&amp; easy_install pip</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install shadowsocks</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>​安装好后需要修改配置文件，创建/编辑配置文件 <code>vim /etc/shadowsocks.json</code></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;server&quot;</span>: <span class="string">&quot;my_server_ip&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;local_address&quot;</span>: <span class="string">&quot;127.0.0.1&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;local_port&quot;</span>: <span class="number">1080</span>,</span><br><span class="line">    <span class="attr">&quot;port_password&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;8380&quot;</span>: <span class="string">&quot;password0&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;8381&quot;</span>: <span class="string">&quot;password1&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;8382&quot;</span>: <span class="string">&quot;password2&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;8383&quot;</span>: <span class="string">&quot;password3&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">&quot;timeout&quot;</span>: <span class="number">300</span>,</span><br><span class="line">    <span class="attr">&quot;method&quot;</span>: <span class="string">&quot;aes-256-cfb&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>具体各项配置说明</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">Field</th>
+<th align="left">Explanation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">server</td>
+<td align="left">the ip of your server</td>
+</tr>
+<tr>
+<td align="left">local_address</td>
+<td align="left">the address your local listens [127.0.0.1]</td>
+</tr>
+<tr>
+<td align="left">local_port</td>
+<td align="left">local port</td>
+</tr>
+<tr>
+<td align="left">port_password</td>
+<td align="left">password used for encryption</td>
+</tr>
+<tr>
+<td align="left">timeout</td>
+<td align="left">in seconds</td>
+</tr>
+<tr>
+<td align="left">method</td>
+<td align="left">encryption method, default: “aes-256-cfb”</td>
+</tr>
+<tr>
+<td align="left">fast_open</td>
+<td align="left">use TCP_FASTOPEN, true / false</td>
+</tr>
+<tr>
+<td align="left">workers</td>
+<td align="left">number of workers, available on Unix/Linux</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>配置完后保存，启动Shadowsocks服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># start:</span></span><br><span class="line">ssserver -c /etc/shadowsocks.json -d start</span><br><span class="line"><span class="comment"># stop:</span></span><br><span class="line">ssserver -d stop</span><br><span class="line"><span class="comment"># restart:</span></span><br><span class="line">ssserver -c /etc/shadowsocks.json -d restart</span><br><span class="line"><span class="comment"># port listening:</span></span><br><span class="line">netstat -lnp</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如需设置开机自启动，只需把上面的启动命令加到 <code>vi /etc/rc.local</code> 里即可。</p>
+</li>
+</ul>
+<h2 id="客户端配置"><a href="#客户端配置" class="headerlink" title="客户端配置"></a>客户端配置</h2><p>客户端直接到 <a target="_blank" rel="noopener" href="https://github.com/shadowsocks">GitHub</a> 上下载，安装好后编辑服务器，填上服务器地址和 <code>/etc/shadowsocks.json</code> 配置文件里写的对应端口和密码等就能使用了，关于PAC可以直接选择<strong>从GFWList更新本地PAC</strong>，这里的<code>GWFList</code>是GitHub上一个开源项目，专门收集惨遭GFW毒手的ip，理论上是较全的PAC文件了。</p>
+<h2 id="加速"><a href="#加速" class="headerlink" title="加速"></a>加速</h2><h3 id="一、增加系统文件描述符的最大限数"><a href="#一、增加系统文件描述符的最大限数" class="headerlink" title="一、增加系统文件描述符的最大限数"></a>一、增加系统文件描述符的最大限数</h3><ul>
+<li><p><code>vi /etc/security/limits.conf</code></p>
+<p>添加下面两行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">soft nofile 51200</span><br><span class="line">hard nofile 51200</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>保存后执行一下命令：<code>ulimit -n 51200</code></p>
+</li>
+</ul>
+<h3 id="二、使用ServerSpeeder进行TCP加速"><a href="#二、使用ServerSpeeder进行TCP加速" class="headerlink" title="二、使用ServerSpeeder进行TCP加速"></a>二、使用ServerSpeeder进行TCP加速</h3><p><a target="_blank" rel="noopener" href="https://github.com/91yun/serverspeeder/">ServerSpeeder</a></p>
+<p>需要注意的是ServerSpeeder并非自持所有的内核，如非适用的内核可选择更换。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># install:</span></span><br><span class="line">wget -N --no-check-certificate https://github.com/91yun/serverspeeder/raw/master/serverspeeder.sh &amp;&amp; bash serverspeeder.sh</span><br><span class="line"><span class="comment"># uninstall:</span></span><br><span class="line">chattr -i /serverspeeder/etc/apx* &amp;&amp; /serverspeeder/bin/serverSpeeder.sh uninstall -f</span><br><span class="line"><span class="comment"># status:</span></span><br><span class="line">/serverspeeder/bin/serverSpeeder.sh status</span><br><span class="line"><span class="comment"># start/stop/restart:</span></span><br><span class="line">/serverspeeder/bin/serverSpeeder.sh start/stop/restart</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/tools/install-shadowsocks-in-linux/install-shadowsocks-in-linux/" data-id="cklqcjd44000r3wn7gvqqay0b" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Linux/" rel="tag">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Network/" rel="tag">Network</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-java/introduction-of-lombok/introduction-of-lombok" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="../../java/introduction-of-lombok/introduction-of-lombok/" class="article-date">
+  <time datetime="2017-03-14T11:32:50.000Z" itemprop="datePublished">2017-03-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="../../java/introduction-of-lombok/introduction-of-lombok/">Lombok介绍</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Lombok是一个能通过添加简单的注解来代替一些必须有但会让代码整体变得臃肿的代码，然后在编译的时候才把注解转换成对应代码的工具。</p>
+<p>GitHub项目：<a target="_blank" rel="noopener" href="https://github.com/rzwitserloot/lombok">Lombok</a></p>
+<p>项目官网：<a target="_blank" rel="noopener" href="https://projectlombok.org/">HomePage</a></p>
+<h2 id="部分注解说明"><a href="#部分注解说明" class="headerlink" title="部分注解说明"></a>部分注解说明</h2><table>
+<thead>
+<tr>
+<th align="left">注解</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">@Getter/@Setter</td>
+<td align="left">可以用来标注Class或者Field，会为非静态Field提供Getter和Setter方法</td>
+</tr>
+<tr>
+<td align="left">@ToString</td>
+<td align="left">生成toString方法，默认会输出Class名和按顺序用逗号分隔输出Field</td>
+</tr>
+<tr>
+<td align="left">@EqualsAndHashCode</td>
+<td align="left">默认为所有非transient和非static的Field生成Equals和HashCode方法，也能指定Field</td>
+</tr>
+<tr>
+<td align="left">@NonNull</td>
+<td align="left">标注Field不能为null，会在Setter方法和构造方法里添加非空判断</td>
+</tr>
+<tr>
+<td align="left">@NoArgsConstructor</td>
+<td align="left">注解在Class上，生成一个无参构造方法</td>
+</tr>
+<tr>
+<td align="left">@RequiredArgsConstructor</td>
+<td align="left">注解在Class上，生成一个包含常量和标注了@NonNull的Field的参数的构造方法</td>
+</tr>
+<tr>
+<td align="left">@AllArgsConstructor</td>
+<td align="left">注解在Class上，生成一个全参的构造方法</td>
+</tr>
+<tr>
+<td align="left">@Data</td>
+<td align="left">包括@ToString、@EqualsAndHashCode、所有Field的@Getter、所有非final的Field的@Setter、@RequiredArgsConstructor几个注解的组合</td>
+</tr>
+<tr>
+<td align="left">@Log系列注解</td>
+<td align="left">使用不同类型的Log包来为标注的Class生成静态常量log</td>
+</tr>
+</tbody></table>
+<p>以上为比较常用的一些注解，当然还有其他的注解，以及部分注解可以通过添加参数或者修改配置文件的方式来修改生成代码的效果，具体可以到官网查阅。</p>
+<h2 id="一些个人看法"><a href="#一些个人看法" class="headerlink" title="一些个人看法"></a>一些个人看法</h2><p>在某种程度上，Lombok是一个比较方便的工具，可以简化一些臃肿的代码，但是这并不是一个完美的工具，需要慎用。</p>
+<ul>
+<li>本工具的价值体现在编译前代码的简洁性上，对编译后的代码只会是有增无减，因此并不会为代码的运行效率带来提升，甚至会造成下降；</li>
+<li>在使用IDE进行开发时依赖于Lombok插件，如果没有安装插件代码会提示报错；</li>
+<li>并不便于开发人员阅读代码，尤其是不熟悉本工具的开发人员更是容易对代码产生疑惑；</li>
+<li>配置文件的生效方式类似于<code>EditorConfig</code>，如不做好管控容易造成混乱；</li>
+<li>即使是有多种参数和配置文件，也不一定能生成完全符合想法的代码，滥用注解会让代码更加凌乱；</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/java/introduction-of-lombok/introduction-of-lombok/" data-id="cklqcjd3t000b3wn7ctu17brd" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/" rel="tag">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="../3/">« Prev</a><a class="page-number" href="../../">1</a><a class="page-number" href="../2/">2</a><a class="page-number" href="../3/">3</a><span class="page-number current">4</span><a class="page-number" href="../5/">5</a><a class="page-number" href="../6/">6</a><a class="extend next" rel="next" href="../5/">Next »</a>
+  </nav>
+
+</section>
+            
+            <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="../../tags/CI/" style="font-size: 10px;">CI</a> <a href="../../tags/DataBase/" style="font-size: 10px;">DataBase</a> <a href="../../tags/Design-Pattern/" style="font-size: 10px;">Design Pattern</a> <a href="../../tags/DevOps/" style="font-size: 15px;">DevOps</a> <a href="../../tags/Docker/" style="font-size: 15px;">Docker</a> <a href="../../tags/ElasticSearch/" style="font-size: 10px;">ElasticSearch</a> <a href="../../tags/Git/" style="font-size: 15px;">Git</a> <a href="../../tags/JDK/" style="font-size: 12.5px;">JDK</a> <a href="../../tags/Java/" style="font-size: 20px;">Java</a> <a href="../../tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="../../tags/Lint/" style="font-size: 12.5px;">Lint</a> <a href="../../tags/Linux/" style="font-size: 17.5px;">Linux</a> <a href="../../tags/Maven/" style="font-size: 10px;">Maven</a> <a href="../../tags/Network/" style="font-size: 10px;">Network</a> <a href="../../tags/Performance/" style="font-size: 10px;">Performance</a> <a href="../../tags/Ruby/" style="font-size: 10px;">Ruby</a> <a href="../../tags/Server/" style="font-size: 10px;">Server</a> <a href="../../tags/middleware/" style="font-size: 12.5px;">middleware</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2015/05/">May 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="../../middleware/nacos/nacos-installation-guide/nacos-installation-guide/">Nacos安装指引</a>
+          </li>
+        
+          <li>
+            <a href="../../java/about-javadoc/about-javadoc/">Java注释说明</a>
+          </li>
+        
+          <li>
+            <a href="../../devops/git/about-git-lfs/about-git-lfs/">Git LFS简介</a>
+          </li>
+        
+          <li>
+            <a href="../../devops/git/git-commit-standardization/git-commit-standardization/">Git Commit规范化</a>
+          </li>
+        
+          <li>
+            <a href="../../linux/root_directory_of_linux/root_directory_of_linux/">Linux目录说明</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+            
+        </div>
+        <footer id="footer">
+	
+	<div class="outer">
+		<div id="footer-info" class="inner">
+			&copy; 2021 Elvis Chan<br>
+		</div>
+	</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="../../fancybox/jquery.fancybox.css">
+
+  
+<script src="../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="../../js/script.js"></script>
+
+
+
+
+</div>
+
+<!-- Load canvas-nest -->
+
+
+<script src="../../js/canvas-nest.js"></script>
+
+
+</body>
+</html>

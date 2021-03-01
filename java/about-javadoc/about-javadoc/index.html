@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    
+
+    
+    <title>
+        
+        Java注释说明 |
+        
+        Jasmine
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="目的合理规范的代码注释，一方面可以使代码见注释知其义，有利于对代码的理解、调用、重构、复用等，另一方面可以生成有效并且美观的API文档。关于javadoc的完整说明请参照官网，本文将结合不同方面对javadoc的日常使用进行说明。 认知和使用不少开发人员对于javadoc这个东西并没有充分的认知，没有理解其提供的各种标签和注解，因此在撰写javadoc的时候经常是随心所欲地添加描述，甚至还自定义了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java注释说明">
+<meta property="og:url" content="https://lev-gc.github.io/java/about-javadoc/about-javadoc/">
+<meta property="og:site_name" content="Jasmine">
+<meta property="og:description" content="目的合理规范的代码注释，一方面可以使代码见注释知其义，有利于对代码的理解、调用、重构、复用等，另一方面可以生成有效并且美观的API文档。关于javadoc的完整说明请参照官网，本文将结合不同方面对javadoc的日常使用进行说明。 认知和使用不少开发人员对于javadoc这个东西并没有充分的认知，没有理解其提供的各种标签和注解，因此在撰写javadoc的时候经常是随心所欲地添加描述，甚至还自定义了">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-08-21T16:34:00.000Z">
+<meta property="article:modified_time" content="2019-08-21T16:34:00.000Z">
+<meta property="article:author" content="Elvis Chan">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+    
+    
+    <link rel="icon" href="/css/images/favicon.png">
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+    
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+
+    
+<link rel="stylesheet" href="../../../css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+<div id="container">
+    <div id="wrap">
+        <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer" class="outer">
+        <div id="header-title" class="inner">
+            <h1 id="logo-wrap">
+                <a href="../../../index.html" id="logo">Jasmine</a>
+            </h1>
+            
+            <h2 id="subtitle-wrap">
+                <span id="subtitle">Fear always springs from ignorance.</span>
+            </h2>
+            
+        </div>
+
+        <div id="header-inner" class="inner">
+
+            <nav id="main-nav">
+                <a id="main-nav-toggle" class="fab fa-bars nav-icon"></a>
+                
+                <a class="main-nav-link" href="../../../index.html">Home</a>
+                
+                <a class="main-nav-link" href="../../../archives">Archives</a>
+                
+            </nav>
+
+            <nav id="sub-nav">
+                
+                <a class="fab fa-github nav-icon" href="../../../https:/github.com/lev-gc"
+                   title="GitHub"></a>
+                
+                <!-- search -->
+                <a id="nav-search-btn" class="far fa-search nav-icon" title="Search"></a>
+            </nav>
+
+            <div id="search-form-wrap">
+                <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://lev-gc.github.io"></form>
+            </div>
+
+        </div>
+
+    </div>
+</header>
+
+        <div class="outer">
+            <section id="main"><article id="post-java/about-javadoc/about-javadoc" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="" class="article-date">
+  <time datetime="2019-08-21T16:34:00.000Z" itemprop="datePublished">2019-08-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Java注释说明
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h2><p>合理规范的代码注释，一方面可以使代码见注释知其义，有利于对代码的理解、调用、重构、复用等，另一方面可以生成有效并且美观的API文档。关于javadoc的完整说明请参照<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/8/docs/technotes/tools/windows/javadoc.html">官网</a>，本文将结合不同方面对javadoc的日常使用进行说明。</p>
+<h2 id="认知和使用"><a href="#认知和使用" class="headerlink" title="认知和使用"></a>认知和使用</h2><p>不少开发人员对于javadoc这个东西并没有充分的认知，没有理解其提供的各种标签和注解，因此在撰写javadoc的时候经常是随心所欲地添加描述，甚至还自定义了各种各样的不能被javadoc识别的标签和注解。这样出来的代码注释没有清晰的规范，结构凌乱，可读性低，更不能生成一份有效的API文档，失去了javadoc提供的所有优点。</p>
+<p>因此要强调的第一件事是，学会去使用javadoc。举个例子，如果你正在使用IntelliJ IDEA并且使用默认的keymap，把你的光标放在某个类、方法、属性或者变量上，按下<code>Ctrl+Q</code>，你就能看到对光标处成员的描述说明，而这个描述说明就是由我们所撰写的javadoc渲染而成（最新的2020版本IDEA甚至可以设置在代码上默认显示渲染后的javadoc）。当你意识到自己写的注释在描述说明中会渲染出一个怎样的效果时，你就下意识地按照规范去维护好这些注释，使之显示成一个美观并且有效的描述说明。</p>
+<p>需要强调的第二件事是，javadoc应该是在设计接口和编写代码的同时去撰写，而不应该是事后再去做补救，因为开发的过程中思维会比较缜密，考虑得会更周全，事后可能会忘记很多的细节，描述会有各种的疏漏，这两种情况下编写出来的注释内容质量是不在一个次元上的。而且，参考<code>TDD</code>（测试驱动开发）的说法，先编写注释其实也可以起到协助梳理、提供清晰思路的效果。</p>
+<h2 id="javadoc常用标签说明"><a href="#javadoc常用标签说明" class="headerlink" title="javadoc常用标签说明"></a>javadoc常用标签说明</h2><p>以下对一些常用的标签进行说明。</p>
+<h3 id="author-name-text"><a href="#author-name-text" class="headerlink" title="@author name-text"></a>@author name-text</h3><p><code>@author</code>标注在 <strong>类</strong> 上，用于标识一个类的作者，<code>name-text</code>即该作者的个人标识。一般不需要标注在方法上，我们可以通过Git History来了解各部分更改的作者。</p>
+<h3 id="version-version-text"><a href="#version-version-text" class="headerlink" title="@version version-text"></a>@version version-text</h3><p><code>@version</code>指定 <strong>类</strong> 的版本，<code>version-text</code>为具体的版本号。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@version</span> v1.0.0</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="since-since-text"><a href="#since-since-text" class="headerlink" title="@since since-text"></a>@since since-text</h3><p><code>@since</code>标记开始引入该特定变化的所处的阶段，一般后面的<code>since-text</code>为当前版本号，代表该变化产生于当前这个版本。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> v1.0.0</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="deprecated-deprecated-text"><a href="#deprecated-deprecated-text" class="headerlink" title="@deprecated deprecated-text"></a>@deprecated deprecated-text</h3><p><code>@deprecated</code>用于说明一个类或成员已过期，<code>deprecated-text</code>对过期原因、代替的类或成员等进行一个详细的说明。一般被该标签标注的类或成员后续新的代码不再对其进行使用，保留仅作为过渡期兼容旧版本代码，后续一般会进行移除。</p>
+<h3 id="see-reference"><a href="#see-reference" class="headerlink" title="@see reference"></a>@see reference</h3><p><code>@see</code>指定了一个到另一个类或成员的链接，其一般的写法为<code>@see package.class#member label</code>，其中<code>package</code>为成员的完整包名，<code>class</code>为类名，<code>member</code>为成员名，可以是属性、方法，成员用<code>#</code>来标志。最后的<code>label</code>用于把前面的一长串字符显示为自定义的文字，相当于昵称。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 类</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span> java.util.HashMap</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 类内属性</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span> java.util.HashMap#size</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 无参方法</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span> java.util.HashMap#values()</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 有参方法</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span> java.util.HashMap#putAll(Map)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 使用label代替方法名</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span> java.util.HashMap#putAll(Map) putAll</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="link-reference"><a href="#link-reference" class="headerlink" title="{@link reference}"></a>{@link reference}</h3><p><code>&#123;@link&#125;</code>为段中插入到另一个引用的链接，注意需要使用<code>&#123;&#125;</code>括起来。写法为<code>&#123;@link package.class#member label&#125;</code>，基本与<code>@see</code>一致。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * The &#123;<span class="doctag">@link</span> #containsKey containsKey&#125; operation may be used to</span></span><br><span class="line"><span class="comment"> * distinguish these two cases.</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="linkplain-reference"><a href="#linkplain-reference" class="headerlink" title="{@linkplain reference}"></a>{@linkplain reference}</h3><p><code>&#123;@linkplain&#125;</code>的功能和使用都与<code>&#123;@link&#125;</code>完全一致，唯一的区别是<code>&#123;@link&#125;</code>显示出的样式是代码的样式，而<code>&#123;@linkplain&#125;</code>显示的则是普通文本的样式。</p>
+<h3 id="value-reference"><a href="#value-reference" class="headerlink" title="{@value reference}"></a>{@value reference}</h3><p><code>&#123;@value&#125;</code>用于引入某个静态常量，写法为<code>&#123;@value package.class#field&#125;</code>，其中<code>field</code>为静态常量名，而最后显示在描述中的为静态常量的值。</p>
+<h3 id="code-text"><a href="#code-text" class="headerlink" title="{@code text}"></a>{@code text}</h3><p><code>&#123;@code&#125;</code>用于插入一段特定的字符，样式是以代码模式显示，一般用以强调一些变量名、常量值、特殊意义的字符、枚举量等。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Returns the value to which the specified key is mapped,</span></span><br><span class="line"><span class="comment"> * or &#123;<span class="doctag">@code</span> null&#125; if this map contains no mapping for the key.</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="inheritDoc"><a href="#inheritDoc" class="headerlink" title="{@inheritDoc}"></a>{@inheritDoc}</h3><p><code>&#123;@inheritDoc&#125;</code>用在重写的方法或者子类上，用于继承父类的javadoc，然后子类或者方法可以在这个基础上再加入自己的注释进行拓展。</p>
+<h3 id="param-parameter-name-description"><a href="#param-parameter-name-description" class="headerlink" title="@param parameter-name description"></a>@param parameter-name description</h3><p><code>@param</code>用于说明一个方法的参数，格式为<code>@param parameter-name description</code>，其中<code>parameter-name</code>为参数名，<code>description</code>为对参数的详细描述。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span>  initialCapacity the initial capacity</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span>  loadFactor      the load factor</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="return-description"><a href="#return-description" class="headerlink" title="@return description"></a>@return description</h3><p><code>@return</code>用于说明返回值的类型以及详细描述。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> the number of key-value mappings in this map</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="throws-exception-class-name-description"><a href="#throws-exception-class-name-description" class="headerlink" title="@throws/@exception class-name description"></a>@throws/@exception class-name description</h3><p><code>@throws</code>和<code>@exception</code>两个标签是一致的，用来标志一个类抛出的异常。写法为<code>@throws class-name description</code>和<code>@exception class-name description</code>，其中<code>class-name</code>为所抛出异常的class，<code>description</code>为对抛出异常的描述。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> NullPointerException if the specified map is null</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h2><p>在写注释的时候，如果没有意识的话就会按照普通文本的方式去写，包括换行、进退格这些，但是这样不但显示出来的效果不好，格式还会被代码自动格式化的操作弄乱。首先，javadoc的渲染是以html的方式进行解析，所以对于换行退格等格式，普通文本出来的效果肯定不好，我们需要在文本中适当添加一些常用的html标签，来让代码注释的样式显示得整洁美观。比如换行<code>&lt;/br&gt;</code>、新段落<code>&lt;p&gt;</code>、原样渲染<code>&lt;pre&gt;</code>、分点<code>&lt;ul&gt;&lt;li&gt;</code>等等。（当然，如果你并不擅长用html的方式来写文档，并且没有非常追求原生性，是可以使用<code>Markdown Doclet for Javadoc</code>这个插件，使用Markdown替换html的。）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * First paragraph.</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;&lt;ul&gt;</span></span><br><span class="line"><span class="comment"> * &lt;li&gt;the first item</span></span><br><span class="line"><span class="comment"> * &lt;li&gt;the second item</span></span><br><span class="line"><span class="comment"> * &lt;li&gt;the third item</span></span><br><span class="line"><span class="comment"> * &lt;/ul&gt;&lt;p&gt;</span></span><br><span class="line"><span class="comment"> * Third paragraph.</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="样例"><a href="#样例" class="headerlink" title="样例"></a>样例</h2><h3 id="类"><a href="#类" class="headerlink" title="类"></a>类</h3><p>对于类，一般需要对类的作用进行描述，并且提供作者、版本等信息，最简单的写法如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 现货实例Controller</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> xxx</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@version</span> v1.0.0</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@since</span> v1.0.0</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"> <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SpotInstanceController</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="属性成员"><a href="#属性成员" class="headerlink" title="属性成员"></a>属性成员</h3><p>属性成员的注释一般直接进行描述即可：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * The Spot instance service.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> SpotInstanceService spotInstanceService;</span><br></pre></td></tr></table></figure>
+
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><p>对于方法，我们需要进行详细的描述，包括功能描述、入参说明、返回结果说明、抛出异常说明。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取现货实例详情</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> tmSceneDateKey 经济场景日期key</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> tradeNum       交易序号</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span> 现货实例详情对象</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> Exception the exception</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">getSpotInstanceDetail</span><span class="params">(String tmSceneDateKey,Integer tradeNum)</span> <span class="keyword">throws</span> Exception </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="重点说明"><a href="#重点说明" class="headerlink" title="重点说明"></a>重点说明</h2><p>上面给出的例子都是简例，但是实际撰写的时候必须要详细描述清楚，尤其是功能描述、入参、返回结果这几个部分。</p>
+<ul>
+<li>功能描述要表达清楚这个方法的作用、适用场景等；</li>
+<li><code>@param</code>和<code>@return</code>应该清楚说明数据的类型和取值范围等，如果是对象的话最好可以说明对象中有没有哪些属性是空的、哪些是不需要填的这种粒度的说明（因为一个对象的类会用在多个地方，并不是完全为某一个方法量身定造的，比如一个对象在add操作时是不需要id的，但是在update的时候则必须填写id）；如果是Map这类数据也最好能说明各种情况会返回的key的意义以及value的范围等。</li>
+</ul>
+<p>简而言之，尽量做到看着注释可以理解整个方法的作用、如何去调用、返回结果的真实结构、有那些不可预测的运行结果，这样才能让你的代码更加清晰，更进一步用好设计模式等，把你的代码写得像诗一般优雅（事实上JDK源码的注释可以作为一份教科书般的参考）。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/java/about-javadoc/about-javadoc/" data-id="cklqcjd3q00083wn77xl3e940" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../tags/Java/" rel="tag">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../../middleware/nacos/nacos-installation-guide/nacos-installation-guide/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Nacos安装指引
+        
+      </div>
+    </a>
+  
+  
+    <a href="../../../devops/git/about-git-lfs/about-git-lfs/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Git LFS简介</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+            
+            <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="../../../tags/CI/" style="font-size: 10px;">CI</a> <a href="../../../tags/DataBase/" style="font-size: 10px;">DataBase</a> <a href="../../../tags/Design-Pattern/" style="font-size: 10px;">Design Pattern</a> <a href="../../../tags/DevOps/" style="font-size: 15px;">DevOps</a> <a href="../../../tags/Docker/" style="font-size: 15px;">Docker</a> <a href="../../../tags/ElasticSearch/" style="font-size: 10px;">ElasticSearch</a> <a href="../../../tags/Git/" style="font-size: 15px;">Git</a> <a href="../../../tags/JDK/" style="font-size: 12.5px;">JDK</a> <a href="../../../tags/Java/" style="font-size: 20px;">Java</a> <a href="../../../tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="../../../tags/Lint/" style="font-size: 12.5px;">Lint</a> <a href="../../../tags/Linux/" style="font-size: 17.5px;">Linux</a> <a href="../../../tags/Maven/" style="font-size: 10px;">Maven</a> <a href="../../../tags/Network/" style="font-size: 10px;">Network</a> <a href="../../../tags/Performance/" style="font-size: 10px;">Performance</a> <a href="../../../tags/Ruby/" style="font-size: 10px;">Ruby</a> <a href="../../../tags/Server/" style="font-size: 10px;">Server</a> <a href="../../../tags/middleware/" style="font-size: 12.5px;">middleware</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2015/05/">May 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="../../../middleware/nacos/nacos-installation-guide/nacos-installation-guide/">Nacos安装指引</a>
+          </li>
+        
+          <li>
+            <a href="">Java注释说明</a>
+          </li>
+        
+          <li>
+            <a href="../../../devops/git/about-git-lfs/about-git-lfs/">Git LFS简介</a>
+          </li>
+        
+          <li>
+            <a href="../../../devops/git/git-commit-standardization/git-commit-standardization/">Git Commit规范化</a>
+          </li>
+        
+          <li>
+            <a href="../../../linux/root_directory_of_linux/root_directory_of_linux/">Linux目录说明</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+            
+        </div>
+        <footer id="footer">
+	
+	<div class="outer">
+		<div id="footer-info" class="inner">
+			&copy; 2021 Elvis Chan<br>
+		</div>
+	</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="../../../fancybox/jquery.fancybox.css">
+
+  
+<script src="../../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="../../../js/script.js"></script>
+
+
+
+
+</div>
+
+<!-- Load canvas-nest -->
+
+
+<script src="../../../js/canvas-nest.js"></script>
+
+
+</body>
+</html>

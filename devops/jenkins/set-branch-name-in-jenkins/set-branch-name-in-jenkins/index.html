@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    
+
+    
+    <title>
+        
+        Jenkins项目中配置Git分支 |
+        
+        Jasmine
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="最近发现很多人在Jenkins上的项目构建配置中都是用*&#x2F;xxx这种方式来指定branch的，分享一点相关的经验。  问题当我们在Jenkins上新添加一个构建项目时，项目的默认配置中的Branches to build（也就是需要构建的目标分支）就是写着*&#x2F;master，所以大部分不熟悉的使用者会选择像下图里一样直接把后面的master改成实际需要构建的branch name，而无视掉前面的*">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jenkins项目中配置Git分支">
+<meta property="og:url" content="https://lev-gc.github.io/devops/jenkins/set-branch-name-in-jenkins/set-branch-name-in-jenkins/">
+<meta property="og:site_name" content="Jasmine">
+<meta property="og:description" content="最近发现很多人在Jenkins上的项目构建配置中都是用*&#x2F;xxx这种方式来指定branch的，分享一点相关的经验。  问题当我们在Jenkins上新添加一个构建项目时，项目的默认配置中的Branches to build（也就是需要构建的目标分支）就是写着*&#x2F;master，所以大部分不熟悉的使用者会选择像下图里一样直接把后面的master改成实际需要构建的branch name，而无视掉前面的*">
+<meta property="og:locale">
+<meta property="og:image" content="https://raw.githubusercontent.com/lev-gc/lev-gc.github.io/source/source/_posts/devops/jenkins/set-branch-name-in-jenkins/jenkins_branch.png">
+<meta property="article:published_time" content="2018-11-26T12:04:00.000Z">
+<meta property="article:modified_time" content="2018-11-26T12:04:00.000Z">
+<meta property="article:author" content="Elvis Chan">
+<meta property="article:tag" content="DevOps">
+<meta property="article:tag" content="CI">
+<meta property="article:tag" content="Jenkins">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lev-gc/lev-gc.github.io/source/source/_posts/devops/jenkins/set-branch-name-in-jenkins/jenkins_branch.png">
+    
+    
+    <link rel="icon" href="/css/images/favicon.png">
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+    
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+
+    
+<link rel="stylesheet" href="../../../../css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+<div id="container">
+    <div id="wrap">
+        <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer" class="outer">
+        <div id="header-title" class="inner">
+            <h1 id="logo-wrap">
+                <a href="../../../../index.html" id="logo">Jasmine</a>
+            </h1>
+            
+            <h2 id="subtitle-wrap">
+                <span id="subtitle">Fear always springs from ignorance.</span>
+            </h2>
+            
+        </div>
+
+        <div id="header-inner" class="inner">
+
+            <nav id="main-nav">
+                <a id="main-nav-toggle" class="fab fa-bars nav-icon"></a>
+                
+                <a class="main-nav-link" href="../../../../index.html">Home</a>
+                
+                <a class="main-nav-link" href="../../../../archives">Archives</a>
+                
+            </nav>
+
+            <nav id="sub-nav">
+                
+                <a class="fab fa-github nav-icon" href="../../../../https:/github.com/lev-gc"
+                   title="GitHub"></a>
+                
+                <!-- search -->
+                <a id="nav-search-btn" class="far fa-search nav-icon" title="Search"></a>
+            </nav>
+
+            <div id="search-form-wrap">
+                <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://lev-gc.github.io"></form>
+            </div>
+
+        </div>
+
+    </div>
+</header>
+
+        <div class="outer">
+            <section id="main"><article id="post-devops/jenkins/set-branch-name-in-jenkins/set-branch-name-in-jenkins" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="" class="article-date">
+  <time datetime="2018-11-26T12:04:00.000Z" itemprop="datePublished">2018-11-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Jenkins项目中配置Git分支
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>最近发现很多人在Jenkins上的项目构建配置中都是用<code>*/xxx</code>这种方式来指定branch的，分享一点相关的经验。</p>
+</blockquote>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>当我们在Jenkins上新添加一个构建项目时，项目的默认配置中的<code>Branches to build</code>（也就是需要构建的目标分支）就是写着<code>*/master</code>，所以大部分不熟悉的使用者会选择像下图里一样直接把后面的<code>master</code>改成实际需要构建的branch name，而无视掉前面的<code>*/</code>。虽然在绝大多数情况下这样的配置是会正常工作不出问题，但是很明显配置中的<code>*</code>是起通配符作用的，这样做其实就是在给自己藏雷。</p>
+<p><img src="https://raw.githubusercontent.com/lev-gc/lev-gc.github.io/source/source/_posts/devops/jenkins/set-branch-name-in-jenkins/jenkins_branch.png" alt="Jenkins branch"></p>
+<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>曾经遇到过的一个真实情况，GitLab上同时存在这样的两个branch：常驻branch <code>develop</code>和临时branch <code>xxx/develop</code>，Jenkins设置了<code>Branches to build</code>为<code>*/develop</code>，通过pollSCM的方式两分钟扫描一次，发现分支有变化就执行构建，因为每次都扫描到了这两个branch，所以每次识别为代码有变更，然后就会执行构建，最后一个晚上下来构建次数达到了几百次。当然，即使不构建几百次，在某些情况下单纯是触发了构建导致发布了非期望版本的代码这个事情其实就够糟糕的了。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><ul>
+<li>第一种方案，建议直接写branch name，不要在前面加<code>*/</code>。这个问题坑过很多人，Jenkins的官方JIRA上能找到一堆跟这个问题相关的Issue。</li>
+<li>第二种方案，不使用pollSCM的触发方式。如今Jenkins拥有众多的插件，如果需要即时构建最新代码，除了pollSCM的触发方式外，其实更推荐使用对应Git托管服务（GitHub、GitLab等）的插件，通过<code>WebHook</code>的方式，由代码托管服务器来调起Jenkins的构建，这样便能完全避开因为Jenkins扫描代码分支导致的问题。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/devops/jenkins/set-branch-name-in-jenkins/set-branch-name-in-jenkins/" data-id="cklqcjd47000x3wn74cji2wip" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/CI/" rel="tag">CI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/DevOps/" rel="tag">DevOps</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/Jenkins/" rel="tag">Jenkins</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../../../linux/root_directory_of_linux/root_directory_of_linux/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Linux目录说明
+        
+      </div>
+    </a>
+  
+  
+    <a href="../../../../middleware/zookeeper/zookeeper-installation-guide/zookeeper-installation-guide/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">zookeeper安装指引</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+            
+            <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="../../../../tags/CI/" style="font-size: 10px;">CI</a> <a href="../../../../tags/DataBase/" style="font-size: 10px;">DataBase</a> <a href="../../../../tags/Design-Pattern/" style="font-size: 10px;">Design Pattern</a> <a href="../../../../tags/DevOps/" style="font-size: 15px;">DevOps</a> <a href="../../../../tags/Docker/" style="font-size: 15px;">Docker</a> <a href="../../../../tags/ElasticSearch/" style="font-size: 10px;">ElasticSearch</a> <a href="../../../../tags/Git/" style="font-size: 15px;">Git</a> <a href="../../../../tags/JDK/" style="font-size: 12.5px;">JDK</a> <a href="../../../../tags/Java/" style="font-size: 20px;">Java</a> <a href="../../../../tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="../../../../tags/Lint/" style="font-size: 12.5px;">Lint</a> <a href="../../../../tags/Linux/" style="font-size: 17.5px;">Linux</a> <a href="../../../../tags/Maven/" style="font-size: 10px;">Maven</a> <a href="../../../../tags/Network/" style="font-size: 10px;">Network</a> <a href="../../../../tags/Performance/" style="font-size: 10px;">Performance</a> <a href="../../../../tags/Ruby/" style="font-size: 10px;">Ruby</a> <a href="../../../../tags/Server/" style="font-size: 10px;">Server</a> <a href="../../../../tags/middleware/" style="font-size: 12.5px;">middleware</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2015/05/">May 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="../../../../middleware/nacos/nacos-installation-guide/nacos-installation-guide/">Nacos安装指引</a>
+          </li>
+        
+          <li>
+            <a href="../../../../java/about-javadoc/about-javadoc/">Java注释说明</a>
+          </li>
+        
+          <li>
+            <a href="../../../git/about-git-lfs/about-git-lfs/">Git LFS简介</a>
+          </li>
+        
+          <li>
+            <a href="../../../git/git-commit-standardization/git-commit-standardization/">Git Commit规范化</a>
+          </li>
+        
+          <li>
+            <a href="../../../../linux/root_directory_of_linux/root_directory_of_linux/">Linux目录说明</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+            
+        </div>
+        <footer id="footer">
+	
+	<div class="outer">
+		<div id="footer-info" class="inner">
+			&copy; 2021 Elvis Chan<br>
+		</div>
+	</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="../../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../../archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="../../../../fancybox/jquery.fancybox.css">
+
+  
+<script src="../../../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="../../../../js/script.js"></script>
+
+
+
+
+</div>
+
+<!-- Load canvas-nest -->
+
+
+<script src="../../../../js/canvas-nest.js"></script>
+
+
+</body>
+</html>

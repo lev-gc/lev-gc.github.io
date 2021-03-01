@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    
+
+    
+    <title>
+        
+        JDK源码分析-ArrayList |
+        
+        Jasmine
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="基本概述 ArrayList的本质是数组，占用一块连续的内存空间，可以动态扩容； 没有实现同步，并非线程安全的； 实现了接口RandomAccess，支持通过下标进行快速随机访问； 实现了接口Cloneable，可以被克隆； 实现了接口Serializable，支持序列化；  构造方法三种构造方法： 123public ArrayList(); &#x2F;&#x2F; 无参构造public ArrayList(in">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JDK源码分析-ArrayList">
+<meta property="og:url" content="https://lev-gc.github.io/java/source-code/jdk-source-code-arraylist/jdk-source-code-arraylist/">
+<meta property="og:site_name" content="Jasmine">
+<meta property="og:description" content="基本概述 ArrayList的本质是数组，占用一块连续的内存空间，可以动态扩容； 没有实现同步，并非线程安全的； 实现了接口RandomAccess，支持通过下标进行快速随机访问； 实现了接口Cloneable，可以被克隆； 实现了接口Serializable，支持序列化；  构造方法三种构造方法： 123public ArrayList(); &#x2F;&#x2F; 无参构造public ArrayList(in">
+<meta property="og:locale">
+<meta property="article:published_time" content="2016-02-01T12:23:00.000Z">
+<meta property="article:modified_time" content="2016-02-01T12:23:00.000Z">
+<meta property="article:author" content="Elvis Chan">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="JDK">
+<meta name="twitter:card" content="summary">
+    
+    
+    <link rel="icon" href="/css/images/favicon.png">
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+    
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+
+    
+<link rel="stylesheet" href="../../../../css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+<div id="container">
+    <div id="wrap">
+        <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer" class="outer">
+        <div id="header-title" class="inner">
+            <h1 id="logo-wrap">
+                <a href="../../../../index.html" id="logo">Jasmine</a>
+            </h1>
+            
+            <h2 id="subtitle-wrap">
+                <span id="subtitle">Fear always springs from ignorance.</span>
+            </h2>
+            
+        </div>
+
+        <div id="header-inner" class="inner">
+
+            <nav id="main-nav">
+                <a id="main-nav-toggle" class="fab fa-bars nav-icon"></a>
+                
+                <a class="main-nav-link" href="../../../../index.html">Home</a>
+                
+                <a class="main-nav-link" href="../../../../archives">Archives</a>
+                
+            </nav>
+
+            <nav id="sub-nav">
+                
+                <a class="fab fa-github nav-icon" href="../../../../https:/github.com/lev-gc"
+                   title="GitHub"></a>
+                
+                <!-- search -->
+                <a id="nav-search-btn" class="far fa-search nav-icon" title="Search"></a>
+            </nav>
+
+            <div id="search-form-wrap">
+                <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://lev-gc.github.io"></form>
+            </div>
+
+        </div>
+
+    </div>
+</header>
+
+        <div class="outer">
+            <section id="main"><article id="post-java/source-code/jdk-source-code-arraylist/jdk-source-code-arraylist" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="" class="article-date">
+  <time datetime="2016-02-01T12:23:00.000Z" itemprop="datePublished">2016-02-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JDK源码分析-ArrayList
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="基本概述"><a href="#基本概述" class="headerlink" title="基本概述"></a>基本概述</h2><ul>
+<li><code>ArrayList</code>的本质是数组，占用一块连续的内存空间，可以动态扩容；</li>
+<li>没有实现同步，并非线程安全的；</li>
+<li>实现了接口<code>RandomAccess</code>，支持通过下标进行快速随机访问；</li>
+<li>实现了接口<code>Cloneable</code>，可以被克隆；</li>
+<li>实现了接口<code>Serializable</code>，支持序列化；</li>
+</ul>
+<h2 id="构造方法"><a href="#构造方法" class="headerlink" title="构造方法"></a>构造方法</h2><p>三种构造方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ArrayList</span><span class="params">()</span></span>; <span class="comment">// 无参构造</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ArrayList</span><span class="params">(<span class="keyword">int</span> initialCapacity)</span></span>; <span class="comment">// initialCapacity为初始化数组的长度大小</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ArrayList</span><span class="params">(Collection&lt;? extends E&gt; c)</span></span>; <span class="comment">// 用Collection对象的元素来构建</span></span><br></pre></td></tr></table></figure>
+
+<p>特别提一下的是在JDK1.6中，无参构造的数组默认长度是10，是调用带数组长度的构造方法来初始化的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// JDK1.6</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ArrayList</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>(<span class="number">10</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>而在JDK1.7、1.8中，无参构造则是直接赋予一个空数组（即默认长度为0），在调用<code>add</code>方法的时候才做扩容：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// JDK1.8</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = &#123;&#125;;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ArrayList</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="动态扩容"><a href="#动态扩容" class="headerlink" title="动态扩容"></a>动态扩容</h2><p>当数组的实际长度将要比当前预留的要大时，需要对数组进行扩容。</p>
+<p>上面提到新版本JDK的无参构造是直接赋予一个空数组，而调用<code>add</code>方法时，会判断变更后长度是否比默认长度小，是的话则设置数组长度为<code>DEFAULT_CAPACITY</code>，即默认最小长度10：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_CAPACITY = <span class="number">10</span>; <span class="comment">// 默认最小长度为10</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ensureCapacityInternal</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) &#123;</span><br><span class="line">        <span class="comment">// 如果小于默认长度10，则取默认长度</span></span><br><span class="line">        minCapacity = Math.max(DEFAULT_CAPACITY, minCapacity);</span><br><span class="line">    &#125;</span><br><span class="line">    ensureExplicitCapacity(minCapacity);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>而在实际添加元素时空间不够会调用<code>grow()</code>方法来调整数组长度，先约定扩大长度为当前的1.5倍，依然不够的话则设置为实际需要的长度：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">grow</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> oldCapacity = elementData.length;</span><br><span class="line">    <span class="keyword">int</span> newCapacity = oldCapacity + (oldCapacity &gt;&gt; <span class="number">1</span>); <span class="comment">// 扩容为原来的1.5倍</span></span><br><span class="line">    <span class="keyword">if</span> (newCapacity - minCapacity &lt; <span class="number">0</span>)</span><br><span class="line">        newCapacity = minCapacity; <span class="comment">// 如果依然不够，则直接设置为需要的大小</span></span><br><span class="line">    <span class="keyword">if</span> (newCapacity - MAX_ARRAY_SIZE &gt; <span class="number">0</span>)</span><br><span class="line">        newCapacity = hugeCapacity(minCapacity);</span><br><span class="line">    elementData = Arrays.copyOf(elementData, newCapacity);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由上面可以得知，每次扩容数组都会执行一次<code>Arrays.copyOf(elementData, newCapacity);</code>，但<code>ArrayList</code>的扩容算法使这些频繁的复制操作基本都集中在前面数据量较小处，到了后期数据量大的时候复制操作相对比较少了，所以设置一个合理的长度虽然可以减少数据复制的次数，但也只能“稍微”提高一点性能，反而设置了过大的长度还可能会浪费内存。如何取舍看具体场景。</p>
+<p>另外，<code>ArrayList</code>有一个设置数组长度为当前实际长度的<code>trimToSize()</code>方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">trimToSize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    modCount++;</span><br><span class="line">    <span class="keyword">if</span> (size &lt; elementData.length) &#123;</span><br><span class="line">        elementData = (size == <span class="number">0</span>) ? EMPTY_ELEMENTDATA : Arrays.copyOf(elementData, size);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h2><p><code>ArrayList</code>没有实现同步，所以不是线程安全的。代码文档中提到，<code>ArrayList</code>类大致等同于<code>Vector</code>类，而<code>Vector</code>是线程安全的，所以是可以使用<code>Vector</code>来做多线程的实现。另外也提到可以使用<code>Collections.synchronizedList</code>方法将<code>ArrayList</code>“包装”起来：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List list = Collections.synchronizedList(<span class="keyword">new</span> ArrayList(...));</span><br></pre></td></tr></table></figure>
+
+<p>当然，因为<code>Collections.synchronizedList</code>实质上底层存储的还是构造时传进来的参数<code>list</code>，只是对它做了一层包装，所以对数据操作起来会比使用<code>Vector</code>慢一点点。Oracle文档里的原话：</p>
+<blockquote>
+<p>If you need synchronization, a Vector will be slightly faster than an ArrayList synchronized with Collections.synchronizedList.</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/java/source-code/jdk-source-code-arraylist/jdk-source-code-arraylist/" data-id="cklqcjd4e00173wn72vi0fl8s" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/JDK/" rel="tag">JDK</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/Java/" rel="tag">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../../try-with-resource/try-with-resource/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Java对流类资源关闭的自动执行
+        
+      </div>
+    </a>
+  
+  
+    <a href="../../jdk-source-code-bigdecimal/jdk-source-code-bigdecimal/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">JDK源码分析-BigDecimal</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+            
+            <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="../../../../tags/CI/" style="font-size: 10px;">CI</a> <a href="../../../../tags/DataBase/" style="font-size: 10px;">DataBase</a> <a href="../../../../tags/Design-Pattern/" style="font-size: 10px;">Design Pattern</a> <a href="../../../../tags/DevOps/" style="font-size: 15px;">DevOps</a> <a href="../../../../tags/Docker/" style="font-size: 15px;">Docker</a> <a href="../../../../tags/ElasticSearch/" style="font-size: 10px;">ElasticSearch</a> <a href="../../../../tags/Git/" style="font-size: 15px;">Git</a> <a href="../../../../tags/JDK/" style="font-size: 12.5px;">JDK</a> <a href="../../../../tags/Java/" style="font-size: 20px;">Java</a> <a href="../../../../tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="../../../../tags/Lint/" style="font-size: 12.5px;">Lint</a> <a href="../../../../tags/Linux/" style="font-size: 17.5px;">Linux</a> <a href="../../../../tags/Maven/" style="font-size: 10px;">Maven</a> <a href="../../../../tags/Network/" style="font-size: 10px;">Network</a> <a href="../../../../tags/Performance/" style="font-size: 10px;">Performance</a> <a href="../../../../tags/Ruby/" style="font-size: 10px;">Ruby</a> <a href="../../../../tags/Server/" style="font-size: 10px;">Server</a> <a href="../../../../tags/middleware/" style="font-size: 12.5px;">middleware</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2015/05/">May 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="../../../../middleware/nacos/nacos-installation-guide/nacos-installation-guide/">Nacos安装指引</a>
+          </li>
+        
+          <li>
+            <a href="../../../about-javadoc/about-javadoc/">Java注释说明</a>
+          </li>
+        
+          <li>
+            <a href="../../../../devops/git/about-git-lfs/about-git-lfs/">Git LFS简介</a>
+          </li>
+        
+          <li>
+            <a href="../../../../devops/git/git-commit-standardization/git-commit-standardization/">Git Commit规范化</a>
+          </li>
+        
+          <li>
+            <a href="../../../../linux/root_directory_of_linux/root_directory_of_linux/">Linux目录说明</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+            
+        </div>
+        <footer id="footer">
+	
+	<div class="outer">
+		<div id="footer-info" class="inner">
+			&copy; 2021 Elvis Chan<br>
+		</div>
+	</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="../../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../../archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="../../../../fancybox/jquery.fancybox.css">
+
+  
+<script src="../../../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="../../../../js/script.js"></script>
+
+
+
+
+</div>
+
+<!-- Load canvas-nest -->
+
+
+<script src="../../../../js/canvas-nest.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    
+
+    
+    <title>
+        
+        Docker常用命令 |
+        
+        Jasmine
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="列举部分较常用的Docker命令行指令。  镜像相关命令 对特指的某个镜像操作时必须要指定该镜像的名称和TAG，如果不指定TAG会默认TAG为latest，另外也可以通过镜像ID来直接指定。   docker images : 查看当前本地仓库所有镜像  docker search $&amp;#123;KEYWORD&amp;#125; : 在线查找镜像  docker login [$&amp;#123;SERVE">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker常用命令">
+<meta property="og:url" content="https://lev-gc.github.io/docker/frequently-used-docker-command-line/frequently-used-docker-command-line/">
+<meta property="og:site_name" content="Jasmine">
+<meta property="og:description" content="列举部分较常用的Docker命令行指令。  镜像相关命令 对特指的某个镜像操作时必须要指定该镜像的名称和TAG，如果不指定TAG会默认TAG为latest，另外也可以通过镜像ID来直接指定。   docker images : 查看当前本地仓库所有镜像  docker search $&amp;#123;KEYWORD&amp;#125; : 在线查找镜像  docker login [$&amp;#123;SERVE">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-02-21T10:20:00.000Z">
+<meta property="article:modified_time" content="2018-02-21T10:20:00.000Z">
+<meta property="article:author" content="Elvis Chan">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary">
+    
+    
+    <link rel="icon" href="/css/images/favicon.png">
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+    
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+
+    
+<link rel="stylesheet" href="../../../css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+<div id="container">
+    <div id="wrap">
+        <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer" class="outer">
+        <div id="header-title" class="inner">
+            <h1 id="logo-wrap">
+                <a href="../../../index.html" id="logo">Jasmine</a>
+            </h1>
+            
+            <h2 id="subtitle-wrap">
+                <span id="subtitle">Fear always springs from ignorance.</span>
+            </h2>
+            
+        </div>
+
+        <div id="header-inner" class="inner">
+
+            <nav id="main-nav">
+                <a id="main-nav-toggle" class="fab fa-bars nav-icon"></a>
+                
+                <a class="main-nav-link" href="../../../index.html">Home</a>
+                
+                <a class="main-nav-link" href="../../../archives">Archives</a>
+                
+            </nav>
+
+            <nav id="sub-nav">
+                
+                <a class="fab fa-github nav-icon" href="../../../https:/github.com/lev-gc"
+                   title="GitHub"></a>
+                
+                <!-- search -->
+                <a id="nav-search-btn" class="far fa-search nav-icon" title="Search"></a>
+            </nav>
+
+            <div id="search-form-wrap">
+                <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://lev-gc.github.io"></form>
+            </div>
+
+        </div>
+
+    </div>
+</header>
+
+        <div class="outer">
+            <section id="main"><article id="post-docker/frequently-used-docker-command-line/frequently-used-docker-command-line" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="" class="article-date">
+  <time datetime="2018-02-21T10:20:00.000Z" itemprop="datePublished">2018-02-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Docker常用命令
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>列举部分较常用的Docker命令行指令。</p>
+</blockquote>
+<h2 id="镜像相关命令"><a href="#镜像相关命令" class="headerlink" title="镜像相关命令"></a>镜像相关命令</h2><blockquote>
+<p>对特指的某个镜像操作时必须要指定该镜像的名称和TAG，如果不指定TAG会默认TAG为<code>latest</code>，另外也可以通过镜像ID来直接指定。</p>
+</blockquote>
+<ul>
+<li><p><code>docker images</code> : 查看当前本地仓库所有镜像</p>
+</li>
+<li><p><code>docker search $&#123;KEYWORD&#125;</code> : 在线查找镜像</p>
+</li>
+<li><p><code>docker login [$&#123;SERVER&#125;]</code> : 登录某个Docker仓库，默认为官方仓库DockerHub</p>
+<ul>
+<li><code>-u $&#123;USERNAME&#125;</code> : 指定登录用户名</li>
+<li><code>-p $&#123;PASSWORD&#125;</code> : 指定登录用户的密码</li>
+</ul>
+</li>
+<li><p><code>docker logout [$&#123;SERVER&#125;]</code> : 退出登录</p>
+</li>
+<li><p><code>docker pull $&#123;IMAGE&#125;:$&#123;TAG&#125;</code> : 下载镜像，不指定TAG则默认下载<code>latest</code>版本</p>
+</li>
+<li><p><code>docker push $&#123;IMAGE&#125;:$&#123;TAG&#125;</code> : 上传镜像到镜像仓库，需要先登陆镜像仓库</p>
+</li>
+<li><p><code>docker rmi $&#123;IMAGE&#125;:$&#123;TAG&#125;</code> : 删除本地仓库中镜像</p>
+</li>
+<li><p><code>docker save $&#123;IMAGE&#125;:$&#123;TAG&#125; -o $&#123;FILE_NAME&#125;</code> : 把镜像保存为tar文件，也可以写成<code>docker save $&#123;IMAGE&#125;:$&#123;TAG&#125;&gt;$&#123;FILE_NAME&#125;</code></p>
+</li>
+<li><p><code>docker load -i $&#123;FILE_NAME&#125;</code> : 把镜像文件导入到仓库，也可以写成<code>docker load &lt;$&#123;FILE_NAME&#125;</code></p>
+</li>
+<li><p><code>docker export $&#123;CONTAINER_ID&#125; -o $&#123;FILE_NAME&#125;</code> : 把容器保存为tar文件，也可以写成<code>docker export $&#123;IMAGE&#125;:$&#123;TAG&#125;&gt;$&#123;FILE_NAME&#125;</code></p>
+</li>
+<li><p><code>docker import $&#123;FILE_NAME&#125; $&#123;IMAGE&#125;:$&#123;TAG&#125;</code> : 把镜像文件导入到仓库，需要指定导入后镜像的IMAGE和TAG</p>
+</li>
+<li><p><code>docker tag $&#123;IMAGE&#125;:$&#123;TAG&#125; $&#123;NEWIMAGE&#125;:$&#123;NEWTAG&#125;</code> : 为某个镜像增加新的镜像名和TAG</p>
+</li>
+<li><p><code>docker commit $&#123;CONTAINER_ID&#125; $&#123;IMAGE&#125;:$&#123;TAG&#125;</code> : 提交对某个容器的更改操作，输出为新的镜像</p>
+<ul>
+<li><code>-m=&quot;$&#123;COMMIT_MESSAGE&#125;&quot;</code> : 填写提交信息</li>
+<li><code>-a=&quot;$&#123;AUTHOR&#125;&quot;</code> : 填写镜像作者</li>
+<li><code>-p</code> : commit时暂停容器</li>
+</ul>
+</li>
+<li><p><code>docker build $&#123;DOCKER_FILE_PATH&#125; -t $&#123;IMAGE&#125;:$&#123;TAG&#125;</code> : 通过Dockerfile创建镜像</p>
+</li>
+</ul>
+<h2 id="容器运行相关命令"><a href="#容器运行相关命令" class="headerlink" title="容器运行相关命令"></a>容器运行相关命令</h2><blockquote>
+<p>对容器进行操作时需要指定该容器的ID，另外也可以通过分配的或自定义的容器名来确定容器。</p>
+</blockquote>
+<ul>
+<li><p><code>docker run</code> : 启动一个新的容器</p>
+<ul>
+<li><code>-t</code> : 在新容器内指定一个伪终端或终端</li>
+<li><code>-i</code> : 允许对容器内的标准输入(STDIN)进行交互</li>
+<li><code>-d</code> : 后台运行</li>
+<li><code>-P</code> : 选取主机的随机端口对容器端口进行映射</li>
+<li><code>-p $&#123;HOST_PORT&#125;:$&#123;CONTAINER_PORT&#125;</code> : 指定端口的映射，可以使用多次<code>-p</code>以映射多个端口</li>
+<li><code>--name $&#123;CONTAINER_NAME&#125;</code> : 指定容器的NAME</li>
+<li><code>-v $&#123;HOST_PATH&#125;:$&#123;CONTAINER_PATH&#125;</code> : 把本机某个目录挂载到容器的某个目录下</li>
+</ul>
+</li>
+<li><p><code>docker stop $&#123;CONTAINER_ID&#125;</code> : 停止某个Docker容器</p>
+</li>
+<li><p><code>docker start $&#123;CONTAINER_ID&#125;</code> : 启动某个关掉的Docker容器</p>
+</li>
+<li><p><code>docker restart $&#123;CONTAINER_ID&#125;</code> : 重启某个正在运行的Docker容器</p>
+</li>
+<li><p><code>docker kill $&#123;CONTAINER_ID&#125;</code> : 强行停止某个Docker容器</p>
+</li>
+<li><p><code>docker attach $&#123;CONTAINER_ID&#125;</code> : 进入某个正在后台运行的容器，通过<code>CTRL+P+Q</code>可以把容器再次切换回后台</p>
+</li>
+<li><p><code>docker exec $&#123;CONTAINER_ID&#125; $&#123;COMMAND&#125;</code> : 在某个运行中的容器里执行COMMAND后退出，如果要进入容器则COMMAND为<code>/bin/bash</code></p>
+</li>
+<li><p><code>docker pause $&#123;CONTAINER_ID&#125;</code> : 暂停容器</p>
+</li>
+<li><p><code>docker unpause $&#123;CONTAINER_ID&#125;</code> : 恢复被暂停的容器</p>
+</li>
+<li><p><code>docker ps</code> : 查看当前正在运行的容器的信息</p>
+<ul>
+<li><code>-a</code> : 查看包括已关闭的容器</li>
+<li><code>-q</code> : 只列出容器的ID，可以与其他需要容器ID的命令组合使用，如[docker rm `docker ps -a -q`]可以删除全部的容器</li>
+</ul>
+</li>
+<li><p><code>docker port $&#123;CONTAINER_ID&#125;</code> : 查看容器的端口映射情况</p>
+</li>
+<li><p><code>docker logs $&#123;CONTAINER_ID&#125;</code> : 查看容器内的标准输出</p>
+<ul>
+<li><code>-f</code> : tail形式输出log</li>
+</ul>
+</li>
+<li><p><code>docker top $&#123;CONTAINER_ID&#125;</code> : 查看容器内部运行的进程</p>
+</li>
+<li><p><code>docker stats</code> : 查看容器资源使用状态</p>
+</li>
+<li><p><code>docker inspect $&#123;CONTAINER_ID&#125;</code> : 查看容器的底层信息</p>
+</li>
+<li><p><code>docker rm $&#123;CONTAINER_ID&#125;</code> : 移除不需要的容器</p>
+</li>
+<li><p><code>docker diff $&#123;CONTAINER_ID&#125;</code> : 查看容器发生改变的文件结构</p>
+</li>
+<li><p><code>docker cp $&#123;HOST_PATH&#125; $&#123;CONTAINER_ID&#125;:$&#123;CONTAINER_PATH&#125;</code> : 本机和容器间的文件传输，在前的为源路径，在后面的为目标路径，容器侧的路径前要加上容器ID</p>
+</li>
+</ul>
+<h2 id="Docker自身服务相关命令"><a href="#Docker自身服务相关命令" class="headerlink" title="Docker自身服务相关命令"></a>Docker自身服务相关命令</h2><ul>
+<li><p><code>docker version</code> : 查看当前使用的Docker版本信息</p>
+</li>
+<li><p><code>docker info</code> : 查看Docker当前的详细系统信息</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/docker/frequently-used-docker-command-line/frequently-used-docker-command-line/" data-id="cklqcjd3o00043wn79flw8an3" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../tags/Docker/" rel="tag">Docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../frequently-used-docker-file-command/frequently-used-docker-file-command/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Dockerfile常用语法
+        
+      </div>
+    </a>
+  
+  
+    <a href="../../../tools/about-editconfig/about-editconfig/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">EditorConfig</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+            
+            <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="../../../tags/CI/" style="font-size: 10px;">CI</a> <a href="../../../tags/DataBase/" style="font-size: 10px;">DataBase</a> <a href="../../../tags/Design-Pattern/" style="font-size: 10px;">Design Pattern</a> <a href="../../../tags/DevOps/" style="font-size: 15px;">DevOps</a> <a href="../../../tags/Docker/" style="font-size: 15px;">Docker</a> <a href="../../../tags/ElasticSearch/" style="font-size: 10px;">ElasticSearch</a> <a href="../../../tags/Git/" style="font-size: 15px;">Git</a> <a href="../../../tags/JDK/" style="font-size: 12.5px;">JDK</a> <a href="../../../tags/Java/" style="font-size: 20px;">Java</a> <a href="../../../tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="../../../tags/Lint/" style="font-size: 12.5px;">Lint</a> <a href="../../../tags/Linux/" style="font-size: 17.5px;">Linux</a> <a href="../../../tags/Maven/" style="font-size: 10px;">Maven</a> <a href="../../../tags/Network/" style="font-size: 10px;">Network</a> <a href="../../../tags/Performance/" style="font-size: 10px;">Performance</a> <a href="../../../tags/Ruby/" style="font-size: 10px;">Ruby</a> <a href="../../../tags/Server/" style="font-size: 10px;">Server</a> <a href="../../../tags/middleware/" style="font-size: 12.5px;">middleware</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2015/05/">May 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="../../../middleware/nacos/nacos-installation-guide/nacos-installation-guide/">Nacos安装指引</a>
+          </li>
+        
+          <li>
+            <a href="../../../java/about-javadoc/about-javadoc/">Java注释说明</a>
+          </li>
+        
+          <li>
+            <a href="../../../devops/git/about-git-lfs/about-git-lfs/">Git LFS简介</a>
+          </li>
+        
+          <li>
+            <a href="../../../devops/git/git-commit-standardization/git-commit-standardization/">Git Commit规范化</a>
+          </li>
+        
+          <li>
+            <a href="../../../linux/root_directory_of_linux/root_directory_of_linux/">Linux目录说明</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+            
+        </div>
+        <footer id="footer">
+	
+	<div class="outer">
+		<div id="footer-info" class="inner">
+			&copy; 2021 Elvis Chan<br>
+		</div>
+	</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="../../../fancybox/jquery.fancybox.css">
+
+  
+<script src="../../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="../../../js/script.js"></script>
+
+
+
+
+</div>
+
+<!-- Load canvas-nest -->
+
+
+<script src="../../../js/canvas-nest.js"></script>
+
+
+</body>
+</html>

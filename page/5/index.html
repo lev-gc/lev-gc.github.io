@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    
+
+    
+    <title>
+        
+        Jasmine
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta property="og:type" content="website">
+<meta property="og:title" content="Jasmine">
+<meta property="og:url" content="https://lev-gc.github.io/page/5/">
+<meta property="og:site_name" content="Jasmine">
+<meta property="og:locale">
+<meta property="article:author" content="Elvis Chan">
+<meta name="twitter:card" content="summary">
+    
+    
+    <link rel="icon" href="/css/images/favicon.png">
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+    
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+
+    
+<link rel="stylesheet" href="../../css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+<div id="container">
+    <div id="wrap">
+        <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer" class="outer">
+        <div id="header-title" class="inner">
+            <h1 id="logo-wrap">
+                <a href="../../index.html" id="logo">Jasmine</a>
+            </h1>
+            
+            <h2 id="subtitle-wrap">
+                <span id="subtitle">Fear always springs from ignorance.</span>
+            </h2>
+            
+        </div>
+
+        <div id="header-inner" class="inner">
+
+            <nav id="main-nav">
+                <a id="main-nav-toggle" class="fab fa-bars nav-icon"></a>
+                
+                <a class="main-nav-link" href="../../index.html">Home</a>
+                
+                <a class="main-nav-link" href="../../archives">Archives</a>
+                
+            </nav>
+
+            <nav id="sub-nav">
+                
+                <a class="fab fa-github nav-icon" href="../../https:/github.com/lev-gc"
+                   title="GitHub"></a>
+                
+                <!-- search -->
+                <a id="nav-search-btn" class="far fa-search nav-icon" title="Search"></a>
+            </nav>
+
+            <div id="search-form-wrap">
+                <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://lev-gc.github.io"></form>
+            </div>
+
+        </div>
+
+    </div>
+</header>
+
+        <div class="outer">
+            <section id="main">
+  
+    <article id="post-java/maven/labels-of-maven-pom/labels-of-maven-pom" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="../../java/maven/labels-of-maven-pom/labels-of-maven-pom/" class="article-date">
+  <time datetime="2016-11-10T15:43:00.000Z" itemprop="datePublished">2016-11-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="../../java/maven/labels-of-maven-pom/labels-of-maven-pom/">Maven POM文件常用标签解释</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>本文档仅描述POM文件中最常用的一部分标签，完整的标签说明请查阅<a target="_blank" rel="noopener" href="http://maven.apache.org/ref/3.2.5/maven-model/maven.html">官方文档</a>。<br>另外，项目查找依赖包的优先级：local &gt; setting-profiles &gt; pom-repositories &gt; setting-mirror/central</p>
+</blockquote>
+<h2 id="基本标签"><a href="#基本标签" class="headerlink" title="基本标签"></a>基本标签</h2><table>
+<thead>
+<tr>
+<th align="center">Label</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">modelVersion</td>
+<td>声明所使用POM模型的版本</td>
+</tr>
+<tr>
+<td align="center">parent</td>
+<td>项目的父模块，需要填写父模块的<code>groupId</code>、<code>artifactId</code>和<code>version</code>；另外<code>relativePath</code>是设置父模块的位置，设置后会优先查找该目录而非Maven仓库</td>
+</tr>
+<tr>
+<td align="center">groupId</td>
+<td>模块所属的group的唯一id，设置<code>parent</code>后可以不填<code>groupId</code>，会默认使用<code>parent</code>的<code>groupId</code></td>
+</tr>
+<tr>
+<td align="center">artifactId</td>
+<td>本模块的唯一ID</td>
+</tr>
+<tr>
+<td align="center">version</td>
+<td>artifact的版本号</td>
+</tr>
+<tr>
+<td align="center">packaging</td>
+<td>本模块打包类型，可选<code>jar</code>、<code>pom</code>、<code>war</code>、<code>ear</code>，默认为<code>jar</code></td>
+</tr>
+<tr>
+<td align="center">name/url/description</td>
+<td>为描述项目而设置的标签，非必须</td>
+</tr>
+</tbody></table>
+<h3 id="modules"><a href="#modules" class="headerlink" title="- modules"></a>- modules</h3><p>列出本项目的子模块，可使用相对路径。</p>
+<h3 id="repositories"><a href="#repositories" class="headerlink" title="- repositories"></a>- repositories</h3><table>
+<thead>
+<tr>
+<th>Label</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>releases</td>
+<td>设置是否下载release的包</td>
+</tr>
+<tr>
+<td>snapshots</td>
+<td>设置是否下载snapshot的包，一般公共仓库都设置为<code>false</code></td>
+</tr>
+<tr>
+<td>id</td>
+<td>仓库ID，需要和setting文件中的<code>server</code>的ID配置相同</td>
+</tr>
+<tr>
+<td>name</td>
+<td>仓库名称</td>
+</tr>
+<tr>
+<td>url</td>
+<td>仓库的地址</td>
+</tr>
+<tr>
+<td>layout</td>
+<td>Maven1的<code>layout</code>是<code>legacy</code>，默认是<code>default</code></td>
+</tr>
+</tbody></table>
+<h3 id="pluginRepositories"><a href="#pluginRepositories" class="headerlink" title="- pluginRepositories"></a>- pluginRepositories</h3><p>配置基本和远程一样，但是查找插件时会到这里的插件仓库照而不是到repositories配置的仓库中找。</p>
+<h3 id="distributionManagement"><a href="#distributionManagement" class="headerlink" title="- distributionManagement"></a>- distributionManagement</h3><p>通过deploy命令把构建的包分发到远程仓库。</p>
+<table>
+<thead>
+<tr>
+<th>Label</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>snapshotRepository</td>
+<td>快照仓库</td>
+</tr>
+<tr>
+<td>repository</td>
+<td>release仓库</td>
+</tr>
+<tr>
+<td>id/name/url</td>
+<td>仓库的配置</td>
+</tr>
+</tbody></table>
+<p>此外，一般还需要在setting文件配置对应id的server：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">servers</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">server</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span>&gt;</span>repo1<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">username</span>&gt;</span>repouser<span class="tag">&lt;/<span class="name">username</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">password</span>&gt;</span>my_login_password<span class="tag">&lt;/<span class="name">password</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- To encrypt passwords: http://maven.apache.org/guides/mini/guide-encryption.html --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">server</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servers</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="dependencyManagement"><a href="#dependencyManagement" class="headerlink" title="- dependencyManagement"></a>- dependencyManagement</h3><p>负责管理相关依赖的版本等信息。本标签下的dependency只管理信息而不直接加载依赖，当本POM文件或者继承的POM文件中的dependencies标签中的dependency只指定了groupId和artifactId而没有描述version、scope等信息，就会默认从dependencyManagement中查找相关信息。</p>
+<h3 id="dependencies"><a href="#dependencies" class="headerlink" title="- dependencies"></a>- dependencies</h3><p>负责加载项目的相关依赖。</p>
+<table>
+<thead>
+<tr>
+<th>Label</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>groupId</td>
+<td>依赖包所在group的ID</td>
+</tr>
+<tr>
+<td>artifactId</td>
+<td>依赖包的ID</td>
+</tr>
+<tr>
+<td>version</td>
+<td>依赖包的版本号</td>
+</tr>
+<tr>
+<td>groupId</td>
+<td>依赖包所在group的ID</td>
+</tr>
+<tr>
+<td>exclusions</td>
+<td>配置此项来排除依赖，去除本依赖包所依赖的其他包</td>
+</tr>
+<tr>
+<td>classifier</td>
+<td>用来指定依赖包有多个输出包时应该使用哪一个，如有多个由不同jdk编译出来的版本时需要指定使用哪一个版本</td>
+</tr>
+<tr>
+<td>systemPath</td>
+<td>当依赖包在本地而非仓库时，<code>sytemPath</code>指出了jar包的路径</td>
+</tr>
+<tr>
+<td>type</td>
+<td>指出所依赖的包的类型，默认为jar</td>
+</tr>
+<tr>
+<td>optional</td>
+<td>表示其他项目依赖本项目时，是否传递该依赖。<code>true</code>表示不传递，默认为<code>false</code></td>
+</tr>
+<tr>
+<td>scope</td>
+<td>打包时对依赖包的不同操作模式</td>
+</tr>
+</tbody></table>
+<p>下面是scope的几种模式：</p>
+<ul>
+<li>compile: 默认值，表示当前依赖需要参与到项目的编译、测试、运行，打包时会被include进去；</li>
+<li>test: 表示当前依赖仅参与测试的工作，包括测试代码的编译和执行，打包时不会被include进去；</li>
+<li>runtime: 表示当前依赖不参与项目的编译，但会参与代码的测试和执行，打包时会被include进去；</li>
+<li>provided: 相当于<code>compile</code>，但打包时不会include该依赖，即使运行需要也是由外部环境提供；</li>
+<li>system: 相当于<code>provided</code>，但是该依赖由本地文件系统提供，需要添加<code>systemPath</code>定义所在路径；</li>
+</ul>
+<h3 id="plugins"><a href="#plugins" class="headerlink" title="- plugins"></a>- plugins</h3><p>Maven本质上是一个插件框架，它的核心并不执行任何具体的构建任务，所有这些任务都交给插件来完成。通过plugins的配置可以完成一些额外的构建任务，或者修改构建过程所使用的插件的版本。</p>
+<h3 id="profiles"><a href="#profiles" class="headerlink" title="- profiles"></a>- profiles</h3><p>指定基于不同环境参数的构建所使用的各种参数的值。</p>
+<h3 id="build"><a href="#build" class="headerlink" title="- build"></a>- build</h3><p>指定构建过程中的各种自定义工作。</p>
+<table>
+<thead>
+<tr>
+<th>Label</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>sourceDirectory</td>
+<td>Java文件目录</td>
+</tr>
+<tr>
+<td>testSourceDirectory</td>
+<td>测试Java文件目录</td>
+</tr>
+<tr>
+<td>resources</td>
+<td>资源文件目录</td>
+</tr>
+<tr>
+<td>testResources</td>
+<td>测试资源文件</td>
+</tr>
+<tr>
+<td>outputDirectory</td>
+<td>源文件输入出目录</td>
+</tr>
+<tr>
+<td>testOutputDirectory</td>
+<td>测试文件输出目录</td>
+</tr>
+<tr>
+<td>finalName</td>
+<td>指出最终打包的包名</td>
+</tr>
+<tr>
+<td>defaultGoal</td>
+<td>指定默认的参数，当执行maven命令时没有指定参数是使用默认参数，如<code>compile</code>、<code>install</code></td>
+</tr>
+<tr>
+<td>filters</td>
+<td>使用配置文件中的值替换项目中的占位符</td>
+</tr>
+</tbody></table>
+<h3 id="properties"><a href="#properties" class="headerlink" title="- properties"></a>- properties</h3><p>通过key-value的方式自定义一些参数。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/java/maven/labels-of-maven-pom/labels-of-maven-pom/" data-id="cklqcjd4c00153wn7f4i382fa" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/" rel="tag">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Maven/" rel="tag">Maven</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-java/install-of-java-environment-on-linux/install-of-java-environment-on-linux" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="../../java/install-of-java-environment-on-linux/install-of-java-environment-on-linux/" class="article-date">
+  <time datetime="2016-08-11T07:20:00.000Z" itemprop="datePublished">2016-08-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="../../java/install-of-java-environment-on-linux/install-of-java-environment-on-linux/">Linux上配置Java环境</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><ul>
+<li>通过yum、apt等包管理工具安装的一般是openjdk，如果需要oracle jdk的话需要到oracle官网下载包进行安装；</li>
+<li>安装Java环境一般分为两种，安装JDK和安装JRE： <ul>
+<li>如果不需要进行开发、编译等操作，只用Java环境来运行一些Jar、War包的软件的话可以只安装JRE环境；</li>
+<li>JDK额外提供了一些开发工具包，如果需要进行编译操作，如使用javac、Maven等执行编译，则应该安装JDK环境；</li>
+</ul>
+</li>
+</ul>
+<h2 id="配置过程"><a href="#配置过程" class="headerlink" title="配置过程"></a>配置过程</h2><p>此处以安装oracle jdk为例：</p>
+<ul>
+<li><p>下载</p>
+<ul>
+<li>官方下载链接需要认证，不能直接用wget下载，可以先通过浏览器下载再上传到对应位置；</li>
+</ul>
+</li>
+<li><p>解压</p>
+<ul>
+<li>解压命令：<code>tar -zxvf jdk-8u201-linux-x64.tar.gz</code>；</li>
+<li>移动到对应目录，一般可以放在<code>/usr/local/</code>目录下；</li>
+</ul>
+</li>
+<li><p>环境配置</p>
+<ul>
+<li><p>编辑配置文件： <code>vim /etc/profile</code>；</p>
+</li>
+<li><p>添加以下配置（根据实际情况修改路径）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/<span class="built_in">local</span>/jdk1.8.0_201</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$JAVA_HOME</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+
+<p>说明：Java1.5版本以后就不需要配置<code>CLASSPATH</code>了。</p>
+</li>
+</ul>
+</li>
+<li><p>使环境变量配置生效并检验是否配置成功</p>
+<ul>
+<li><p>使用<code>source</code>命令使之生效：<code>source /etc/profile</code>；</p>
+</li>
+<li><p>查看配置结果：<code>echo $JAVA_HOME</code>；</p>
+<p><img src="https://raw.githubusercontent.com/lev-gc/lev-gc.github.io/source/source/_posts/java/install-of-java-environment-on-linux/java_env.png" alt="效果图"></p>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/java/install-of-java-environment-on-linux/install-of-java-environment-on-linux/" data-id="cklqcjd3r00093wn74wo40a5h" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/" rel="tag">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Linux/" rel="tag">Linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-design-pattern/design-pattern-singleton/design-pattern-singleton" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="../../design-pattern/design-pattern-singleton/design-pattern-singleton/" class="article-date">
+  <time datetime="2016-06-28T15:41:00.000Z" itemprop="datePublished">2016-06-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="../../design-pattern/design-pattern-singleton/design-pattern-singleton/">设计模式 - 单例模式</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>单例模式是指一个类只能构建一个对象的设计模式。单例模式根据构建对象的时间分为两类：启动时就构建好的饿汉式和初次被调用才构建的懒汉式。实现一个单例模式主要需要考虑的是线程安全问题，另外是否能懒加载和是否能防止反射构建也是需要考虑的一部分。</p>
+</blockquote>
+<h3 id="双重检测锁实现"><a href="#双重检测锁实现" class="headerlink" title="双重检测锁实现"></a>双重检测锁实现</h3><p>双重检测锁是单例模式的一种实现，可以满足线程安全和懒加载的需要，不过不能防止利用反射来构建多个对象。</p>
+<h4 id="基本实现"><a href="#基本实现" class="headerlink" title="基本实现"></a>基本实现</h4><p>首先我们从最简单的代码开始一步步构建双重检测锁的单例实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;&#125; <span class="comment">//构造函数私有化</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance = <span class="keyword">null</span>; <span class="comment">//单例对象</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//静态初始化方法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;</span><br><span class="line">            instance = <span class="keyword">new</span> Singleton();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>首先第一步，我们是把构造方法给私有化，防止外部随意调用构造方法构建对象；</li>
+<li><code>instance</code>便是我们的单例对象，因为是一个静态成员，赋值为<code>null</code>实现了懒加载，当然也可以写成<code>new Singleton()</code>实现饿汉式加载；</li>
+<li><code>getInstance()</code>是获取单例对象的方法，通过<code>if (instance == null)</code>这一步来确保对象只会被构建一次。</li>
+</ul>
+<h4 id="确保线程安全"><a href="#确保线程安全" class="headerlink" title="确保线程安全"></a>确保线程安全</h4><p>上面的基本实现能保证在单线程下实现单例模式，但在多线程的情况下可能会出现一些问题：<br>刚开始<code>instance</code>还是等于<code>null</code>的时候，<code>if (instance == null)</code>这一步判断是为<code>true</code>，当线程A通过了这一步判断进入了分支里但还没来得及构建对象的时候，<code>instance</code>实际上还是为<code>null</code>，这时候线程B依然能通过判断进入分支体，于是就会出现多个线程同时在分支体里面，导致分支体里的<code>instance = new Singleton();</code>会被执行多次，构建了多次对象。</p>
+<p>添加双重检测机制：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;&#125; <span class="comment">//构造函数私有化</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton instance = <span class="keyword">null</span>; <span class="comment">//单例对象</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//静态初始化方法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;                 <span class="comment">//双重检测机制</span></span><br><span class="line">            <span class="keyword">synchronized</span> (Singleton.class) &#123;    //同步锁</span><br><span class="line">                <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;         <span class="comment">//双重检测机制</span></span><br><span class="line">                    instance = <span class="keyword">new</span> Singleton();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>通过添加同步锁<code>synchronized</code>的方式，保证同一时刻最多只会有一个线程在执行同步锁里的程序，保证<code>instance = new Singleton();</code>只会被执行一次；</li>
+<li>同步锁外的<code>if (instance == null)</code>判空是指当不是<code>null</code>的时候就直接跳过整个分支体，而不用等待完同步锁后才发现<code>instance</code>不为<code>null</code>，减少不必要的时间开销；</li>
+<li>同步锁里的<code>if (instance == null)</code>判空是为了防止线程A进入了锁里面还没来得及创建对象时，线程B就通过了外部判空开始等待锁的情况出现，这种机制就叫做双重检测锁。</li>
+</ul>
+<h3 id="禁止指令重排序"><a href="#禁止指令重排序" class="headerlink" title="禁止指令重排序"></a>禁止指令重排序</h3><p>上面的实现看似保证了线程安全，但实际上并非如此，原因在于Java指令的重排序。<br>什么是指令重排序？上面构建对象部分的代码<code>instance = new Singleton();</code>，实际上会被编译器编译成以下指令：</p>
+<ol>
+<li>分配对象需要的内存空间</li>
+<li>在分配的内存中初始化对象</li>
+<li>把<code>instance</code>指向上面分配到的内存地址</li>
+</ol>
+<p>指令流水线并非是串行的，多条指令可以同时被执行，为了使性能更优，JVM和CPU可能会把这些指令进行优化重排序，导致出现以下的顺序：</p>
+<ol>
+<li>分配对象需要的内存空间</li>
+<li>把<code>instance</code>指向上面分配到的内存地址</li>
+<li>在分配的内存中初始化对象</li>
+</ol>
+<p>结果会导致这样一种情况：线程A正在执行<code>instance = new Singleton()</code>，获取了内存地址但是还没有初始化对象，而此时线程B在外部判空时发现<code>instance</code>不等于<code>null</code>，于是直接返回了<code>instance</code>，便造成线程B拿到了一个还没完成初始化的对象。</p>
+<p>添加修饰符volatile：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;&#125; <span class="comment">//构造函数私有化</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> Singleton instance = <span class="keyword">null</span>; <span class="comment">//单例对象</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//静态初始化方法</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;                 <span class="comment">//双重检测机制</span></span><br><span class="line">            <span class="keyword">synchronized</span> (Singleton.class) &#123;    //同步锁</span><br><span class="line">                <span class="keyword">if</span> (instance == <span class="keyword">null</span>) &#123;         <span class="comment">//双重检测机制</span></span><br><span class="line">                    instance = <span class="keyword">new</span> Singleton();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用volatile修饰符禁止了指令重排序，保证指令是按顺序执行的，不会出现一种中间态。另外一提，volatile关键字除了禁止指令重排外，还能确保其修饰的值被修改后马上写回到主内存中，保证线程访问的该变量值是最新值。</p>
+<p>至此为止，代码已经实现了线程安全且懒加载的单例模式，然而，硬要用反射来使构造函数可见，还是能构建多个对象的。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/design-pattern/design-pattern-singleton/design-pattern-singleton/" data-id="cklqcjd3k00013wn798cw9ya9" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Design-Pattern/" rel="tag">Design Pattern</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-devops/git/git-multiple-user-config/git-multiple-user-config" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="../../devops/git/git-multiple-user-config/git-multiple-user-config/" class="article-date">
+  <time datetime="2016-05-22T08:52:00.000Z" itemprop="datePublished">2016-05-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="../../devops/git/git-multiple-user-config/git-multiple-user-config/">Git配置多用户</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="场景描述"><a href="#场景描述" class="headerlink" title="场景描述"></a>场景描述</h2><p>对于使用Git仓库，我们可能需要在同一个系统中使用不同的邮箱账号进行开发工作，比如工作时需要使用工作邮箱和易于识别的名字，而社区则是使用私人邮箱和网络名称，如果只使用一套全局配置会很不方便。Git提供了处理这个问题的机制。</p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>基础配置本质上存在于两个配置文件中：</p>
+<ul>
+<li>全局配置，一般存放在用户目录下的<code>.gitconfig</code>文件中；</li>
+<li>局部配置，存放在仓库目录下的<code>.git/config</code>文件中；</li>
+</ul>
+<p>优先级上，__局部配置大于全局配置__。Git提供的<code>git config</code>命令本质上就是改变这两个文件的配置，其中加了<code>--global</code>参数的命令改动的是全局配置，而没有加该参数的则是改变对应仓库的局部配置。因此我们可以先全局配置一个相对常用的用户，然后再在不使用该用户信息的仓库里进行局部配置。</p>
+<h2 id="相关操作"><a href="#相关操作" class="headerlink" title="相关操作"></a>相关操作</h2><h3 id="方法一：命令行操作"><a href="#方法一：命令行操作" class="headerlink" title="方法一：命令行操作"></a>方法一：命令行操作</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 配置用户名和邮箱</span></span><br><span class="line">git config [--global] user.name <span class="string">&quot;xxx&quot;</span></span><br><span class="line">git config [--global] user.email <span class="string">&quot;xxx&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 取消全局设置</span></span><br><span class="line">git config [--global] --<span class="built_in">unset</span> user.name</span><br><span class="line">git config [--global] --<span class="built_in">unset</span> user.email</span><br></pre></td></tr></table></figure>
+
+<h3 id="方法二：直接编辑配置文件"><a href="#方法二：直接编辑配置文件" class="headerlink" title="方法二：直接编辑配置文件"></a>方法二：直接编辑配置文件</h3><p>除了命令的方式外，当然也可以直接编辑<code>.gitconfig</code>或者<code>.git/config</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[user]</span><br><span class="line">    name &#x3D; xxx</span><br><span class="line">    email &#x3D; xxx</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/devops/git/git-multiple-user-config/git-multiple-user-config/" data-id="cklqcjd47000w3wn7aj1tb30t" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/DevOps/" rel="tag">DevOps</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Git/" rel="tag">Git</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-linux/shortcuts-of-command-line-in-linux/shortcuts-of-command-line-in-linux" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="../../linux/shortcuts-of-command-line-in-linux/shortcuts-of-command-line-in-linux/" class="article-date">
+  <time datetime="2016-05-15T02:57:00.000Z" itemprop="datePublished">2016-05-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="../../linux/shortcuts-of-command-line-in-linux/shortcuts-of-command-line-in-linux/">Linux命令行常用快捷键</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="光标位置移动"><a href="#光标位置移动" class="headerlink" title="光标位置移动"></a><strong>光标位置移动</strong></h2><table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Remark</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>*<em>Ctrl+A</em></td>
+<td>移动到行首</td>
+</tr>
+<tr>
+<td>*<em>Ctrl+E</em></td>
+<td>移动到行末</td>
+</tr>
+<tr>
+<td>Ctrl+B</td>
+<td>向左边移动一个字符，同Left键</td>
+</tr>
+<tr>
+<td>Ctrl+F</td>
+<td>向右边移动一个字符，同Right键</td>
+</tr>
+<tr>
+<td>*<em>Ctrl+Left &amp; Ctrl+Right</em></td>
+<td>以单词为单位左右移动</td>
+</tr>
+<tr>
+<td>Alt+B/Esc to B</td>
+<td>向左边移动一个单词</td>
+</tr>
+<tr>
+<td>Alt+F/Esc to F</td>
+<td>向右边移动一个单词</td>
+</tr>
+</tbody></table>
+<h2 id="编辑命令"><a href="#编辑命令" class="headerlink" title="编辑命令"></a><strong>编辑命令</strong></h2><table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Remark</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>*<em>Ctrl+L</em></td>
+<td>清屏操作，作用同输入clear/reset</td>
+</tr>
+<tr>
+<td>*<em>Ctrl+U</em></td>
+<td>删除光标前的输入(配合Ctrl+Y可粘贴删除的内容)</td>
+</tr>
+<tr>
+<td>*<em>Ctrl+K</em></td>
+<td>删除光标后的输入(配合Ctrl+Y可粘贴删除的内容)</td>
+</tr>
+<tr>
+<td>Ctrl+Y</td>
+<td>粘贴被Ctrl+U/Ctrl+K 删掉的内容</td>
+</tr>
+<tr>
+<td>Ctrl+W</td>
+<td>往光标左边删除单词</td>
+</tr>
+<tr>
+<td>Alt+D/Esc to D</td>
+<td>往光标右边删除单词</td>
+</tr>
+<tr>
+<td>Ctrl+T</td>
+<td>交换光标左边的两个字符的位置</td>
+</tr>
+</tbody></table>
+<h2 id="查找历史命令"><a href="#查找历史命令" class="headerlink" title="查找历史命令"></a><strong>查找历史命令</strong></h2><table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Remark</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Ctrl+P</td>
+<td>显示当前命令的上一条命令，同UP键</td>
+</tr>
+<tr>
+<td>Ctrl+N</td>
+<td>显示当前命令的下一条命令，同DOWN键</td>
+</tr>
+<tr>
+<td>*<em>Ctrl+R</em></td>
+<td>开启历史命令搜索，Enter执行搜索结果，Esc显示搜索结果但不执行，再次输入Ctrl+R可以往前回溯符合s搜索条件的命令</td>
+</tr>
+<tr>
+<td>*<em>Ctrl+G</em></td>
+<td>退出历史命令搜索</td>
+</tr>
+</tbody></table>
+<h2 id="控制命令"><a href="#控制命令" class="headerlink" title="控制命令"></a><strong>控制命令</strong></h2><table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Remark</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>*<em>Ctrl+S</em></td>
+<td>阻止屏幕输出</td>
+</tr>
+<tr>
+<td>*<em>Ctrl+Q</em></td>
+<td>允许屏幕输出</td>
+</tr>
+<tr>
+<td>*<em>Ctrl+C</em></td>
+<td>终止命令，也可用于忽略当前输入直接跳到下一行</td>
+</tr>
+<tr>
+<td>*<em>Ctrl+Z</em></td>
+<td>暂停命令，可以通过jobs查看作业，使用fg/bg加作业ID可前台/后台继续运行进程</td>
+</tr>
+</tbody></table>
+<h2 id="Bang命令"><a href="#Bang命令" class="headerlink" title="Bang命令"></a><strong>Bang命令</strong></h2><table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Remark</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>*<em>!!</em></td>
+<td>执行上一条命令</td>
+</tr>
+<tr>
+<td>*<em>!$</em></td>
+<td>添加上一条命令的最后一个参数</td>
+</tr>
+<tr>
+<td>!-n</td>
+<td>执行前n条命令</td>
+</tr>
+<tr>
+<td>^xxx</td>
+<td>删除上一条命令的xxx字符并执行</td>
+</tr>
+<tr>
+<td>^xxx^yyy</td>
+<td>替换上一条命令的xxx字符为yyy</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/linux/shortcuts-of-command-line-in-linux/shortcuts-of-command-line-in-linux/" data-id="cklqcjd40000j3wn7dsmadkgi" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Linux/" rel="tag">Linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="../4/">« Prev</a><a class="page-number" href="../../">1</a><span class="space">&hellip;</span><a class="page-number" href="../3/">3</a><a class="page-number" href="../4/">4</a><span class="page-number current">5</span><a class="page-number" href="../6/">6</a><a class="extend next" rel="next" href="../6/">Next »</a>
+  </nav>
+
+</section>
+            
+            <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="../../tags/CI/" style="font-size: 10px;">CI</a> <a href="../../tags/DataBase/" style="font-size: 10px;">DataBase</a> <a href="../../tags/Design-Pattern/" style="font-size: 10px;">Design Pattern</a> <a href="../../tags/DevOps/" style="font-size: 15px;">DevOps</a> <a href="../../tags/Docker/" style="font-size: 15px;">Docker</a> <a href="../../tags/ElasticSearch/" style="font-size: 10px;">ElasticSearch</a> <a href="../../tags/Git/" style="font-size: 15px;">Git</a> <a href="../../tags/JDK/" style="font-size: 12.5px;">JDK</a> <a href="../../tags/Java/" style="font-size: 20px;">Java</a> <a href="../../tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="../../tags/Lint/" style="font-size: 12.5px;">Lint</a> <a href="../../tags/Linux/" style="font-size: 17.5px;">Linux</a> <a href="../../tags/Maven/" style="font-size: 10px;">Maven</a> <a href="../../tags/Network/" style="font-size: 10px;">Network</a> <a href="../../tags/Performance/" style="font-size: 10px;">Performance</a> <a href="../../tags/Ruby/" style="font-size: 10px;">Ruby</a> <a href="../../tags/Server/" style="font-size: 10px;">Server</a> <a href="../../tags/middleware/" style="font-size: 12.5px;">middleware</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2015/05/">May 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="../../middleware/nacos/nacos-installation-guide/nacos-installation-guide/">Nacos安装指引</a>
+          </li>
+        
+          <li>
+            <a href="../../java/about-javadoc/about-javadoc/">Java注释说明</a>
+          </li>
+        
+          <li>
+            <a href="../../devops/git/about-git-lfs/about-git-lfs/">Git LFS简介</a>
+          </li>
+        
+          <li>
+            <a href="../../devops/git/git-commit-standardization/git-commit-standardization/">Git Commit规范化</a>
+          </li>
+        
+          <li>
+            <a href="../../linux/root_directory_of_linux/root_directory_of_linux/">Linux目录说明</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+            
+        </div>
+        <footer id="footer">
+	
+	<div class="outer">
+		<div id="footer-info" class="inner">
+			&copy; 2021 Elvis Chan<br>
+		</div>
+	</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="../../fancybox/jquery.fancybox.css">
+
+  
+<script src="../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="../../js/script.js"></script>
+
+
+
+
+</div>
+
+<!-- Load canvas-nest -->
+
+
+<script src="../../js/canvas-nest.js"></script>
+
+
+</body>
+</html>

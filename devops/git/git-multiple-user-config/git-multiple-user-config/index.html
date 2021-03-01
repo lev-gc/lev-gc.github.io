@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    
+
+    
+    <title>
+        
+        Git配置多用户 |
+        
+        Jasmine
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="场景描述对于使用Git仓库，我们可能需要在同一个系统中使用不同的邮箱账号进行开发工作，比如工作时需要使用工作邮箱和易于识别的名字，而社区则是使用私人邮箱和网络名称，如果只使用一套全局配置会很不方便。Git提供了处理这个问题的机制。 原理基础配置本质上存在于两个配置文件中：  全局配置，一般存放在用户目录下的.gitconfig文件中； 局部配置，存放在仓库目录下的.git&#x2F;config文件中；">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git配置多用户">
+<meta property="og:url" content="https://lev-gc.github.io/devops/git/git-multiple-user-config/git-multiple-user-config/">
+<meta property="og:site_name" content="Jasmine">
+<meta property="og:description" content="场景描述对于使用Git仓库，我们可能需要在同一个系统中使用不同的邮箱账号进行开发工作，比如工作时需要使用工作邮箱和易于识别的名字，而社区则是使用私人邮箱和网络名称，如果只使用一套全局配置会很不方便。Git提供了处理这个问题的机制。 原理基础配置本质上存在于两个配置文件中：  全局配置，一般存放在用户目录下的.gitconfig文件中； 局部配置，存放在仓库目录下的.git&#x2F;config文件中；">
+<meta property="og:locale">
+<meta property="article:published_time" content="2016-05-22T08:52:00.000Z">
+<meta property="article:modified_time" content="2016-05-22T08:52:00.000Z">
+<meta property="article:author" content="Elvis Chan">
+<meta property="article:tag" content="DevOps">
+<meta property="article:tag" content="Git">
+<meta name="twitter:card" content="summary">
+    
+    
+    <link rel="icon" href="/css/images/favicon.png">
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+    
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+
+    
+<link rel="stylesheet" href="../../../../css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+<div id="container">
+    <div id="wrap">
+        <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer" class="outer">
+        <div id="header-title" class="inner">
+            <h1 id="logo-wrap">
+                <a href="../../../../index.html" id="logo">Jasmine</a>
+            </h1>
+            
+            <h2 id="subtitle-wrap">
+                <span id="subtitle">Fear always springs from ignorance.</span>
+            </h2>
+            
+        </div>
+
+        <div id="header-inner" class="inner">
+
+            <nav id="main-nav">
+                <a id="main-nav-toggle" class="fab fa-bars nav-icon"></a>
+                
+                <a class="main-nav-link" href="../../../../index.html">Home</a>
+                
+                <a class="main-nav-link" href="../../../../archives">Archives</a>
+                
+            </nav>
+
+            <nav id="sub-nav">
+                
+                <a class="fab fa-github nav-icon" href="../../../../https:/github.com/lev-gc"
+                   title="GitHub"></a>
+                
+                <!-- search -->
+                <a id="nav-search-btn" class="far fa-search nav-icon" title="Search"></a>
+            </nav>
+
+            <div id="search-form-wrap">
+                <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://lev-gc.github.io"></form>
+            </div>
+
+        </div>
+
+    </div>
+</header>
+
+        <div class="outer">
+            <section id="main"><article id="post-devops/git/git-multiple-user-config/git-multiple-user-config" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="" class="article-date">
+  <time datetime="2016-05-22T08:52:00.000Z" itemprop="datePublished">2016-05-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Git配置多用户
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="场景描述"><a href="#场景描述" class="headerlink" title="场景描述"></a>场景描述</h2><p>对于使用Git仓库，我们可能需要在同一个系统中使用不同的邮箱账号进行开发工作，比如工作时需要使用工作邮箱和易于识别的名字，而社区则是使用私人邮箱和网络名称，如果只使用一套全局配置会很不方便。Git提供了处理这个问题的机制。</p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>基础配置本质上存在于两个配置文件中：</p>
+<ul>
+<li>全局配置，一般存放在用户目录下的<code>.gitconfig</code>文件中；</li>
+<li>局部配置，存放在仓库目录下的<code>.git/config</code>文件中；</li>
+</ul>
+<p>优先级上，__局部配置大于全局配置__。Git提供的<code>git config</code>命令本质上就是改变这两个文件的配置，其中加了<code>--global</code>参数的命令改动的是全局配置，而没有加该参数的则是改变对应仓库的局部配置。因此我们可以先全局配置一个相对常用的用户，然后再在不使用该用户信息的仓库里进行局部配置。</p>
+<h2 id="相关操作"><a href="#相关操作" class="headerlink" title="相关操作"></a>相关操作</h2><h3 id="方法一：命令行操作"><a href="#方法一：命令行操作" class="headerlink" title="方法一：命令行操作"></a>方法一：命令行操作</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 配置用户名和邮箱</span></span><br><span class="line">git config [--global] user.name <span class="string">&quot;xxx&quot;</span></span><br><span class="line">git config [--global] user.email <span class="string">&quot;xxx&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 取消全局设置</span></span><br><span class="line">git config [--global] --<span class="built_in">unset</span> user.name</span><br><span class="line">git config [--global] --<span class="built_in">unset</span> user.email</span><br></pre></td></tr></table></figure>
+
+<h3 id="方法二：直接编辑配置文件"><a href="#方法二：直接编辑配置文件" class="headerlink" title="方法二：直接编辑配置文件"></a>方法二：直接编辑配置文件</h3><p>除了命令的方式外，当然也可以直接编辑<code>.gitconfig</code>或者<code>.git/config</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[user]</span><br><span class="line">    name &#x3D; xxx</span><br><span class="line">    email &#x3D; xxx</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/devops/git/git-multiple-user-config/git-multiple-user-config/" data-id="cklqcjd47000w3wn7aj1tb30t" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/DevOps/" rel="tag">DevOps</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/Git/" rel="tag">Git</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../../../design-pattern/design-pattern-singleton/design-pattern-singleton/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          设计模式 - 单例模式
+        
+      </div>
+    </a>
+  
+  
+    <a href="../../../../linux/shortcuts-of-command-line-in-linux/shortcuts-of-command-line-in-linux/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Linux命令行常用快捷键</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+            
+            <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="../../../../tags/CI/" style="font-size: 10px;">CI</a> <a href="../../../../tags/DataBase/" style="font-size: 10px;">DataBase</a> <a href="../../../../tags/Design-Pattern/" style="font-size: 10px;">Design Pattern</a> <a href="../../../../tags/DevOps/" style="font-size: 15px;">DevOps</a> <a href="../../../../tags/Docker/" style="font-size: 15px;">Docker</a> <a href="../../../../tags/ElasticSearch/" style="font-size: 10px;">ElasticSearch</a> <a href="../../../../tags/Git/" style="font-size: 15px;">Git</a> <a href="../../../../tags/JDK/" style="font-size: 12.5px;">JDK</a> <a href="../../../../tags/Java/" style="font-size: 20px;">Java</a> <a href="../../../../tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="../../../../tags/Lint/" style="font-size: 12.5px;">Lint</a> <a href="../../../../tags/Linux/" style="font-size: 17.5px;">Linux</a> <a href="../../../../tags/Maven/" style="font-size: 10px;">Maven</a> <a href="../../../../tags/Network/" style="font-size: 10px;">Network</a> <a href="../../../../tags/Performance/" style="font-size: 10px;">Performance</a> <a href="../../../../tags/Ruby/" style="font-size: 10px;">Ruby</a> <a href="../../../../tags/Server/" style="font-size: 10px;">Server</a> <a href="../../../../tags/middleware/" style="font-size: 12.5px;">middleware</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2015/05/">May 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="../../../../middleware/nacos/nacos-installation-guide/nacos-installation-guide/">Nacos安装指引</a>
+          </li>
+        
+          <li>
+            <a href="../../../../java/about-javadoc/about-javadoc/">Java注释说明</a>
+          </li>
+        
+          <li>
+            <a href="../../about-git-lfs/about-git-lfs/">Git LFS简介</a>
+          </li>
+        
+          <li>
+            <a href="../../git-commit-standardization/git-commit-standardization/">Git Commit规范化</a>
+          </li>
+        
+          <li>
+            <a href="../../../../linux/root_directory_of_linux/root_directory_of_linux/">Linux目录说明</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+            
+        </div>
+        <footer id="footer">
+	
+	<div class="outer">
+		<div id="footer-info" class="inner">
+			&copy; 2021 Elvis Chan<br>
+		</div>
+	</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="../../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../../archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="../../../../fancybox/jquery.fancybox.css">
+
+  
+<script src="../../../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="../../../../js/script.js"></script>
+
+
+
+
+</div>
+
+<!-- Load canvas-nest -->
+
+
+<script src="../../../../js/canvas-nest.js"></script>
+
+
+</body>
+</html>

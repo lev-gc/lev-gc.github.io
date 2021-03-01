@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    
+
+    
+    <title>
+        
+        Jasmine
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta property="og:type" content="website">
+<meta property="og:title" content="Jasmine">
+<meta property="og:url" content="https://lev-gc.github.io/page/2/">
+<meta property="og:site_name" content="Jasmine">
+<meta property="og:locale">
+<meta property="article:author" content="Elvis Chan">
+<meta name="twitter:card" content="summary">
+    
+    
+    <link rel="icon" href="/css/images/favicon.png">
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+    
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+
+    
+<link rel="stylesheet" href="../../css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+<div id="container">
+    <div id="wrap">
+        <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer" class="outer">
+        <div id="header-title" class="inner">
+            <h1 id="logo-wrap">
+                <a href="../../index.html" id="logo">Jasmine</a>
+            </h1>
+            
+            <h2 id="subtitle-wrap">
+                <span id="subtitle">Fear always springs from ignorance.</span>
+            </h2>
+            
+        </div>
+
+        <div id="header-inner" class="inner">
+
+            <nav id="main-nav">
+                <a id="main-nav-toggle" class="fab fa-bars nav-icon"></a>
+                
+                <a class="main-nav-link" href="../../index.html">Home</a>
+                
+                <a class="main-nav-link" href="../../archives">Archives</a>
+                
+            </nav>
+
+            <nav id="sub-nav">
+                
+                <a class="fab fa-github nav-icon" href="../../https:/github.com/lev-gc"
+                   title="GitHub"></a>
+                
+                <!-- search -->
+                <a id="nav-search-btn" class="far fa-search nav-icon" title="Search"></a>
+            </nav>
+
+            <div id="search-form-wrap">
+                <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://lev-gc.github.io"></form>
+            </div>
+
+        </div>
+
+    </div>
+</header>
+
+        <div class="outer">
+            <section id="main">
+  
+    <article id="post-devops/jenkins/set-branch-name-in-jenkins/set-branch-name-in-jenkins" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="../../devops/jenkins/set-branch-name-in-jenkins/set-branch-name-in-jenkins/" class="article-date">
+  <time datetime="2018-11-26T12:04:00.000Z" itemprop="datePublished">2018-11-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="../../devops/jenkins/set-branch-name-in-jenkins/set-branch-name-in-jenkins/">Jenkins项目中配置Git分支</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>最近发现很多人在Jenkins上的项目构建配置中都是用<code>*/xxx</code>这种方式来指定branch的，分享一点相关的经验。</p>
+</blockquote>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>当我们在Jenkins上新添加一个构建项目时，项目的默认配置中的<code>Branches to build</code>（也就是需要构建的目标分支）就是写着<code>*/master</code>，所以大部分不熟悉的使用者会选择像下图里一样直接把后面的<code>master</code>改成实际需要构建的branch name，而无视掉前面的<code>*/</code>。虽然在绝大多数情况下这样的配置是会正常工作不出问题，但是很明显配置中的<code>*</code>是起通配符作用的，这样做其实就是在给自己藏雷。</p>
+<p><img src="https://raw.githubusercontent.com/lev-gc/lev-gc.github.io/source/source/_posts/devops/jenkins/set-branch-name-in-jenkins/jenkins_branch.png" alt="Jenkins branch"></p>
+<h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>曾经遇到过的一个真实情况，GitLab上同时存在这样的两个branch：常驻branch <code>develop</code>和临时branch <code>xxx/develop</code>，Jenkins设置了<code>Branches to build</code>为<code>*/develop</code>，通过pollSCM的方式两分钟扫描一次，发现分支有变化就执行构建，因为每次都扫描到了这两个branch，所以每次识别为代码有变更，然后就会执行构建，最后一个晚上下来构建次数达到了几百次。当然，即使不构建几百次，在某些情况下单纯是触发了构建导致发布了非期望版本的代码这个事情其实就够糟糕的了。</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><ul>
+<li>第一种方案，建议直接写branch name，不要在前面加<code>*/</code>。这个问题坑过很多人，Jenkins的官方JIRA上能找到一堆跟这个问题相关的Issue。</li>
+<li>第二种方案，不使用pollSCM的触发方式。如今Jenkins拥有众多的插件，如果需要即时构建最新代码，除了pollSCM的触发方式外，其实更推荐使用对应Git托管服务（GitHub、GitLab等）的插件，通过<code>WebHook</code>的方式，由代码托管服务器来调起Jenkins的构建，这样便能完全避开因为Jenkins扫描代码分支导致的问题。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/devops/jenkins/set-branch-name-in-jenkins/set-branch-name-in-jenkins/" data-id="cklqcjd47000x3wn74cji2wip" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/CI/" rel="tag">CI</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/DevOps/" rel="tag">DevOps</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Jenkins/" rel="tag">Jenkins</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-middleware/zookeeper/zookeeper-installation-guide/zookeeper-installation-guide" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="../../middleware/zookeeper/zookeeper-installation-guide/zookeeper-installation-guide/" class="article-date">
+  <time datetime="2018-11-07T09:44:30.000Z" itemprop="datePublished">2018-11-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="../../middleware/zookeeper/zookeeper-installation-guide/zookeeper-installation-guide/">zookeeper安装指引</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/apache/zookeeper">apache-zookeeper</a>提供了跨平台的应用包，本文档以Linux安装使用为例进行说明；</li>
+<li>版本：<a target="_blank" rel="noopener" href="https://github.com/apache/zookeeper/archive/release-3.5.8.tar.gz">zookeeper-3.5.8</a></li>
+<li>安装目录：<code>/opt/zookeeper</code></li>
+</ul>
+<h2 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h2><h3 id="检查运行环境"><a href="#检查运行环境" class="headerlink" title="检查运行环境"></a>检查运行环境</h3><ul>
+<li>zookeeper需要JAVA环境，需要先检查是否已经配置；</li>
+</ul>
+<h3 id="下载解压"><a href="#下载解压" class="headerlink" title="下载解压"></a>下载解压</h3><ul>
+<li>下载安装包：<code>wget https://github.com/apache/zookeeper/archive/release-3.5.8.tar.gz</code>；</li>
+<li>解压：<code>tar -zxvf apache-zookeeper-3.5.8-bin.tar.gz</code>；</li>
+<li>移动文件夹到<code>/opt</code>目录下：<code>sudo mv zookeeper-3.4.8 /opt/zookeeper</code>；</li>
+</ul>
+<h3 id="修改配置"><a href="#修改配置" class="headerlink" title="修改配置"></a>修改配置</h3><ul>
+<li><p><code>/opt/zookeeper</code>目录下的<code>conf</code>目录为配置文件目录，把其中的<code>zoo_sample.cfg</code>复制一份作为zookeeper的启动配置：<code>cp /opt/zookeeper/conf/zoo_sample.cfg /opt/zookeeper/conf/zoo.cfg</code>；</p>
+</li>
+<li><p>可修改配置项：</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 修改数据保存文件</span><br><span class="line">dataDir&#x3D;&#x2F;opt&#x2F;zookeeper&#x2F;data&#x2F;</span><br><span class="line"></span><br><span class="line"># 默认端口为2181，如有必要可更改以下配置项</span><br><span class="line">clientPort&#x3D;2181</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="启停命令"><a href="#启停命令" class="headerlink" title="启停命令"></a>启停命令</h3><ul>
+<li>zookeeper启动命令：<code>/opt/zookeeper/bin/zkServer.sh start /opt/zookeeper/conf/zoo.cfg</code>；</li>
+<li>zookeeper状态检查：<code>/opt/zookeeper/bin/zkServer.sh status</code>；</li>
+<li>zookeeper关闭命令：<code>/opt/zookeeper/bin/zkServer.sh stop</code>；</li>
+<li>zookeeper重启命令：<code>/opt/zookeeper/bin/zkServer.sh restart</code>；</li>
+</ul>
+<h3 id="配置开机启动"><a href="#配置开机启动" class="headerlink" title="配置开机启动"></a>配置开机启动</h3><p>修改文件：<code>vim /etc/rc.local</code>，追加以下行（请修改<code>&lt;USER&gt;</code>为启动时期望使用的Linux用户）：</p>
+<p><code>su - &lt;USER&gt; -c /opt/zookeeper/bin/zkServer.sh start /opt/zookeeper/conf/zoo.cfg &amp;</code></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/middleware/zookeeper/zookeeper-installation-guide/zookeeper-installation-guide/" data-id="cklqcjd4k001g3wn7h7gdbdfk" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/middleware/" rel="tag">middleware</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-docker/create-docker-repository-in-nexus/create-docker-repository-in-nexus" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="../../docker/create-docker-repository-in-nexus/create-docker-repository-in-nexus/" class="article-date">
+  <time datetime="2018-08-15T14:25:00.000Z" itemprop="datePublished">2018-08-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="../../docker/create-docker-repository-in-nexus/create-docker-repository-in-nexus/">Nexus上配置Docker仓库</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>本文主要介绍如何在Nexus上配置Docker的仓库，以及如何配置本地Docker使用搭建好的Docker仓库。</p>
+</blockquote>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><ul>
+<li>服务器的Nexus版本为3.x以上，可下载安装，也可以直接使用Docker镜像的版本；</li>
+<li>使用方的系统及Docker版本没有限制，但因为不同版本的系统能兼容的Docker版本区别较大，此处仅以Centos7搭配Docker17为例说明；</li>
+</ul>
+<h2 id="关于Docker仓库"><a href="#关于Docker仓库" class="headerlink" title="关于Docker仓库"></a>关于Docker仓库</h2><p>Nexus中的Docker仓库分为三种类型：</p>
+<table>
+<thead>
+<tr>
+<th align="center">Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">proxy</td>
+<td>代理仓库，提供代理其他仓库，一旦下载过的镜像会被存储在该仓库，下次无需再从外部网络重新下载</td>
+</tr>
+<tr>
+<td align="center">hosted</td>
+<td>私有仓库，提供本地私服功能，上传的镜像可与使用该Nexus的用户共享</td>
+</tr>
+<tr>
+<td align="center">group</td>
+<td>组合仓库，实际为多个仓库的组合，但只能使用原来仓库存在的镜像，不能直接通过对组合仓库操作来添加镜像</td>
+</tr>
+</tbody></table>
+<h2 id="配置步骤"><a href="#配置步骤" class="headerlink" title="配置步骤"></a>配置步骤</h2><ul>
+<li><p>首先，打开Nexus的系统页面，按图中步骤开始创建仓库：</p>
+<p><img src="https://raw.githubusercontent.com/lev-gc/lev-gc.github.io/source/source/_posts/docker/create-docker-repository-in-nexus/create_repositories.png" alt="点击创建仓库"></p>
+</li>
+<li><p>选择不同Docker仓库类型后进入各自的创建页面：</p>
+<p><img src="https://raw.githubusercontent.com/lev-gc/lev-gc.github.io/source/source/_posts/docker/create-docker-repository-in-nexus/select_recipe.png" alt="选择仓库类型"></p>
+<ul>
+<li><p>proxy</p>
+<p><img src="https://raw.githubusercontent.com/lev-gc/lev-gc.github.io/source/source/_posts/docker/create-docker-repository-in-nexus/proxy_repository_configure.png" alt="proxy仓库配置"></p>
+<p>关键步骤：</p>
+<ul>
+<li>输入唯一的仓库名称；</li>
+<li>选择协议及对应端口，该端口会在后面配置Docker镜像时会用到，注意所选端口不要被占用；</li>
+<li>填写本仓库所代理的远程仓库，可使用国内的镜像进行加速；</li>
+</ul>
+</li>
+<li><p>hosted</p>
+<p><img src="https://raw.githubusercontent.com/lev-gc/lev-gc.github.io/source/source/_posts/docker/create-docker-repository-in-nexus/hosted_repository_configure.png" alt="hosted仓库配置"></p>
+<p>关键步骤：</p>
+<ul>
+<li>输入唯一的仓库名称；</li>
+<li>选择协议及对应端口，会在配置Docker登录、上传下载私服仓库镜像时会用到，注意所选端口不要被占用；</li>
+</ul>
+</li>
+<li><p>group</p>
+<p><img src="https://raw.githubusercontent.com/lev-gc/lev-gc.github.io/source/source/_posts/docker/create-docker-repository-in-nexus/group_repository_configure.png" alt="group仓库配置"></p>
+<p>关键步骤：</p>
+<ul>
+<li>输入唯一的仓库名称；</li>
+<li>选择协议及对应端口，该端口会在后面配置Docker镜像时会用到，注意所选端口不要被占用；</li>
+<li>选择该组合仓库需要包括的仓库，镜像会从所选的仓库里获取；</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="配置使用Nexus的Docker仓库"><a href="#配置使用Nexus的Docker仓库" class="headerlink" title="配置使用Nexus的Docker仓库"></a>配置使用Nexus的Docker仓库</h2><ul>
+<li><p>新建或修改配置文件<code>/etc/docker/daemon.json</code>，添加</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;registry-mirrors&quot;</span>: [<span class="string">&quot;http://xxx.xxx.xxx.xxx:8099&quot;</span>],</span><br><span class="line">  <span class="attr">&quot;insecure-registries&quot;</span>:[<span class="string">&quot;http://xxx.xxx.xxx.xxx:8098&quot;</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中：</p>
+<ul>
+<li><code>http://xxx.xxx.xxx.xxx:8099</code>为Nexus上的proxy仓库或group仓库，配置生效后会默认通过该仓库获取镜像；</li>
+<li><code>http://xxx.xxx.xxx.xxx:8098</code>为私服仓库，即镜像push的目标仓库，使用前需要先通过<code>docker login</code>登陆；</li>
+<li>注意<code>registry-mirrors</code>的地址必须要加上协议类型[http/https]；</li>
+</ul>
+</li>
+<li><p>使配置生效</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>登录Nexus私服帐号</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker login xxx.xxx.xxx.xxx:8098</span><br><span class="line"><span class="comment"># 使用Nexus帐号登录，Nexus默认帐号密码: admin/admin123</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="使用Nexus仓库"><a href="#使用Nexus仓库" class="headerlink" title="使用Nexus仓库"></a>使用Nexus仓库</h2><ul>
+<li><p>使用Nexus的proxy仓库</p>
+<p>当配置好环境后默认即使用Nexus的proxy仓库，每次本地pull新的镜像时，proxy仓库就会下载并缓存该镜像，下次再pull的时候就会直接从proxy仓库取而不必再通过外部网络获取。</p>
+</li>
+<li><p>使用Nexus的hosted仓库</p>
+<p>对于自构建的镜像，需要通过Nexus的hosted仓库上传下载，以下为具体步骤：</p>
+<ul>
+<li>使用<code>docker tag</code>命令对构建完的镜像进行命名，命名规则为在镜像名前添加hosted仓库地址（即<code>xxx.xxx.xxx.xxx:8098</code>），如<code>java:1.8</code>应该命名为<code>xxx.xxx.xxx.xxx:8098/java:1.8</code>，因为如果不重命名则会默认提交到Docker Hub上；</li>
+<li>确认已登录后把重命名的镜像上传，如 <code>docker push xxx.xxx.xxx.xxx:8098/java:1.8</code>；</li>
+<li>push成功后可在Nexus上查看到上传的镜像；</li>
+<li>需要使用时通过<code>docker pull xxx.xxx.xxx.xxx:8098/java:1.8</code>命令可从hosted仓库下载该镜像；</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/docker/create-docker-repository-in-nexus/create-docker-repository-in-nexus/" data-id="cklqcjd3n00033wn7ez7y8ysd" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Docker/" rel="tag">Docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-ruby/install-ruby-by-rvm/install-ruby-by-rvm" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="../../ruby/install-ruby-by-rvm/install-ruby-by-rvm/" class="article-date">
+  <time datetime="2018-08-07T15:36:00.000Z" itemprop="datePublished">2018-08-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="../../ruby/install-ruby-by-rvm/install-ruby-by-rvm/">使用RVM安装管理Ruby</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>RVM(Ruby Version Manager)是一个负责安装、管理不同版本的Ruby环境的命令行工具。</p>
+</blockquote>
+<h2 id="安装RVM"><a href="#安装RVM" class="headerlink" title="安装RVM"></a>安装RVM</h2><ul>
+<li><p>确认是否已安装<code>curl</code>，没有则执行命令<code>yum install curl</code>进行安装；</p>
+</li>
+<li><p>打开<a target="_blank" rel="noopener" href="https://www.rvm.io/">RVM官网</a>，使用上面提供的命令安装RVM：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> \curl -sSL https://get.rvm.io | bash -s stable</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使配置文件生效：</p>
+<ul>
+<li>查找配置文件位置： <code>find / -name rvm.sh</code></li>
+<li>配置文件生效： <code>source /etc/profile.d/rvm.sh</code></li>
+</ul>
+</li>
+<li><p>下载RVM依赖： <code>rvm requirements</code></p>
+</li>
+</ul>
+<h2 id="安装Ruby"><a href="#安装Ruby" class="headerlink" title="安装Ruby"></a>安装Ruby</h2><ul>
+<li>查看RVM库所有Ruby版本： <code>rvm list known</code></li>
+<li>指定安装其中某个版本的Ruby ：<code>rvm install ruby-2.5.1</code></li>
+</ul>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><ul>
+<li>查看所有已安装的Ruby版本信息：<code>rvm list</code></li>
+<li>设置Ruby的当前需要版本： <code>rvm use 2.5.1</code></li>
+<li>设置为默认版本：<code>rvm use 2.5.1 default</code></li>
+<li>删除其中某个版本：<code>rvm remove 2.5.1</code></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/ruby/install-ruby-by-rvm/install-ruby-by-rvm/" data-id="cklqcjd40000l3wn73owjeimg" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Ruby/" rel="tag">Ruby</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-linux/about-secure-shell/about-secure-shell" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="../../linux/about-secure-shell/about-secure-shell/" class="article-date">
+  <time datetime="2018-06-10T14:38:00.000Z" itemprop="datePublished">2018-06-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="../../linux/about-secure-shell/about-secure-shell/">理解SSH服务的原理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>SSH全称Secure Shell，是一种加密的网络传输协议，其目的是在不安全的网络中为网络服务提供安全的传输环境。</p>
+</blockquote>
+<h2 id="相关文件"><a href="#相关文件" class="headerlink" title="相关文件"></a>相关文件</h2><p>SSH服务会在系统的用户目录下生成一个<code>.ssh</code>的文件夹，文件夹下一般会有以下几个文件：</p>
+<ul>
+<li><code>config</code> : 配置文件，可以为远程主机配置host、登录端口、默认登录用户等，方便用户使用；</li>
+<li><code>known_hosts</code> : 记录本机访问过的服务端所提供的host key，下次访问相同主机时会核对host key，如不匹配会发出警告；</li>
+<li><code>id_rsa</code> : 保存本机的私钥；</li>
+<li><code>id_rsa.pub</code> : 保存本机的公钥；</li>
+<li><code>authorized_keys</code> : 本机作为服务端所保存的已授权客户端的公钥；</li>
+</ul>
+<h2 id="关于非对称加密"><a href="#关于非对称加密" class="headerlink" title="关于非对称加密"></a>关于非对称加密</h2><p>SSH有密码登录和证书登录两种认证方式，都是以非对称加密实现身份验证。不同于对称加密的加密解密使用同一套密钥的方式，非对称加密拥有公钥和私钥两套密钥，其中 <strong>公钥负责加密，私钥负责解密</strong> ，公钥加密后的密文只能通过对应的私钥进行解密，而通过公钥几乎不可能推算出私钥。另外提一下，数字签名一类是使用私钥编码、公钥解码的，但是这种方式只能称为编解码而不能称作加密解密，因为公钥是公开的，拥有公钥者都可以通过密文解码出明文，加密的意义就不存在。</p>
+<h3 id="密码登录的验证过程"><a href="#密码登录的验证过程" class="headerlink" title="密码登录的验证过程"></a>密码登录的验证过程</h3><ol>
+<li>客户端向远程服务端发出登录请求，服务端把自己的公钥发给客户端；</li>
+<li>客户端本机使用服务端提供的公钥对密码进行加密，并把密文发送至服务端；</li>
+<li>服务端接收密文并使用私钥把密文解密出密码；</li>
+<li>服务端通过密码验证用户身份并返回登录结果；</li>
+</ol>
+<h3 id="证书登录的验证过程"><a href="#证书登录的验证过程" class="headerlink" title="证书登录的验证过程"></a>证书登录的验证过程</h3><ol>
+<li>客户端事先生成本机的公钥和私钥，并把公钥追加到服务端主机的<code>authorized_keys</code>文件中；</li>
+<li>客户端发出登录请求，服务端在<code>authorized_keys</code>中匹配该客户端对应的公钥；</li>
+<li>服务端生成随机数，并使用客户端的公钥进行加密，然后把密文发送给客户端；</li>
+<li>客户端通过本机私钥解密密文获得随机数；</li>
+<li>客户端利用随机数和会话密钥session key通过MD5生成摘要Digest，并发送给服务端；</li>
+<li>服务端使用同样的算法生成另一份Digest；</li>
+<li>服务端对比生成的Digest和客户端发送过来的Digest，返回登录结果；</li>
+</ol>
+<p>以上两种方式的验证过程是主要的流程而非全部的过程，其他还包括会话密钥session key的生成以及使用会话密钥对会话过程进行加密等等此处略过不提。另外，为了保证访问的远程主机是真正的目标主机，防止IP劫持等中间人攻击（Man-in-the-middle attack）的出现（具体手段为拦截登录请求，向客户端提供伪造的服务端公钥，并在获取密文密码后通过假公钥对应的私钥解密为明文，然后使用明文密码对真正的服务端主机进行攻击。），客户端在初次访问远程主机时会获取远程主机的公钥指纹host key（会提示无法确认主机真实性，询问是否连接）并把其添加到本机<code>.ssh</code>目录下的<code>known_hosts</code>文件中，以后访问远程主机时会先通过对比host key确保是同一主机；</p>
+<h2 id="证书登录的配置过程"><a href="#证书登录的配置过程" class="headerlink" title="证书登录的配置过程"></a>证书登录的配置过程</h2><p>上面提及到证书登录的前提是把公钥放到目标主机中，下面是详细的过程：</p>
+<ul>
+<li>客户端执行<code>ssh-keygen</code>命令生成私钥和公钥，会在用户目录下的<code>.ssh</code>文件夹下生成<code>id_rsa</code>和<code>id_rsa.pub</code>两个文件，其中<code>id_rsa</code>为私钥文件，<code>id_rsa.pub</code>为公钥文件；</li>
+<li>把公钥文件的内容追加到服务端主机的<code>~/.ssh</code>目录下的<code>authorized_keys</code>中，注意是追加，没有该文件要新建，已存在则不要覆盖原有内容，完成后如果发现不能免密登录应尝试重启服务端的SSH服务（本步骤也可以直接通过在客户端执行<code>ssh-copy-id</code>命令完成）；</li>
+<li>当然，对于安全性的更多考虑，可以增加禁止root用户登录、禁用密码登录等设置。</li>
+<li>此外，当第一次访问某台服务器的时候会因为检查到HostKey不存在而提示添加，这是因为配置项<code>StrictHostKeyChecking</code>的默认值为<code>ask</code>，即会进行对话提示确认，但某些情况下（比如执行脚本）我们并不希望该交互的出现，因此可以添加参数<code>-o StrictHostKeyChecking=no</code>或者在<code>~/.ssh/config</code>配置文件中添加配置<code>StrictHostKeyChecking no</code>来跳过该对话，不过该方法相当于降低了安全性，需要自行斟酌使用。</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/linux/about-secure-shell/about-secure-shell/" data-id="cklqcjd3x000f3wn7cc8dbp89" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Linux/" rel="tag">Linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="../../">« Prev</a><a class="page-number" href="../../">1</a><span class="page-number current">2</span><a class="page-number" href="../3/">3</a><a class="page-number" href="../4/">4</a><span class="space">&hellip;</span><a class="page-number" href="../6/">6</a><a class="extend next" rel="next" href="../3/">Next »</a>
+  </nav>
+
+</section>
+            
+            <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="../../tags/CI/" style="font-size: 10px;">CI</a> <a href="../../tags/DataBase/" style="font-size: 10px;">DataBase</a> <a href="../../tags/Design-Pattern/" style="font-size: 10px;">Design Pattern</a> <a href="../../tags/DevOps/" style="font-size: 15px;">DevOps</a> <a href="../../tags/Docker/" style="font-size: 15px;">Docker</a> <a href="../../tags/ElasticSearch/" style="font-size: 10px;">ElasticSearch</a> <a href="../../tags/Git/" style="font-size: 15px;">Git</a> <a href="../../tags/JDK/" style="font-size: 12.5px;">JDK</a> <a href="../../tags/Java/" style="font-size: 20px;">Java</a> <a href="../../tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="../../tags/Lint/" style="font-size: 12.5px;">Lint</a> <a href="../../tags/Linux/" style="font-size: 17.5px;">Linux</a> <a href="../../tags/Maven/" style="font-size: 10px;">Maven</a> <a href="../../tags/Network/" style="font-size: 10px;">Network</a> <a href="../../tags/Performance/" style="font-size: 10px;">Performance</a> <a href="../../tags/Ruby/" style="font-size: 10px;">Ruby</a> <a href="../../tags/Server/" style="font-size: 10px;">Server</a> <a href="../../tags/middleware/" style="font-size: 12.5px;">middleware</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2015/05/">May 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="../../middleware/nacos/nacos-installation-guide/nacos-installation-guide/">Nacos安装指引</a>
+          </li>
+        
+          <li>
+            <a href="../../java/about-javadoc/about-javadoc/">Java注释说明</a>
+          </li>
+        
+          <li>
+            <a href="../../devops/git/about-git-lfs/about-git-lfs/">Git LFS简介</a>
+          </li>
+        
+          <li>
+            <a href="../../devops/git/git-commit-standardization/git-commit-standardization/">Git Commit规范化</a>
+          </li>
+        
+          <li>
+            <a href="../../linux/root_directory_of_linux/root_directory_of_linux/">Linux目录说明</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+            
+        </div>
+        <footer id="footer">
+	
+	<div class="outer">
+		<div id="footer-info" class="inner">
+			&copy; 2021 Elvis Chan<br>
+		</div>
+	</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="../../fancybox/jquery.fancybox.css">
+
+  
+<script src="../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="../../js/script.js"></script>
+
+
+
+
+</div>
+
+<!-- Load canvas-nest -->
+
+
+<script src="../../js/canvas-nest.js"></script>
+
+
+</body>
+</html>

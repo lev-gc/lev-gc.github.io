@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    
+
+    
+    <title>
+        
+        Linux上配置Java环境 |
+        
+        Jasmine
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="说明 通过yum、apt等包管理工具安装的一般是openjdk，如果需要oracle jdk的话需要到oracle官网下载包进行安装； 安装Java环境一般分为两种，安装JDK和安装JRE：  如果不需要进行开发、编译等操作，只用Java环境来运行一些Jar、War包的软件的话可以只安装JRE环境； JDK额外提供了一些开发工具包，如果需要进行编译操作，如使用javac、Maven等执行编译，则应">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux上配置Java环境">
+<meta property="og:url" content="https://lev-gc.github.io/java/install-of-java-environment-on-linux/install-of-java-environment-on-linux/">
+<meta property="og:site_name" content="Jasmine">
+<meta property="og:description" content="说明 通过yum、apt等包管理工具安装的一般是openjdk，如果需要oracle jdk的话需要到oracle官网下载包进行安装； 安装Java环境一般分为两种，安装JDK和安装JRE：  如果不需要进行开发、编译等操作，只用Java环境来运行一些Jar、War包的软件的话可以只安装JRE环境； JDK额外提供了一些开发工具包，如果需要进行编译操作，如使用javac、Maven等执行编译，则应">
+<meta property="og:locale">
+<meta property="og:image" content="https://raw.githubusercontent.com/lev-gc/lev-gc.github.io/source/source/_posts/java/install-of-java-environment-on-linux/java_env.png">
+<meta property="article:published_time" content="2016-08-11T07:20:00.000Z">
+<meta property="article:modified_time" content="2016-08-11T07:20:00.000Z">
+<meta property="article:author" content="Elvis Chan">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/lev-gc/lev-gc.github.io/source/source/_posts/java/install-of-java-environment-on-linux/java_env.png">
+    
+    
+    <link rel="icon" href="/css/images/favicon.png">
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+    
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+
+    
+<link rel="stylesheet" href="../../../css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+<div id="container">
+    <div id="wrap">
+        <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer" class="outer">
+        <div id="header-title" class="inner">
+            <h1 id="logo-wrap">
+                <a href="../../../index.html" id="logo">Jasmine</a>
+            </h1>
+            
+            <h2 id="subtitle-wrap">
+                <span id="subtitle">Fear always springs from ignorance.</span>
+            </h2>
+            
+        </div>
+
+        <div id="header-inner" class="inner">
+
+            <nav id="main-nav">
+                <a id="main-nav-toggle" class="fab fa-bars nav-icon"></a>
+                
+                <a class="main-nav-link" href="../../../index.html">Home</a>
+                
+                <a class="main-nav-link" href="../../../archives">Archives</a>
+                
+            </nav>
+
+            <nav id="sub-nav">
+                
+                <a class="fab fa-github nav-icon" href="../../../https:/github.com/lev-gc"
+                   title="GitHub"></a>
+                
+                <!-- search -->
+                <a id="nav-search-btn" class="far fa-search nav-icon" title="Search"></a>
+            </nav>
+
+            <div id="search-form-wrap">
+                <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://lev-gc.github.io"></form>
+            </div>
+
+        </div>
+
+    </div>
+</header>
+
+        <div class="outer">
+            <section id="main"><article id="post-java/install-of-java-environment-on-linux/install-of-java-environment-on-linux" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="" class="article-date">
+  <time datetime="2016-08-11T07:20:00.000Z" itemprop="datePublished">2016-08-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Linux上配置Java环境
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><ul>
+<li>通过yum、apt等包管理工具安装的一般是openjdk，如果需要oracle jdk的话需要到oracle官网下载包进行安装；</li>
+<li>安装Java环境一般分为两种，安装JDK和安装JRE： <ul>
+<li>如果不需要进行开发、编译等操作，只用Java环境来运行一些Jar、War包的软件的话可以只安装JRE环境；</li>
+<li>JDK额外提供了一些开发工具包，如果需要进行编译操作，如使用javac、Maven等执行编译，则应该安装JDK环境；</li>
+</ul>
+</li>
+</ul>
+<h2 id="配置过程"><a href="#配置过程" class="headerlink" title="配置过程"></a>配置过程</h2><p>此处以安装oracle jdk为例：</p>
+<ul>
+<li><p>下载</p>
+<ul>
+<li>官方下载链接需要认证，不能直接用wget下载，可以先通过浏览器下载再上传到对应位置；</li>
+</ul>
+</li>
+<li><p>解压</p>
+<ul>
+<li>解压命令：<code>tar -zxvf jdk-8u201-linux-x64.tar.gz</code>；</li>
+<li>移动到对应目录，一般可以放在<code>/usr/local/</code>目录下；</li>
+</ul>
+</li>
+<li><p>环境配置</p>
+<ul>
+<li><p>编辑配置文件： <code>vim /etc/profile</code>；</p>
+</li>
+<li><p>添加以下配置（根据实际情况修改路径）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> JAVA_HOME=/usr/<span class="built_in">local</span>/jdk1.8.0_201</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$JAVA_HOME</span>/bin:<span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+
+<p>说明：Java1.5版本以后就不需要配置<code>CLASSPATH</code>了。</p>
+</li>
+</ul>
+</li>
+<li><p>使环境变量配置生效并检验是否配置成功</p>
+<ul>
+<li><p>使用<code>source</code>命令使之生效：<code>source /etc/profile</code>；</p>
+</li>
+<li><p>查看配置结果：<code>echo $JAVA_HOME</code>；</p>
+<p><img src="https://raw.githubusercontent.com/lev-gc/lev-gc.github.io/source/source/_posts/java/install-of-java-environment-on-linux/java_env.png" alt="效果图"></p>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/java/install-of-java-environment-on-linux/install-of-java-environment-on-linux/" data-id="cklqcjd3r00093wn74wo40a5h" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../tags/Java/" rel="tag">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../tags/Linux/" rel="tag">Linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../maven/labels-of-maven-pom/labels-of-maven-pom/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Maven POM文件常用标签解释
+        
+      </div>
+    </a>
+  
+  
+    <a href="../../../design-pattern/design-pattern-singleton/design-pattern-singleton/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">设计模式 - 单例模式</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+            
+            <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="../../../tags/CI/" style="font-size: 10px;">CI</a> <a href="../../../tags/DataBase/" style="font-size: 10px;">DataBase</a> <a href="../../../tags/Design-Pattern/" style="font-size: 10px;">Design Pattern</a> <a href="../../../tags/DevOps/" style="font-size: 15px;">DevOps</a> <a href="../../../tags/Docker/" style="font-size: 15px;">Docker</a> <a href="../../../tags/ElasticSearch/" style="font-size: 10px;">ElasticSearch</a> <a href="../../../tags/Git/" style="font-size: 15px;">Git</a> <a href="../../../tags/JDK/" style="font-size: 12.5px;">JDK</a> <a href="../../../tags/Java/" style="font-size: 20px;">Java</a> <a href="../../../tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="../../../tags/Lint/" style="font-size: 12.5px;">Lint</a> <a href="../../../tags/Linux/" style="font-size: 17.5px;">Linux</a> <a href="../../../tags/Maven/" style="font-size: 10px;">Maven</a> <a href="../../../tags/Network/" style="font-size: 10px;">Network</a> <a href="../../../tags/Performance/" style="font-size: 10px;">Performance</a> <a href="../../../tags/Ruby/" style="font-size: 10px;">Ruby</a> <a href="../../../tags/Server/" style="font-size: 10px;">Server</a> <a href="../../../tags/middleware/" style="font-size: 12.5px;">middleware</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2015/05/">May 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="../../../middleware/nacos/nacos-installation-guide/nacos-installation-guide/">Nacos安装指引</a>
+          </li>
+        
+          <li>
+            <a href="../../about-javadoc/about-javadoc/">Java注释说明</a>
+          </li>
+        
+          <li>
+            <a href="../../../devops/git/about-git-lfs/about-git-lfs/">Git LFS简介</a>
+          </li>
+        
+          <li>
+            <a href="../../../devops/git/git-commit-standardization/git-commit-standardization/">Git Commit规范化</a>
+          </li>
+        
+          <li>
+            <a href="../../../linux/root_directory_of_linux/root_directory_of_linux/">Linux目录说明</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+            
+        </div>
+        <footer id="footer">
+	
+	<div class="outer">
+		<div id="footer-info" class="inner">
+			&copy; 2021 Elvis Chan<br>
+		</div>
+	</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="../../../fancybox/jquery.fancybox.css">
+
+  
+<script src="../../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="../../../js/script.js"></script>
+
+
+
+
+</div>
+
+<!-- Load canvas-nest -->
+
+
+<script src="../../../js/canvas-nest.js"></script>
+
+
+</body>
+</html>

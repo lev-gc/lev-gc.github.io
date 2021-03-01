@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    
+
+    
+    <title>
+        
+        EditorConfig |
+        
+        Jasmine
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="EditorConfig 是一套用于统一代码风格的方案，可以帮助开发者在不同的编辑器和IDE之间定义和维护一致的代码风格，同时有利于团队的合作，避免不必要的格式重构。 原理当打开一个文件时，EditorConfig插件会从该文件所在目录开始往上每一级目录中查找.editorconfig文件，直到找到.editorconfig文件中有root&#x3D;true这个配置为止，并把该配置文件作为根配置。Edit">
+<meta property="og:type" content="article">
+<meta property="og:title" content="EditorConfig">
+<meta property="og:url" content="https://lev-gc.github.io/tools/about-editconfig/about-editconfig/">
+<meta property="og:site_name" content="Jasmine">
+<meta property="og:description" content="EditorConfig 是一套用于统一代码风格的方案，可以帮助开发者在不同的编辑器和IDE之间定义和维护一致的代码风格，同时有利于团队的合作，避免不必要的格式重构。 原理当打开一个文件时，EditorConfig插件会从该文件所在目录开始往上每一级目录中查找.editorconfig文件，直到找到.editorconfig文件中有root&#x3D;true这个配置为止，并把该配置文件作为根配置。Edit">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-12-14T11:47:00.000Z">
+<meta property="article:modified_time" content="2017-12-14T11:47:00.000Z">
+<meta property="article:author" content="Elvis Chan">
+<meta property="article:tag" content="Lint">
+<meta name="twitter:card" content="summary">
+    
+    
+    <link rel="icon" href="/css/images/favicon.png">
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+    
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+
+    
+<link rel="stylesheet" href="../../../css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+<div id="container">
+    <div id="wrap">
+        <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer" class="outer">
+        <div id="header-title" class="inner">
+            <h1 id="logo-wrap">
+                <a href="../../../index.html" id="logo">Jasmine</a>
+            </h1>
+            
+            <h2 id="subtitle-wrap">
+                <span id="subtitle">Fear always springs from ignorance.</span>
+            </h2>
+            
+        </div>
+
+        <div id="header-inner" class="inner">
+
+            <nav id="main-nav">
+                <a id="main-nav-toggle" class="fab fa-bars nav-icon"></a>
+                
+                <a class="main-nav-link" href="../../../index.html">Home</a>
+                
+                <a class="main-nav-link" href="../../../archives">Archives</a>
+                
+            </nav>
+
+            <nav id="sub-nav">
+                
+                <a class="fab fa-github nav-icon" href="../../../https:/github.com/lev-gc"
+                   title="GitHub"></a>
+                
+                <!-- search -->
+                <a id="nav-search-btn" class="far fa-search nav-icon" title="Search"></a>
+            </nav>
+
+            <div id="search-form-wrap">
+                <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://lev-gc.github.io"></form>
+            </div>
+
+        </div>
+
+    </div>
+</header>
+
+        <div class="outer">
+            <section id="main"><article id="post-tools/about-editconfig/about-editconfig" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="" class="article-date">
+  <time datetime="2017-12-14T11:47:00.000Z" itemprop="datePublished">2017-12-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      EditorConfig
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a target="_blank" rel="noopener" href="http://editorconfig.org/">EditorConfig</a> 是一套用于统一代码风格的方案，可以帮助开发者在不同的编辑器和IDE之间定义和维护一致的代码风格，同时有利于团队的合作，避免不必要的格式重构。</p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>当打开一个文件时，<code>EditorConfig</code>插件会从该文件所在目录开始往上每一级目录中查找<code>.editorconfig</code>文件，直到找到<code>.editorconfig</code>文件中有<code>root=true</code>这个配置为止，并把该配置文件作为根配置。<code>EditorConfig</code>插件会从根配置文件开始开始往下层读取，下层文件配置会覆盖上层文件配置，所以最接近所打开文件的配置优先级最高。另外，配置文件里的属性名和属性值大小写不敏感，编译时都会被转为小写，而没有被明确指定的某个属性则会使用编辑器默认的配置。</p>
+<h2 id="通配符说明"><a href="#通配符说明" class="headerlink" title="通配符说明"></a>通配符说明</h2><table>
+<thead>
+<tr>
+<th align="center">通配符</th>
+<th align="left">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">*</td>
+<td align="left">匹配除/之外的任意字符串(即不跨目录，特殊字符可以用<code>\</code> 转义)</td>
+</tr>
+<tr>
+<td align="center">**</td>
+<td align="left">匹配任意单个字符(即遍历子目录下的文件)</td>
+</tr>
+<tr>
+<td align="center">?</td>
+<td align="left">匹配任意单个字符</td>
+</tr>
+<tr>
+<td align="center">[name]</td>
+<td align="left">匹配name字符</td>
+</tr>
+<tr>
+<td align="center">[!name]</td>
+<td align="left">匹配非name字符</td>
+</tr>
+<tr>
+<td align="center">{s1,s3,s3}</td>
+<td align="left">匹配任意给定的字符串</td>
+</tr>
+</tbody></table>
+<h2 id="通用属性"><a href="#通用属性" class="headerlink" title="通用属性"></a>通用属性</h2><table>
+<thead>
+<tr>
+<th align="center">属性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">indent_style</td>
+<td>[tab/space]</td>
+</tr>
+<tr>
+<td align="center">indent_size</td>
+<td>对应indent_style=space时的列数</td>
+</tr>
+<tr>
+<td align="center">tab_width</td>
+<td>对应indent_style=tab时的列数，默认等于indent_size</td>
+</tr>
+<tr>
+<td align="center">end_of_line</td>
+<td>[lf/crlf/cr] lf(\n)为Unix和OS X的默认值/crlf(\r\n)为Windows的默认值/cr(\r)为Classic Mac OS的默认值</td>
+</tr>
+<tr>
+<td align="center">charset</td>
+<td>[utf-8/latin1/gbk/etc..]</td>
+</tr>
+<tr>
+<td align="center">trim_trailing_whitespace</td>
+<td>[true/false] 是否将行尾空格自动删除</td>
+</tr>
+<tr>
+<td align="center">insert_final_newline</td>
+<td>[true/false]是否使文件以一个空白行结尾</td>
+</tr>
+<tr>
+<td align="center">root</td>
+<td>[true]表明是最顶层的配置文件，发现设为true时，才会停止继续查找</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>设置为unset时可以把配置重置为编辑器默认配置，另外有一些适配不同编辑器的属性，详见<a target="_blank" rel="noopener" href="https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties">wiki</a> 。</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/tools/about-editconfig/about-editconfig/" data-id="cklqcjd42000n3wn7bht80xjb" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../tags/Lint/" rel="tag">Lint</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../../docker/frequently-used-docker-command-line/frequently-used-docker-command-line/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Docker常用命令
+        
+      </div>
+    </a>
+  
+  
+    <a href="../../disk-performance-test-by-fio/disk-performance-test-by-fio/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">磁盘性能测试工具FIO的简单使用</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+            
+            <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="../../../tags/CI/" style="font-size: 10px;">CI</a> <a href="../../../tags/DataBase/" style="font-size: 10px;">DataBase</a> <a href="../../../tags/Design-Pattern/" style="font-size: 10px;">Design Pattern</a> <a href="../../../tags/DevOps/" style="font-size: 15px;">DevOps</a> <a href="../../../tags/Docker/" style="font-size: 15px;">Docker</a> <a href="../../../tags/ElasticSearch/" style="font-size: 10px;">ElasticSearch</a> <a href="../../../tags/Git/" style="font-size: 15px;">Git</a> <a href="../../../tags/JDK/" style="font-size: 12.5px;">JDK</a> <a href="../../../tags/Java/" style="font-size: 20px;">Java</a> <a href="../../../tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="../../../tags/Lint/" style="font-size: 12.5px;">Lint</a> <a href="../../../tags/Linux/" style="font-size: 17.5px;">Linux</a> <a href="../../../tags/Maven/" style="font-size: 10px;">Maven</a> <a href="../../../tags/Network/" style="font-size: 10px;">Network</a> <a href="../../../tags/Performance/" style="font-size: 10px;">Performance</a> <a href="../../../tags/Ruby/" style="font-size: 10px;">Ruby</a> <a href="../../../tags/Server/" style="font-size: 10px;">Server</a> <a href="../../../tags/middleware/" style="font-size: 12.5px;">middleware</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2015/05/">May 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="../../../middleware/nacos/nacos-installation-guide/nacos-installation-guide/">Nacos安装指引</a>
+          </li>
+        
+          <li>
+            <a href="../../../java/about-javadoc/about-javadoc/">Java注释说明</a>
+          </li>
+        
+          <li>
+            <a href="../../../devops/git/about-git-lfs/about-git-lfs/">Git LFS简介</a>
+          </li>
+        
+          <li>
+            <a href="../../../devops/git/git-commit-standardization/git-commit-standardization/">Git Commit规范化</a>
+          </li>
+        
+          <li>
+            <a href="../../../linux/root_directory_of_linux/root_directory_of_linux/">Linux目录说明</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+            
+        </div>
+        <footer id="footer">
+	
+	<div class="outer">
+		<div id="footer-info" class="inner">
+			&copy; 2021 Elvis Chan<br>
+		</div>
+	</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="../../../fancybox/jquery.fancybox.css">
+
+  
+<script src="../../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="../../../js/script.js"></script>
+
+
+
+
+</div>
+
+<!-- Load canvas-nest -->
+
+
+<script src="../../../js/canvas-nest.js"></script>
+
+
+</body>
+</html>

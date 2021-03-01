@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    
+
+    
+    <title>
+        
+        磁盘性能测试工具FIO的简单使用 |
+        
+        Jasmine
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="简介FIO是一个用来进行磁盘IO压力测试的工具，可以产生足够多的任意类型的负载 (arbitrary load)，测试并得出对应的比较详细而易懂的报告。FIO支持13种不同的I&#x2F;O引擎，包括：sync,mmap, libaio, posixaio, SG v3, splice, null, network, syslet,guasi, solarisaio 等等。 FIO官网 2.1.10版本下载">
+<meta property="og:type" content="article">
+<meta property="og:title" content="磁盘性能测试工具FIO的简单使用">
+<meta property="og:url" content="https://lev-gc.github.io/tools/disk-performance-test-by-fio/disk-performance-test-by-fio/">
+<meta property="og:site_name" content="Jasmine">
+<meta property="og:description" content="简介FIO是一个用来进行磁盘IO压力测试的工具，可以产生足够多的任意类型的负载 (arbitrary load)，测试并得出对应的比较详细而易懂的报告。FIO支持13种不同的I&#x2F;O引擎，包括：sync,mmap, libaio, posixaio, SG v3, splice, null, network, syslet,guasi, solarisaio 等等。 FIO官网 2.1.10版本下载">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-10-24T10:09:00.000Z">
+<meta property="article:modified_time" content="2017-10-24T10:09:00.000Z">
+<meta property="article:author" content="Elvis Chan">
+<meta property="article:tag" content="Performance">
+<meta name="twitter:card" content="summary">
+    
+    
+    <link rel="icon" href="/css/images/favicon.png">
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+    
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+
+    
+<link rel="stylesheet" href="../../../css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+<div id="container">
+    <div id="wrap">
+        <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer" class="outer">
+        <div id="header-title" class="inner">
+            <h1 id="logo-wrap">
+                <a href="../../../index.html" id="logo">Jasmine</a>
+            </h1>
+            
+            <h2 id="subtitle-wrap">
+                <span id="subtitle">Fear always springs from ignorance.</span>
+            </h2>
+            
+        </div>
+
+        <div id="header-inner" class="inner">
+
+            <nav id="main-nav">
+                <a id="main-nav-toggle" class="fab fa-bars nav-icon"></a>
+                
+                <a class="main-nav-link" href="../../../index.html">Home</a>
+                
+                <a class="main-nav-link" href="../../../archives">Archives</a>
+                
+            </nav>
+
+            <nav id="sub-nav">
+                
+                <a class="fab fa-github nav-icon" href="../../../https:/github.com/lev-gc"
+                   title="GitHub"></a>
+                
+                <!-- search -->
+                <a id="nav-search-btn" class="far fa-search nav-icon" title="Search"></a>
+            </nav>
+
+            <div id="search-form-wrap">
+                <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://lev-gc.github.io"></form>
+            </div>
+
+        </div>
+
+    </div>
+</header>
+
+        <div class="outer">
+            <section id="main"><article id="post-tools/disk-performance-test-by-fio/disk-performance-test-by-fio" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="" class="article-date">
+  <time datetime="2017-10-24T10:09:00.000Z" itemprop="datePublished">2017-10-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      磁盘性能测试工具FIO的简单使用
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>FIO是一个用来进行磁盘IO压力测试的工具，可以产生足够多的任意类型的负载 (arbitrary load)，测试并得出对应的比较详细而易懂的报告。FIO支持13种不同的I/O引擎，包括：sync,mmap, libaio, posixaio, SG v3, splice, null, network, syslet,guasi, solarisaio 等等。</p>
+<p><a target="_blank" rel="noopener" href="http://freecode.com/projects/fio">FIO官网</a></p>
+<p><a target="_blank" rel="noopener" href="http://brick.kernel.dk/snaps/fio-2.1.10.tar.gz">2.1.10版本下载</a></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>官方默认提供的版本是源码安装，安装前需要确认是否有安装GCC。以下是安装步骤：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> wget直接下载</span></span><br><span class="line">wget http://brick.kernel.dk/snaps/fio-2.1.10.tar.gz</span><br><span class="line"><span class="meta">#</span><span class="bash"> 解压：</span></span><br><span class="line">tar -zxvf fio-2.1.10.tar.gz</span><br><span class="line"><span class="meta">#</span><span class="bash"> 编译安装：</span></span><br><span class="line">cd fio-2.1.10</span><br><span class="line">./configure</span><br><span class="line">make</span><br><span class="line">make install</span><br><span class="line"><span class="meta">#</span><span class="bash"> 检查是否安装成功：</span></span><br><span class="line">fio</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="简单例子"><a href="#简单例子" class="headerlink" title="简单例子"></a>简单例子</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 当前目录下，建立5G大小的<span class="built_in">test</span>文件进行顺序读，单个线程以4k一个块大小执行，最大执行时间为1000秒，最后结果汇总输出报告，报告名为reportName</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> fio -filename=./<span class="built_in">test</span> -direct=1 -iodepth 1 -thread -rw=<span class="built_in">read</span> -ioengine=psync -bs=4k -size=5G -numjobs=1 -runtime=1000 -group_reporting -name=reportName</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>解析</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>filename</td>
+<td>测试文件名称，在需要测试的挂载的盘的目录下</td>
+</tr>
+<tr>
+<td>direct=1</td>
+<td>direct=1表示测试过程绕过机器自带的buffer，使测试结果更真实</td>
+</tr>
+<tr>
+<td>rw</td>
+<td>read/write/randread/randwrite，读写模式[顺序读/顺序写/随机读/随机写]</td>
+</tr>
+<tr>
+<td>bs</td>
+<td>单次io的块大小</td>
+</tr>
+<tr>
+<td>bsrange</td>
+<td>设定数据块大小范围</td>
+</tr>
+<tr>
+<td>size</td>
+<td>测试文件总大小</td>
+</tr>
+<tr>
+<td>numjobs</td>
+<td>线程数</td>
+</tr>
+<tr>
+<td>runtime</td>
+<td>设置执行最大时间，不设置则运行至size设置的大小全部完成</td>
+</tr>
+<tr>
+<td>ioengine</td>
+<td>设定io引擎类型</td>
+</tr>
+<tr>
+<td>group_reporting</td>
+<td>显示结果汇总每个进程的信息</td>
+</tr>
+<tr>
+<td>name</td>
+<td>输出报告的名称</td>
+</tr>
+</tbody></table>
+<h3 id="报告例子"><a href="#报告例子" class="headerlink" title="报告例子"></a>报告例子</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">read : io&#x3D;40960MB, bw&#x3D;238459KB&#x2F;s, iops&#x3D;59614, runt&#x3D;175892msec</span><br><span class="line">    clat (usec): min&#x3D;35, max&#x3D;22978, avg&#x3D;131.27, stdev&#x3D;61.13</span><br><span class="line">     lat (usec): min&#x3D;35, max&#x3D;22979, avg&#x3D;131.49, stdev&#x3D;61.14</span><br><span class="line">    clat percentiles (usec):</span><br><span class="line">     |  1.00th&#x3D;[   74],  5.00th&#x3D;[   90], 10.00th&#x3D;[   98], 20.00th&#x3D;[  107],</span><br><span class="line">     | 30.00th&#x3D;[  114], 40.00th&#x3D;[  119], 50.00th&#x3D;[  125], 60.00th&#x3D;[  131],</span><br><span class="line">     | 70.00th&#x3D;[  139], 80.00th&#x3D;[  149], 90.00th&#x3D;[  169], 95.00th&#x3D;[  195],</span><br><span class="line">     | 99.00th&#x3D;[  258], 99.50th&#x3D;[  286], 99.90th&#x3D;[  346], 99.95th&#x3D;[  378],</span><br><span class="line">     | 99.99th&#x3D;[  564]</span><br><span class="line">    bw (KB  &#x2F;s): min&#x3D;23680, max&#x3D;35216, per&#x3D;12.53%, avg&#x3D;29882.13, stdev&#x3D;1601.01</span><br><span class="line">    lat (usec) : 50&#x3D;0.03%, 100&#x3D;11.33%, 250&#x3D;87.42%, 500&#x3D;1.20%, 750&#x3D;0.01%</span><br><span class="line">    lat (usec) : 1000&#x3D;0.01%</span><br><span class="line">    lat (msec) : 2&#x3D;0.01%, 4&#x3D;0.01%, 10&#x3D;0.01%, 20&#x3D;0.01%, 50&#x3D;0.01%</span><br><span class="line">  cpu          : usr&#x3D;2.97%, sys&#x3D;21.49%, ctx&#x3D;10524303, majf&#x3D;0, minf&#x3D;819</span><br><span class="line">  IO depths    : 1&#x3D;100.0%, 2&#x3D;0.0%, 4&#x3D;0.0%, 8&#x3D;0.0%, 16&#x3D;0.0%, 32&#x3D;0.0%, &gt;&#x3D;64&#x3D;0.0%</span><br><span class="line">     submit    : 0&#x3D;0.0%, 4&#x3D;100.0%, 8&#x3D;0.0%, 16&#x3D;0.0%, 32&#x3D;0.0%, 64&#x3D;0.0%, &gt;&#x3D;64&#x3D;0.0%</span><br><span class="line">     complete  : 0&#x3D;0.0%, 4&#x3D;100.0%, 8&#x3D;0.0%, 16&#x3D;0.0%, 32&#x3D;0.0%, 64&#x3D;0.0%, &gt;&#x3D;64&#x3D;0.0%</span><br><span class="line">     issued    : total&#x3D;r&#x3D;10485760&#x2F;w&#x3D;0&#x2F;d&#x3D;0, short&#x3D;r&#x3D;0&#x2F;w&#x3D;0&#x2F;d&#x3D;0</span><br><span class="line">     latency   : target&#x3D;0, window&#x3D;0, percentile&#x3D;100.00%, depth&#x3D;1</span><br></pre></td></tr></table></figure>
+
+<h3 id="报告的重要指标解析"><a href="#报告的重要指标解析" class="headerlink" title="报告的重要指标解析"></a>报告的重要指标解析</h3><ul>
+<li>read/write 表示是读或者写部分的报告；</li>
+<li>io表示当次执行完毕的io文件大小，bw表示带宽，iops表示每秒io次数，runt表示执行时间；</li>
+<li>clat percentiles表示提交延时的排名分布；</li>
+<li>lat表示响应时间，slat是提交延时，clat是完成延时；</li>
+<li>lat部分的数据表示完成时延具体分布在那些时间段，可以用来直观对比不同磁盘的响应时延；</li>
+<li>util表示磁盘利用率；</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/tools/disk-performance-test-by-fio/disk-performance-test-by-fio/" data-id="cklqcjd43000p3wn7ghxydybz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../tags/Performance/" rel="tag">Performance</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../about-editconfig/about-editconfig/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          EditorConfig
+        
+      </div>
+    </a>
+  
+  
+    <a href="../../../middleware/elastic/install-elasticsearch-cluster/install-elasticsearch-cluster/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">ElasticSearch集群搭建</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+            
+            <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="../../../tags/CI/" style="font-size: 10px;">CI</a> <a href="../../../tags/DataBase/" style="font-size: 10px;">DataBase</a> <a href="../../../tags/Design-Pattern/" style="font-size: 10px;">Design Pattern</a> <a href="../../../tags/DevOps/" style="font-size: 15px;">DevOps</a> <a href="../../../tags/Docker/" style="font-size: 15px;">Docker</a> <a href="../../../tags/ElasticSearch/" style="font-size: 10px;">ElasticSearch</a> <a href="../../../tags/Git/" style="font-size: 15px;">Git</a> <a href="../../../tags/JDK/" style="font-size: 12.5px;">JDK</a> <a href="../../../tags/Java/" style="font-size: 20px;">Java</a> <a href="../../../tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="../../../tags/Lint/" style="font-size: 12.5px;">Lint</a> <a href="../../../tags/Linux/" style="font-size: 17.5px;">Linux</a> <a href="../../../tags/Maven/" style="font-size: 10px;">Maven</a> <a href="../../../tags/Network/" style="font-size: 10px;">Network</a> <a href="../../../tags/Performance/" style="font-size: 10px;">Performance</a> <a href="../../../tags/Ruby/" style="font-size: 10px;">Ruby</a> <a href="../../../tags/Server/" style="font-size: 10px;">Server</a> <a href="../../../tags/middleware/" style="font-size: 12.5px;">middleware</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2015/05/">May 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="../../../middleware/nacos/nacos-installation-guide/nacos-installation-guide/">Nacos安装指引</a>
+          </li>
+        
+          <li>
+            <a href="../../../java/about-javadoc/about-javadoc/">Java注释说明</a>
+          </li>
+        
+          <li>
+            <a href="../../../devops/git/about-git-lfs/about-git-lfs/">Git LFS简介</a>
+          </li>
+        
+          <li>
+            <a href="../../../devops/git/git-commit-standardization/git-commit-standardization/">Git Commit规范化</a>
+          </li>
+        
+          <li>
+            <a href="../../../linux/root_directory_of_linux/root_directory_of_linux/">Linux目录说明</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+            
+        </div>
+        <footer id="footer">
+	
+	<div class="outer">
+		<div id="footer-info" class="inner">
+			&copy; 2021 Elvis Chan<br>
+		</div>
+	</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="../../../fancybox/jquery.fancybox.css">
+
+  
+<script src="../../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="../../../js/script.js"></script>
+
+
+
+
+</div>
+
+<!-- Load canvas-nest -->
+
+
+<script src="../../../js/canvas-nest.js"></script>
+
+
+</body>
+</html>

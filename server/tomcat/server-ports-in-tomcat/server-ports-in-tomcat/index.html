@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    
+
+    
+    <title>
+        
+        Tomcat的端口作用 |
+        
+        Jasmine
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="Apache Tomcat是我们最常使用到的应用服务器，一般来说，Tomcat默认的配置已经足以支撑我们正常的使用，无需做更多的修改。但是当一台机器上需要启动多个Tomcat服务的时候，我们会发现服务因为端口冲突而启动失败，这时候我们就需要手动修改配置文件中的端口配置了。  Tomcat所使用到的端口主要包括4个，默认分别为8005、8080、8009和8443，其配置都在Tomcat目录的co">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tomcat的端口作用">
+<meta property="og:url" content="https://lev-gc.github.io/server/tomcat/server-ports-in-tomcat/server-ports-in-tomcat/">
+<meta property="og:site_name" content="Jasmine">
+<meta property="og:description" content="Apache Tomcat是我们最常使用到的应用服务器，一般来说，Tomcat默认的配置已经足以支撑我们正常的使用，无需做更多的修改。但是当一台机器上需要启动多个Tomcat服务的时候，我们会发现服务因为端口冲突而启动失败，这时候我们就需要手动修改配置文件中的端口配置了。  Tomcat所使用到的端口主要包括4个，默认分别为8005、8080、8009和8443，其配置都在Tomcat目录的co">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-07-11T11:15:00.000Z">
+<meta property="article:modified_time" content="2017-07-11T11:15:00.000Z">
+<meta property="article:author" content="Elvis Chan">
+<meta property="article:tag" content="Server">
+<meta name="twitter:card" content="summary">
+    
+    
+    <link rel="icon" href="/css/images/favicon.png">
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+    
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+
+    
+<link rel="stylesheet" href="../../../../css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+<div id="container">
+    <div id="wrap">
+        <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer" class="outer">
+        <div id="header-title" class="inner">
+            <h1 id="logo-wrap">
+                <a href="../../../../index.html" id="logo">Jasmine</a>
+            </h1>
+            
+            <h2 id="subtitle-wrap">
+                <span id="subtitle">Fear always springs from ignorance.</span>
+            </h2>
+            
+        </div>
+
+        <div id="header-inner" class="inner">
+
+            <nav id="main-nav">
+                <a id="main-nav-toggle" class="fab fa-bars nav-icon"></a>
+                
+                <a class="main-nav-link" href="../../../../index.html">Home</a>
+                
+                <a class="main-nav-link" href="../../../../archives">Archives</a>
+                
+            </nav>
+
+            <nav id="sub-nav">
+                
+                <a class="fab fa-github nav-icon" href="../../../../https:/github.com/lev-gc"
+                   title="GitHub"></a>
+                
+                <!-- search -->
+                <a id="nav-search-btn" class="far fa-search nav-icon" title="Search"></a>
+            </nav>
+
+            <div id="search-form-wrap">
+                <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://lev-gc.github.io"></form>
+            </div>
+
+        </div>
+
+    </div>
+</header>
+
+        <div class="outer">
+            <section id="main"><article id="post-server/tomcat/server-ports-in-tomcat/server-ports-in-tomcat" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="" class="article-date">
+  <time datetime="2017-07-11T11:15:00.000Z" itemprop="datePublished">2017-07-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Tomcat的端口作用
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p><code>Apache Tomcat</code>是我们最常使用到的应用服务器，一般来说，Tomcat默认的配置已经足以支撑我们正常的使用，无需做更多的修改。但是当一台机器上需要启动多个Tomcat服务的时候，我们会发现服务因为端口冲突而启动失败，这时候我们就需要手动修改配置文件中的端口配置了。</p>
+</blockquote>
+<p>Tomcat所使用到的端口主要包括4个，默认分别为8005、8080、8009和8443，其配置都在Tomcat目录的<code>conf/server.xml</code>里，下面分别对几个端口的作用进行说明：</p>
+<ul>
+<li><code>8005</code>：Tomcat服务监听关闭操作的端口，多个服务时需要修改该端口以防止服务在其他Tomcat服务关闭的同时被关闭；</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Server</span> <span class="attr">port</span>=<span class="string">&quot;8005&quot;</span> <span class="attr">shutdown</span>=<span class="string">&quot;SHUTDOWN&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>8080</code>：Tomcat的连接端口；</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Connector</span> <span class="attr">port</span>=<span class="string">&quot;8080&quot;</span> <span class="attr">protocol</span>=<span class="string">&quot;HTTP/1.1&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">connectionTimeout</span>=<span class="string">&quot;20000&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">redirectPort</span>=<span class="string">&quot;8443&quot;</span> <span class="attr">server</span>=<span class="string">&quot;APP Srv1.0&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>8009</code>：Tomcat接受其他服务器转发过来的请求；</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Connector</span> <span class="attr">port</span>=<span class="string">&quot;8009&quot;</span> <span class="attr">protocol</span>=<span class="string">&quot;AJP/1.3&quot;</span> <span class="attr">redirectPort</span>=<span class="string">&quot;8443&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>8443</code>：上面8080和8009端口接收到SSL请求的时候重定向的端口，修改时以上两处都要同时修改；</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/server/tomcat/server-ports-in-tomcat/server-ports-in-tomcat/" data-id="cklqcjd4m001j3wn7fytug77b" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../../tags/Server/" rel="tag">Server</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../../../database/uid-generator-of-postgres/uid-generator-of-postgres/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          数据库UID的一种生成策略 [PostgreSQL]
+        
+      </div>
+    </a>
+  
+  
+    <a href="../../../../tools/install-shadowsocks-in-linux/install-shadowsocks-in-linux/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Linux上搭建Shadowsocks</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+            
+            <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="../../../../tags/CI/" style="font-size: 10px;">CI</a> <a href="../../../../tags/DataBase/" style="font-size: 10px;">DataBase</a> <a href="../../../../tags/Design-Pattern/" style="font-size: 10px;">Design Pattern</a> <a href="../../../../tags/DevOps/" style="font-size: 15px;">DevOps</a> <a href="../../../../tags/Docker/" style="font-size: 15px;">Docker</a> <a href="../../../../tags/ElasticSearch/" style="font-size: 10px;">ElasticSearch</a> <a href="../../../../tags/Git/" style="font-size: 15px;">Git</a> <a href="../../../../tags/JDK/" style="font-size: 12.5px;">JDK</a> <a href="../../../../tags/Java/" style="font-size: 20px;">Java</a> <a href="../../../../tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="../../../../tags/Lint/" style="font-size: 12.5px;">Lint</a> <a href="../../../../tags/Linux/" style="font-size: 17.5px;">Linux</a> <a href="../../../../tags/Maven/" style="font-size: 10px;">Maven</a> <a href="../../../../tags/Network/" style="font-size: 10px;">Network</a> <a href="../../../../tags/Performance/" style="font-size: 10px;">Performance</a> <a href="../../../../tags/Ruby/" style="font-size: 10px;">Ruby</a> <a href="../../../../tags/Server/" style="font-size: 10px;">Server</a> <a href="../../../../tags/middleware/" style="font-size: 12.5px;">middleware</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../../archives/2015/05/">May 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="../../../../middleware/nacos/nacos-installation-guide/nacos-installation-guide/">Nacos安装指引</a>
+          </li>
+        
+          <li>
+            <a href="../../../../java/about-javadoc/about-javadoc/">Java注释说明</a>
+          </li>
+        
+          <li>
+            <a href="../../../../devops/git/about-git-lfs/about-git-lfs/">Git LFS简介</a>
+          </li>
+        
+          <li>
+            <a href="../../../../devops/git/git-commit-standardization/git-commit-standardization/">Git Commit规范化</a>
+          </li>
+        
+          <li>
+            <a href="../../../../linux/root_directory_of_linux/root_directory_of_linux/">Linux目录说明</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+            
+        </div>
+        <footer id="footer">
+	
+	<div class="outer">
+		<div id="footer-info" class="inner">
+			&copy; 2021 Elvis Chan<br>
+		</div>
+	</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="../../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../../archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="../../../../fancybox/jquery.fancybox.css">
+
+  
+<script src="../../../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="../../../../js/script.js"></script>
+
+
+
+
+</div>
+
+<!-- Load canvas-nest -->
+
+
+<script src="../../../../js/canvas-nest.js"></script>
+
+
+</body>
+</html>

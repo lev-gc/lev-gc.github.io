@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    
+
+    
+    <title>
+        
+        Jasmine
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta property="og:type" content="website">
+<meta property="og:title" content="Jasmine">
+<meta property="og:url" content="https://lev-gc.github.io/page/3/">
+<meta property="og:site_name" content="Jasmine">
+<meta property="og:locale">
+<meta property="article:author" content="Elvis Chan">
+<meta name="twitter:card" content="summary">
+    
+    
+    <link rel="icon" href="/css/images/favicon.png">
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+    
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+
+    
+<link rel="stylesheet" href="../../css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+<div id="container">
+    <div id="wrap">
+        <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer" class="outer">
+        <div id="header-title" class="inner">
+            <h1 id="logo-wrap">
+                <a href="../../index.html" id="logo">Jasmine</a>
+            </h1>
+            
+            <h2 id="subtitle-wrap">
+                <span id="subtitle">Fear always springs from ignorance.</span>
+            </h2>
+            
+        </div>
+
+        <div id="header-inner" class="inner">
+
+            <nav id="main-nav">
+                <a id="main-nav-toggle" class="fab fa-bars nav-icon"></a>
+                
+                <a class="main-nav-link" href="../../index.html">Home</a>
+                
+                <a class="main-nav-link" href="../../archives">Archives</a>
+                
+            </nav>
+
+            <nav id="sub-nav">
+                
+                <a class="fab fa-github nav-icon" href="../../https:/github.com/lev-gc"
+                   title="GitHub"></a>
+                
+                <!-- search -->
+                <a id="nav-search-btn" class="far fa-search nav-icon" title="Search"></a>
+            </nav>
+
+            <div id="search-form-wrap">
+                <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://lev-gc.github.io"></form>
+            </div>
+
+        </div>
+
+    </div>
+</header>
+
+        <div class="outer">
+            <section id="main">
+  
+    <article id="post-java/feature/generate-docx-by-poi-tl/generate-docx-by-poi-tl" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="../../java/feature/generate-docx-by-poi-tl/generate-docx-by-poi-tl/" class="article-date">
+  <time datetime="2018-04-04T13:54:00.000Z" itemprop="datePublished">2018-04-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="../../java/feature/generate-docx-by-poi-tl/generate-docx-by-poi-tl/">Word通过模版生成文档</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>目的是通过使用预先设置好的模版文档，通过使用调度任务产生的数据（包括文本、图片、列表、报表等），回填生成完整的Word文档，通常可用于需要定时生成文档的场景。</p>
+</blockquote>
+<h2 id="基本思路"><a href="#基本思路" class="headerlink" title="基本思路"></a>基本思路</h2><p>使用开源项目Word模版生成文档项目<a target="_blank" rel="noopener" href="https://github.com/Sayi/poi-tl">poi-tl</a>，把后台组织好的数据，包括文本、列表、表格和图片，填到相应的模版里，生成一份完整的文档。</p>
+<h2 id="使用说明"><a href="#使用说明" class="headerlink" title="使用说明"></a>使用说明</h2><p><code>poi-tl</code>是一个jar包，使用时只需在项目pom文件内引入依赖即可：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.deepoove<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>poi-tl<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>该组件对模版文档内的语法结构要求都是以  结束，具体如下：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; 普通文本：&#123;&#123;template&#125;&#125;，渲染类为String或者TextRenderData</span><br><span class="line">&gt; 图片：&#123;&#123;@template&#125;&#125;，渲染类为PictureRenderData</span><br><span class="line">&gt; 表格：&#123;&#123;#template&#125;&#125;，渲染类为TableRenderData</span><br><span class="line">&gt; 列表：&#123;&#123;*template&#125;&#125;，渲染类为NumbericRenderData</span><br></pre></td></tr></table></figure>
+
+<p>另外，关于文档样式的问题，默认会使用模版占位符的样式，如果需要动态变化样式，可以在构造渲染类的时候注入样式。</p>
+<h2 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h2><p>具体使用代码如下，其中Map里的所有Key都是模版文档里的占位符：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    Map&lt;String, Object&gt; renderData = <span class="keyword">new</span> HashMap&lt;String, Object&gt;() &#123;&#123;</span><br><span class="line">        <span class="comment">// 文本</span></span><br><span class="line">        put(<span class="string">&quot;date&quot;</span>, <span class="string">&quot;2018-03-19&quot;</span>); <span class="comment">// 直接用String写入文本</span></span><br><span class="line">        put(<span class="string">&quot;title&quot;</span>, <span class="keyword">new</span> TextRenderData(<span class="string">&quot;Here is the Title.&quot;</span>)); <span class="comment">// 通过渲染类写入文本</span></span><br><span class="line">        put(<span class="string">&quot;author&quot;</span>, <span class="keyword">new</span> TextRenderData(<span class="string">&quot;66ccFF&quot;</span>, <span class="string">&quot;Elvis&quot;</span>)); <span class="comment">// 添加样式，另外还可以修改渲染类的Style属性配置完整的样式</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 通过文件系统路径方式加载图片</span></span><br><span class="line">        put(<span class="string">&quot;image1&quot;</span>, <span class="keyword">new</span> PictureRenderData(<span class="number">700</span>, <span class="number">300</span>, <span class="string">&quot;/image1.png&quot;</span>));</span><br><span class="line">        <span class="comment">// 通过Http方式加载图片</span></span><br><span class="line">        String url = <span class="string">&quot;xxx&quot;</span>; <span class="comment">// 请求的URL</span></span><br><span class="line">        <span class="keyword">byte</span>[] imageByHttp = getImageByHttp(url, <span class="string">&quot;[&#123;...&#125;]&quot;</span>); <span class="comment">// param参数为JSON字符串，url参数根据实际需要修改(此处使用的是post方法的请求)</span></span><br><span class="line">        put(<span class="string">&quot;image2&quot;</span>, <span class="keyword">new</span> PictureRenderData(<span class="number">700</span>, <span class="number">300</span>, <span class="string">&quot;image.png&quot;</span>, imageByHttp)); <span class="comment">// 由于path参数会有验证不能为空且必须为合法格式，但其实通过字节数组的方式不需要读文件，所以填定义一个合法文件名即可</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 表格</span></span><br><span class="line">        put(<span class="string">&quot;Table&quot;</span>, <span class="keyword">new</span> TableRenderData(<span class="keyword">new</span> ArrayList&lt;RenderData&gt;() &#123;&#123;</span><br><span class="line">            add(<span class="keyword">new</span> TextRenderData(<span class="string">&quot;d0d0d0&quot;</span>, <span class="string">&quot;column1&quot;</span>));</span><br><span class="line">            add(<span class="keyword">new</span> TextRenderData(<span class="string">&quot;111111&quot;</span>, <span class="string">&quot;column2&quot;</span>));</span><br><span class="line">            add(<span class="keyword">new</span> TextRenderData(<span class="string">&quot;d0d0d0&quot;</span>, <span class="string">&quot;column3&quot;</span>));</span><br><span class="line">        &#125;&#125;, <span class="keyword">new</span> ArrayList&lt;Object&gt;() &#123;&#123;</span><br><span class="line">            add(<span class="string">&quot;row1;r1c2;&quot;</span>);</span><br><span class="line">            add(<span class="string">&quot;row2;;r2c3&quot;</span>);</span><br><span class="line">            add(<span class="string">&quot;row3;r3c2;r3c3&quot;</span>);</span><br><span class="line">        &#125;&#125;, <span class="string">&quot;no datas&quot;</span>, <span class="number">10600</span>));</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 列表</span></span><br><span class="line">        put(<span class="string">&quot;List&quot;</span>, <span class="keyword">new</span> NumbericRenderData(FMT_DECIMAL, <span class="keyword">new</span> ArrayList&lt;TextRenderData&gt;() &#123;&#123;</span><br><span class="line">            add(<span class="keyword">new</span> TextRenderData(<span class="string">&quot;Deeply in love with the things you love, just deepoove.&quot;</span>));</span><br><span class="line">            add(<span class="keyword">new</span> TextRenderData(<span class="string">&quot;df2d4f&quot;</span>, <span class="string">&quot;Deeply in love with the things you love, just deepoove.&quot;</span>));</span><br><span class="line">        &#125;&#125;));</span><br><span class="line">    &#125;&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 读取模版并生成文档</span></span><br><span class="line">    XWPFTemplate template = XWPFTemplate.compile(<span class="string">&quot;/xx/template.docx&quot;</span>).render(renderData);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 输出到文件系统</span></span><br><span class="line">    FileOutputStream out = <span class="keyword">new</span> FileOutputStream(<span class="string">&quot;/xx/output.docx&quot;</span>);</span><br><span class="line">    template.write(out);</span><br><span class="line">    template.close();</span><br><span class="line">    out.close();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面有使用Http请求的方法来获取图片，其实<code>poi-tl</code>包里提供了Http请求的<code>Get</code>的工具方法，但上面我们给出了<code>Post</code>方法的使用方法，下面是<code>Post</code>请求的工具方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">byte</span>[] getImageByHttp(String urlStr, String param) <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        URL url = <span class="keyword">new</span> URL(urlStr);</span><br><span class="line">        URLConnection conn = url.openConnection();</span><br><span class="line">        conn.setRequestProperty(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/png;charset=UTF-8&quot;</span>);</span><br><span class="line">        conn.setDoOutput(<span class="keyword">true</span>);</span><br><span class="line">        conn.setDoInput(<span class="keyword">true</span>);</span><br><span class="line">        PrintWriter out = <span class="keyword">new</span> PrintWriter(<span class="keyword">new</span> OutputStreamWriter(conn.getOutputStream(), <span class="string">&quot;utf-8&quot;</span>));</span><br><span class="line">        out.print(param);</span><br><span class="line">        out.flush();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> len;</span><br><span class="line">        <span class="keyword">byte</span>[] data = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</span><br><span class="line">        InputStream inputStream = conn.getInputStream();</span><br><span class="line">        ByteArrayOutputStream outputStream = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">        <span class="keyword">while</span> ((len = inputStream.read(data)) != -<span class="number">1</span>) &#123;</span><br><span class="line">            outputStream.write(data, <span class="number">0</span>, len);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">byte</span>[] result = outputStream.toByteArray();</span><br><span class="line"></span><br><span class="line">        out.close();</span><br><span class="line">        inputStream.close();</span><br><span class="line">        outputStream.close();</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">        <span class="keyword">throw</span> e;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="题外话"><a href="#题外话" class="headerlink" title="题外话"></a>题外话</h2><p>使用<code>poi-tl</code>基本上只能生成一些结构比较基本的文档，当需要相对复杂的图或者表的时候是处理不来的，这种情况下的一种解决方法是把需要的图或者表转成图片然后插入到文档中。至于如何生成图和表，可以在<code>PhantomJS</code>的环境下利用诸如<code>Echars</code>、<code>HighCharts</code>这些图表插件生成。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/java/feature/generate-docx-by-poi-tl/generate-docx-by-poi-tl/" data-id="cklqcjd4900103wn7h71gdd37" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Java/" rel="tag">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-docker/frequently-used-docker-file-command/frequently-used-docker-file-command" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="../../docker/frequently-used-docker-file-command/frequently-used-docker-file-command/" class="article-date">
+  <time datetime="2018-02-21T19:27:00.000Z" itemprop="datePublished">2018-02-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="../../docker/frequently-used-docker-file-command/frequently-used-docker-file-command/">Dockerfile常用语法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>介绍Dockerfile部分较为常用的语法，关于Docker常用命令参考<a target="_blank" rel="noopener" href="https://www.0x0f0f.com/Docker/frequently-used-docker-command-line/">Docker常用命令</a>。</p>
+</blockquote>
+<ul>
+<li><p><code>FROM $&#123;IMAGE&#125;[:$&#123;TAG&#125;]</code></p>
+<ul>
+<li>仅且必须出现在Dockerfile的第一个指令，指定构建镜像的基础源镜像；</li>
+<li>不填TAG时默认TAG为<code>latest</code>；</li>
+</ul>
+</li>
+<li><p><code>MAINTAINER $&#123;AUTHOR&#125; $&#123;EMAIL&#125;</code></p>
+<ul>
+<li>记录构建镜像的作者及其邮箱的信息；</li>
+</ul>
+</li>
+<li><p><code>RUN $&#123;COMMAND&#125; $&#123;PARAM&#125;..</code></p>
+<ul>
+<li>每执行一次<code>RUN</code>都会形成一层新的镜像，因为镜像只读，在后续命令里删除、卸载等操作无法影响前面已形成的镜像，因此体积也不会下降；</li>
+<li>因为每一个<code>RUN</code>命令都会形成新的镜像，因此可以通过<code>&amp;&amp;</code>符号连接多条命令一次完成；</li>
+<li>执行的命令不继承原来的环境变量；</li>
+</ul>
+</li>
+<li><p><code>CMD $&#123;COMMAND&#125; $&#123;PARAM&#125;..</code></p>
+<ul>
+<li>Dockerfile启动时的提供的默认命令；</li>
+<li>只能有一个<code>CMD</code>，写多个时最后一个生效，启动容器时用户提供了命令的话则此项会被覆盖而失效；</li>
+</ul>
+</li>
+<li><p><code>ENTRYPOINT $&#123;COMMAND&#125; $&#123;PARAM&#125;..</code></p>
+<ul>
+<li>同<code>CMD</code>，但不会被用户启动容器时指定的<code>CMD</code>命令覆盖，如果要覆盖需要指定OPTION <code>--entrypoint</code>；</li>
+<li>同样只能有一个<code>ENTRYPOINT</code>，写多个时最后一个生效；</li>
+</ul>
+</li>
+<li><p><code>EXPOSE $&#123;CONTAINER_PORT&#125;</code></p>
+<ul>
+<li>指定容器需要与外部进行映射的端口，允许使用多个<code>EXPOSE</code>进行多端口映射，在启动添加OPTION<code>-P</code>时生效；</li>
+</ul>
+</li>
+<li><p><code>ENV $&#123;KEY&#125;=$&#123;VALUE&#125;</code></p>
+<ul>
+<li>设置容器的环境变量，也可以提供给后面的<code>RUN</code>命令使用；</li>
+<li>如需要一行设置多个环境变量时可以用空格分隔；</li>
+</ul>
+</li>
+<li><p><code>ARG $&#123;KEY&#125;</code></p>
+<ul>
+<li>设置构建镜像时需要使用的参数，<code>ARG $&#123;KEY&#125;=$&#123;VALUE&#125;</code>可以设置默认值；</li>
+<li>使用方式为在<code>docker build</code>时通过<code>--build-arg $&#123;KEY&#125;=$&#123;VALUE&#125;</code>传入参数；</li>
+</ul>
+</li>
+<li><p><code>ADD $&#123;SOURCE&#125; $&#123;DEST&#125;</code></p>
+<ul>
+<li>把本地或者远程文件或文件夹复制到容器中；</li>
+<li>如果传输的是压缩包则会自动解压；</li>
+</ul>
+</li>
+<li><p><code>COPY $&#123;SOURCE&#125; $&#123;DEST&#125;</code></p>
+<ul>
+<li>功能同<code>ADD</code>，但不能处理网络文件，也不会自动解压压缩文件；</li>
+</ul>
+</li>
+<li><p><code>VOLUME $&#123;PATH&#125;</code></p>
+<ul>
+<li>指定容器内要挂载到主机的目录；</li>
+<li>使用该方式时对应主机的目录是自动生成的，无法被指定；</li>
+<li>可以在使用<code>docker run</code>启动容器时通过OPTION<code>-v</code>的方式代替该方式；</li>
+</ul>
+</li>
+<li><p><code>USER $&#123;USER_NAME&#125;</code></p>
+<ul>
+<li>指定运行容器的用户；</li>
+</ul>
+</li>
+<li><p><code>WORKDIR $&#123;PATH&#125;</code></p>
+<ul>
+<li>为后续的<code>RUN</code>、<code>CMD</code>、<code>ENTRYPOINT</code>命令指定容器内的工作目录；</li>
+</ul>
+</li>
+<li><p><code>ONBUILD $&#123;INSTRUCTION&#125;</code></p>
+<ul>
+<li>配置该镜像被作为其它镜像的基础镜像时需要执行的命令；</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/docker/frequently-used-docker-file-command/frequently-used-docker-file-command/" data-id="cklqcjd3p00053wn7hosu9p6a" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Docker/" rel="tag">Docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-docker/frequently-used-docker-command-line/frequently-used-docker-command-line" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="../../docker/frequently-used-docker-command-line/frequently-used-docker-command-line/" class="article-date">
+  <time datetime="2018-02-21T10:20:00.000Z" itemprop="datePublished">2018-02-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="../../docker/frequently-used-docker-command-line/frequently-used-docker-command-line/">Docker常用命令</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>列举部分较常用的Docker命令行指令。</p>
+</blockquote>
+<h2 id="镜像相关命令"><a href="#镜像相关命令" class="headerlink" title="镜像相关命令"></a>镜像相关命令</h2><blockquote>
+<p>对特指的某个镜像操作时必须要指定该镜像的名称和TAG，如果不指定TAG会默认TAG为<code>latest</code>，另外也可以通过镜像ID来直接指定。</p>
+</blockquote>
+<ul>
+<li><p><code>docker images</code> : 查看当前本地仓库所有镜像</p>
+</li>
+<li><p><code>docker search $&#123;KEYWORD&#125;</code> : 在线查找镜像</p>
+</li>
+<li><p><code>docker login [$&#123;SERVER&#125;]</code> : 登录某个Docker仓库，默认为官方仓库DockerHub</p>
+<ul>
+<li><code>-u $&#123;USERNAME&#125;</code> : 指定登录用户名</li>
+<li><code>-p $&#123;PASSWORD&#125;</code> : 指定登录用户的密码</li>
+</ul>
+</li>
+<li><p><code>docker logout [$&#123;SERVER&#125;]</code> : 退出登录</p>
+</li>
+<li><p><code>docker pull $&#123;IMAGE&#125;:$&#123;TAG&#125;</code> : 下载镜像，不指定TAG则默认下载<code>latest</code>版本</p>
+</li>
+<li><p><code>docker push $&#123;IMAGE&#125;:$&#123;TAG&#125;</code> : 上传镜像到镜像仓库，需要先登陆镜像仓库</p>
+</li>
+<li><p><code>docker rmi $&#123;IMAGE&#125;:$&#123;TAG&#125;</code> : 删除本地仓库中镜像</p>
+</li>
+<li><p><code>docker save $&#123;IMAGE&#125;:$&#123;TAG&#125; -o $&#123;FILE_NAME&#125;</code> : 把镜像保存为tar文件，也可以写成<code>docker save $&#123;IMAGE&#125;:$&#123;TAG&#125;&gt;$&#123;FILE_NAME&#125;</code></p>
+</li>
+<li><p><code>docker load -i $&#123;FILE_NAME&#125;</code> : 把镜像文件导入到仓库，也可以写成<code>docker load &lt;$&#123;FILE_NAME&#125;</code></p>
+</li>
+<li><p><code>docker export $&#123;CONTAINER_ID&#125; -o $&#123;FILE_NAME&#125;</code> : 把容器保存为tar文件，也可以写成<code>docker export $&#123;IMAGE&#125;:$&#123;TAG&#125;&gt;$&#123;FILE_NAME&#125;</code></p>
+</li>
+<li><p><code>docker import $&#123;FILE_NAME&#125; $&#123;IMAGE&#125;:$&#123;TAG&#125;</code> : 把镜像文件导入到仓库，需要指定导入后镜像的IMAGE和TAG</p>
+</li>
+<li><p><code>docker tag $&#123;IMAGE&#125;:$&#123;TAG&#125; $&#123;NEWIMAGE&#125;:$&#123;NEWTAG&#125;</code> : 为某个镜像增加新的镜像名和TAG</p>
+</li>
+<li><p><code>docker commit $&#123;CONTAINER_ID&#125; $&#123;IMAGE&#125;:$&#123;TAG&#125;</code> : 提交对某个容器的更改操作，输出为新的镜像</p>
+<ul>
+<li><code>-m=&quot;$&#123;COMMIT_MESSAGE&#125;&quot;</code> : 填写提交信息</li>
+<li><code>-a=&quot;$&#123;AUTHOR&#125;&quot;</code> : 填写镜像作者</li>
+<li><code>-p</code> : commit时暂停容器</li>
+</ul>
+</li>
+<li><p><code>docker build $&#123;DOCKER_FILE_PATH&#125; -t $&#123;IMAGE&#125;:$&#123;TAG&#125;</code> : 通过Dockerfile创建镜像</p>
+</li>
+</ul>
+<h2 id="容器运行相关命令"><a href="#容器运行相关命令" class="headerlink" title="容器运行相关命令"></a>容器运行相关命令</h2><blockquote>
+<p>对容器进行操作时需要指定该容器的ID，另外也可以通过分配的或自定义的容器名来确定容器。</p>
+</blockquote>
+<ul>
+<li><p><code>docker run</code> : 启动一个新的容器</p>
+<ul>
+<li><code>-t</code> : 在新容器内指定一个伪终端或终端</li>
+<li><code>-i</code> : 允许对容器内的标准输入(STDIN)进行交互</li>
+<li><code>-d</code> : 后台运行</li>
+<li><code>-P</code> : 选取主机的随机端口对容器端口进行映射</li>
+<li><code>-p $&#123;HOST_PORT&#125;:$&#123;CONTAINER_PORT&#125;</code> : 指定端口的映射，可以使用多次<code>-p</code>以映射多个端口</li>
+<li><code>--name $&#123;CONTAINER_NAME&#125;</code> : 指定容器的NAME</li>
+<li><code>-v $&#123;HOST_PATH&#125;:$&#123;CONTAINER_PATH&#125;</code> : 把本机某个目录挂载到容器的某个目录下</li>
+</ul>
+</li>
+<li><p><code>docker stop $&#123;CONTAINER_ID&#125;</code> : 停止某个Docker容器</p>
+</li>
+<li><p><code>docker start $&#123;CONTAINER_ID&#125;</code> : 启动某个关掉的Docker容器</p>
+</li>
+<li><p><code>docker restart $&#123;CONTAINER_ID&#125;</code> : 重启某个正在运行的Docker容器</p>
+</li>
+<li><p><code>docker kill $&#123;CONTAINER_ID&#125;</code> : 强行停止某个Docker容器</p>
+</li>
+<li><p><code>docker attach $&#123;CONTAINER_ID&#125;</code> : 进入某个正在后台运行的容器，通过<code>CTRL+P+Q</code>可以把容器再次切换回后台</p>
+</li>
+<li><p><code>docker exec $&#123;CONTAINER_ID&#125; $&#123;COMMAND&#125;</code> : 在某个运行中的容器里执行COMMAND后退出，如果要进入容器则COMMAND为<code>/bin/bash</code></p>
+</li>
+<li><p><code>docker pause $&#123;CONTAINER_ID&#125;</code> : 暂停容器</p>
+</li>
+<li><p><code>docker unpause $&#123;CONTAINER_ID&#125;</code> : 恢复被暂停的容器</p>
+</li>
+<li><p><code>docker ps</code> : 查看当前正在运行的容器的信息</p>
+<ul>
+<li><code>-a</code> : 查看包括已关闭的容器</li>
+<li><code>-q</code> : 只列出容器的ID，可以与其他需要容器ID的命令组合使用，如[docker rm `docker ps -a -q`]可以删除全部的容器</li>
+</ul>
+</li>
+<li><p><code>docker port $&#123;CONTAINER_ID&#125;</code> : 查看容器的端口映射情况</p>
+</li>
+<li><p><code>docker logs $&#123;CONTAINER_ID&#125;</code> : 查看容器内的标准输出</p>
+<ul>
+<li><code>-f</code> : tail形式输出log</li>
+</ul>
+</li>
+<li><p><code>docker top $&#123;CONTAINER_ID&#125;</code> : 查看容器内部运行的进程</p>
+</li>
+<li><p><code>docker stats</code> : 查看容器资源使用状态</p>
+</li>
+<li><p><code>docker inspect $&#123;CONTAINER_ID&#125;</code> : 查看容器的底层信息</p>
+</li>
+<li><p><code>docker rm $&#123;CONTAINER_ID&#125;</code> : 移除不需要的容器</p>
+</li>
+<li><p><code>docker diff $&#123;CONTAINER_ID&#125;</code> : 查看容器发生改变的文件结构</p>
+</li>
+<li><p><code>docker cp $&#123;HOST_PATH&#125; $&#123;CONTAINER_ID&#125;:$&#123;CONTAINER_PATH&#125;</code> : 本机和容器间的文件传输，在前的为源路径，在后面的为目标路径，容器侧的路径前要加上容器ID</p>
+</li>
+</ul>
+<h2 id="Docker自身服务相关命令"><a href="#Docker自身服务相关命令" class="headerlink" title="Docker自身服务相关命令"></a>Docker自身服务相关命令</h2><ul>
+<li><p><code>docker version</code> : 查看当前使用的Docker版本信息</p>
+</li>
+<li><p><code>docker info</code> : 查看Docker当前的详细系统信息</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/docker/frequently-used-docker-command-line/frequently-used-docker-command-line/" data-id="cklqcjd3o00043wn79flw8an3" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Docker/" rel="tag">Docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-tools/about-editconfig/about-editconfig" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="../../tools/about-editconfig/about-editconfig/" class="article-date">
+  <time datetime="2017-12-14T11:47:00.000Z" itemprop="datePublished">2017-12-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="../../tools/about-editconfig/about-editconfig/">EditorConfig</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a target="_blank" rel="noopener" href="http://editorconfig.org/">EditorConfig</a> 是一套用于统一代码风格的方案，可以帮助开发者在不同的编辑器和IDE之间定义和维护一致的代码风格，同时有利于团队的合作，避免不必要的格式重构。</p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>当打开一个文件时，<code>EditorConfig</code>插件会从该文件所在目录开始往上每一级目录中查找<code>.editorconfig</code>文件，直到找到<code>.editorconfig</code>文件中有<code>root=true</code>这个配置为止，并把该配置文件作为根配置。<code>EditorConfig</code>插件会从根配置文件开始开始往下层读取，下层文件配置会覆盖上层文件配置，所以最接近所打开文件的配置优先级最高。另外，配置文件里的属性名和属性值大小写不敏感，编译时都会被转为小写，而没有被明确指定的某个属性则会使用编辑器默认的配置。</p>
+<h2 id="通配符说明"><a href="#通配符说明" class="headerlink" title="通配符说明"></a>通配符说明</h2><table>
+<thead>
+<tr>
+<th align="center">通配符</th>
+<th align="left">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">*</td>
+<td align="left">匹配除/之外的任意字符串(即不跨目录，特殊字符可以用<code>\</code> 转义)</td>
+</tr>
+<tr>
+<td align="center">**</td>
+<td align="left">匹配任意单个字符(即遍历子目录下的文件)</td>
+</tr>
+<tr>
+<td align="center">?</td>
+<td align="left">匹配任意单个字符</td>
+</tr>
+<tr>
+<td align="center">[name]</td>
+<td align="left">匹配name字符</td>
+</tr>
+<tr>
+<td align="center">[!name]</td>
+<td align="left">匹配非name字符</td>
+</tr>
+<tr>
+<td align="center">{s1,s3,s3}</td>
+<td align="left">匹配任意给定的字符串</td>
+</tr>
+</tbody></table>
+<h2 id="通用属性"><a href="#通用属性" class="headerlink" title="通用属性"></a>通用属性</h2><table>
+<thead>
+<tr>
+<th align="center">属性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">indent_style</td>
+<td>[tab/space]</td>
+</tr>
+<tr>
+<td align="center">indent_size</td>
+<td>对应indent_style=space时的列数</td>
+</tr>
+<tr>
+<td align="center">tab_width</td>
+<td>对应indent_style=tab时的列数，默认等于indent_size</td>
+</tr>
+<tr>
+<td align="center">end_of_line</td>
+<td>[lf/crlf/cr] lf(\n)为Unix和OS X的默认值/crlf(\r\n)为Windows的默认值/cr(\r)为Classic Mac OS的默认值</td>
+</tr>
+<tr>
+<td align="center">charset</td>
+<td>[utf-8/latin1/gbk/etc..]</td>
+</tr>
+<tr>
+<td align="center">trim_trailing_whitespace</td>
+<td>[true/false] 是否将行尾空格自动删除</td>
+</tr>
+<tr>
+<td align="center">insert_final_newline</td>
+<td>[true/false]是否使文件以一个空白行结尾</td>
+</tr>
+<tr>
+<td align="center">root</td>
+<td>[true]表明是最顶层的配置文件，发现设为true时，才会停止继续查找</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>设置为unset时可以把配置重置为编辑器默认配置，另外有一些适配不同编辑器的属性，详见<a target="_blank" rel="noopener" href="https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties">wiki</a> 。</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/tools/about-editconfig/about-editconfig/" data-id="cklqcjd42000n3wn7bht80xjb" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Lint/" rel="tag">Lint</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-tools/disk-performance-test-by-fio/disk-performance-test-by-fio" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="../../tools/disk-performance-test-by-fio/disk-performance-test-by-fio/" class="article-date">
+  <time datetime="2017-10-24T10:09:00.000Z" itemprop="datePublished">2017-10-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="../../tools/disk-performance-test-by-fio/disk-performance-test-by-fio/">磁盘性能测试工具FIO的简单使用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>FIO是一个用来进行磁盘IO压力测试的工具，可以产生足够多的任意类型的负载 (arbitrary load)，测试并得出对应的比较详细而易懂的报告。FIO支持13种不同的I/O引擎，包括：sync,mmap, libaio, posixaio, SG v3, splice, null, network, syslet,guasi, solarisaio 等等。</p>
+<p><a target="_blank" rel="noopener" href="http://freecode.com/projects/fio">FIO官网</a></p>
+<p><a target="_blank" rel="noopener" href="http://brick.kernel.dk/snaps/fio-2.1.10.tar.gz">2.1.10版本下载</a></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>官方默认提供的版本是源码安装，安装前需要确认是否有安装GCC。以下是安装步骤：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> wget直接下载</span></span><br><span class="line">wget http://brick.kernel.dk/snaps/fio-2.1.10.tar.gz</span><br><span class="line"><span class="meta">#</span><span class="bash"> 解压：</span></span><br><span class="line">tar -zxvf fio-2.1.10.tar.gz</span><br><span class="line"><span class="meta">#</span><span class="bash"> 编译安装：</span></span><br><span class="line">cd fio-2.1.10</span><br><span class="line">./configure</span><br><span class="line">make</span><br><span class="line">make install</span><br><span class="line"><span class="meta">#</span><span class="bash"> 检查是否安装成功：</span></span><br><span class="line">fio</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="简单例子"><a href="#简单例子" class="headerlink" title="简单例子"></a>简单例子</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 当前目录下，建立5G大小的<span class="built_in">test</span>文件进行顺序读，单个线程以4k一个块大小执行，最大执行时间为1000秒，最后结果汇总输出报告，报告名为reportName</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> fio -filename=./<span class="built_in">test</span> -direct=1 -iodepth 1 -thread -rw=<span class="built_in">read</span> -ioengine=psync -bs=4k -size=5G -numjobs=1 -runtime=1000 -group_reporting -name=reportName</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="参数说明"><a href="#参数说明" class="headerlink" title="参数说明"></a>参数说明</h3><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>解析</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>filename</td>
+<td>测试文件名称，在需要测试的挂载的盘的目录下</td>
+</tr>
+<tr>
+<td>direct=1</td>
+<td>direct=1表示测试过程绕过机器自带的buffer，使测试结果更真实</td>
+</tr>
+<tr>
+<td>rw</td>
+<td>read/write/randread/randwrite，读写模式[顺序读/顺序写/随机读/随机写]</td>
+</tr>
+<tr>
+<td>bs</td>
+<td>单次io的块大小</td>
+</tr>
+<tr>
+<td>bsrange</td>
+<td>设定数据块大小范围</td>
+</tr>
+<tr>
+<td>size</td>
+<td>测试文件总大小</td>
+</tr>
+<tr>
+<td>numjobs</td>
+<td>线程数</td>
+</tr>
+<tr>
+<td>runtime</td>
+<td>设置执行最大时间，不设置则运行至size设置的大小全部完成</td>
+</tr>
+<tr>
+<td>ioengine</td>
+<td>设定io引擎类型</td>
+</tr>
+<tr>
+<td>group_reporting</td>
+<td>显示结果汇总每个进程的信息</td>
+</tr>
+<tr>
+<td>name</td>
+<td>输出报告的名称</td>
+</tr>
+</tbody></table>
+<h3 id="报告例子"><a href="#报告例子" class="headerlink" title="报告例子"></a>报告例子</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">read : io&#x3D;40960MB, bw&#x3D;238459KB&#x2F;s, iops&#x3D;59614, runt&#x3D;175892msec</span><br><span class="line">    clat (usec): min&#x3D;35, max&#x3D;22978, avg&#x3D;131.27, stdev&#x3D;61.13</span><br><span class="line">     lat (usec): min&#x3D;35, max&#x3D;22979, avg&#x3D;131.49, stdev&#x3D;61.14</span><br><span class="line">    clat percentiles (usec):</span><br><span class="line">     |  1.00th&#x3D;[   74],  5.00th&#x3D;[   90], 10.00th&#x3D;[   98], 20.00th&#x3D;[  107],</span><br><span class="line">     | 30.00th&#x3D;[  114], 40.00th&#x3D;[  119], 50.00th&#x3D;[  125], 60.00th&#x3D;[  131],</span><br><span class="line">     | 70.00th&#x3D;[  139], 80.00th&#x3D;[  149], 90.00th&#x3D;[  169], 95.00th&#x3D;[  195],</span><br><span class="line">     | 99.00th&#x3D;[  258], 99.50th&#x3D;[  286], 99.90th&#x3D;[  346], 99.95th&#x3D;[  378],</span><br><span class="line">     | 99.99th&#x3D;[  564]</span><br><span class="line">    bw (KB  &#x2F;s): min&#x3D;23680, max&#x3D;35216, per&#x3D;12.53%, avg&#x3D;29882.13, stdev&#x3D;1601.01</span><br><span class="line">    lat (usec) : 50&#x3D;0.03%, 100&#x3D;11.33%, 250&#x3D;87.42%, 500&#x3D;1.20%, 750&#x3D;0.01%</span><br><span class="line">    lat (usec) : 1000&#x3D;0.01%</span><br><span class="line">    lat (msec) : 2&#x3D;0.01%, 4&#x3D;0.01%, 10&#x3D;0.01%, 20&#x3D;0.01%, 50&#x3D;0.01%</span><br><span class="line">  cpu          : usr&#x3D;2.97%, sys&#x3D;21.49%, ctx&#x3D;10524303, majf&#x3D;0, minf&#x3D;819</span><br><span class="line">  IO depths    : 1&#x3D;100.0%, 2&#x3D;0.0%, 4&#x3D;0.0%, 8&#x3D;0.0%, 16&#x3D;0.0%, 32&#x3D;0.0%, &gt;&#x3D;64&#x3D;0.0%</span><br><span class="line">     submit    : 0&#x3D;0.0%, 4&#x3D;100.0%, 8&#x3D;0.0%, 16&#x3D;0.0%, 32&#x3D;0.0%, 64&#x3D;0.0%, &gt;&#x3D;64&#x3D;0.0%</span><br><span class="line">     complete  : 0&#x3D;0.0%, 4&#x3D;100.0%, 8&#x3D;0.0%, 16&#x3D;0.0%, 32&#x3D;0.0%, 64&#x3D;0.0%, &gt;&#x3D;64&#x3D;0.0%</span><br><span class="line">     issued    : total&#x3D;r&#x3D;10485760&#x2F;w&#x3D;0&#x2F;d&#x3D;0, short&#x3D;r&#x3D;0&#x2F;w&#x3D;0&#x2F;d&#x3D;0</span><br><span class="line">     latency   : target&#x3D;0, window&#x3D;0, percentile&#x3D;100.00%, depth&#x3D;1</span><br></pre></td></tr></table></figure>
+
+<h3 id="报告的重要指标解析"><a href="#报告的重要指标解析" class="headerlink" title="报告的重要指标解析"></a>报告的重要指标解析</h3><ul>
+<li>read/write 表示是读或者写部分的报告；</li>
+<li>io表示当次执行完毕的io文件大小，bw表示带宽，iops表示每秒io次数，runt表示执行时间；</li>
+<li>clat percentiles表示提交延时的排名分布；</li>
+<li>lat表示响应时间，slat是提交延时，clat是完成延时；</li>
+<li>lat部分的数据表示完成时延具体分布在那些时间段，可以用来直观对比不同磁盘的响应时延；</li>
+<li>util表示磁盘利用率；</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/tools/disk-performance-test-by-fio/disk-performance-test-by-fio/" data-id="cklqcjd43000p3wn7ghxydybz" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../tags/Performance/" rel="tag">Performance</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="../2/">« Prev</a><a class="page-number" href="../../">1</a><a class="page-number" href="../2/">2</a><span class="page-number current">3</span><a class="page-number" href="../4/">4</a><a class="page-number" href="../5/">5</a><a class="page-number" href="../6/">6</a><a class="extend next" rel="next" href="../4/">Next »</a>
+  </nav>
+
+</section>
+            
+            <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="../../tags/CI/" style="font-size: 10px;">CI</a> <a href="../../tags/DataBase/" style="font-size: 10px;">DataBase</a> <a href="../../tags/Design-Pattern/" style="font-size: 10px;">Design Pattern</a> <a href="../../tags/DevOps/" style="font-size: 15px;">DevOps</a> <a href="../../tags/Docker/" style="font-size: 15px;">Docker</a> <a href="../../tags/ElasticSearch/" style="font-size: 10px;">ElasticSearch</a> <a href="../../tags/Git/" style="font-size: 15px;">Git</a> <a href="../../tags/JDK/" style="font-size: 12.5px;">JDK</a> <a href="../../tags/Java/" style="font-size: 20px;">Java</a> <a href="../../tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="../../tags/Lint/" style="font-size: 12.5px;">Lint</a> <a href="../../tags/Linux/" style="font-size: 17.5px;">Linux</a> <a href="../../tags/Maven/" style="font-size: 10px;">Maven</a> <a href="../../tags/Network/" style="font-size: 10px;">Network</a> <a href="../../tags/Performance/" style="font-size: 10px;">Performance</a> <a href="../../tags/Ruby/" style="font-size: 10px;">Ruby</a> <a href="../../tags/Server/" style="font-size: 10px;">Server</a> <a href="../../tags/middleware/" style="font-size: 12.5px;">middleware</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../archives/2015/05/">May 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="../../middleware/nacos/nacos-installation-guide/nacos-installation-guide/">Nacos安装指引</a>
+          </li>
+        
+          <li>
+            <a href="../../java/about-javadoc/about-javadoc/">Java注释说明</a>
+          </li>
+        
+          <li>
+            <a href="../../devops/git/about-git-lfs/about-git-lfs/">Git LFS简介</a>
+          </li>
+        
+          <li>
+            <a href="../../devops/git/git-commit-standardization/git-commit-standardization/">Git Commit规范化</a>
+          </li>
+        
+          <li>
+            <a href="../../linux/root_directory_of_linux/root_directory_of_linux/">Linux目录说明</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+            
+        </div>
+        <footer id="footer">
+	
+	<div class="outer">
+		<div id="footer-info" class="inner">
+			&copy; 2021 Elvis Chan<br>
+		</div>
+	</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="../../fancybox/jquery.fancybox.css">
+
+  
+<script src="../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="../../js/script.js"></script>
+
+
+
+
+</div>
+
+<!-- Load canvas-nest -->
+
+
+<script src="../../js/canvas-nest.js"></script>
+
+
+</body>
+</html>

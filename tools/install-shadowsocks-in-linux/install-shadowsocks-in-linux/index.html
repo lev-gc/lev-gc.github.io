@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    
+
+    
+    <title>
+        
+        Linux上搭建Shadowsocks |
+        
+        Jasmine
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="说明 ​为了搭建通畅的网络通道，首先需要一台境外的服务器&#x2F;VPS，安装Linux系统（CentOS或者Ubuntu都行），配置不需要很高，最基础的就能用，重点是自己的常用设备和该服务器的网络连接延时要低，Linode等都有提供测试节点速度，可以先测下速度再决定买哪里的服务器。  服务器端配置 需要安装的是python版本的shadowsocks，因此首先需要安装python及其包管理工具pip 1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux上搭建Shadowsocks">
+<meta property="og:url" content="https://lev-gc.github.io/tools/install-shadowsocks-in-linux/install-shadowsocks-in-linux/">
+<meta property="og:site_name" content="Jasmine">
+<meta property="og:description" content="说明 ​为了搭建通畅的网络通道，首先需要一台境外的服务器&#x2F;VPS，安装Linux系统（CentOS或者Ubuntu都行），配置不需要很高，最基础的就能用，重点是自己的常用设备和该服务器的网络连接延时要低，Linode等都有提供测试节点速度，可以先测下速度再决定买哪里的服务器。  服务器端配置 需要安装的是python版本的shadowsocks，因此首先需要安装python及其包管理工具pip 1">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-05-03T09:00:00.000Z">
+<meta property="article:modified_time" content="2017-05-03T09:00:00.000Z">
+<meta property="article:author" content="Elvis Chan">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Network">
+<meta name="twitter:card" content="summary">
+    
+    
+    <link rel="icon" href="/css/images/favicon.png">
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+    
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+
+    
+<link rel="stylesheet" href="../../../css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+<div id="container">
+    <div id="wrap">
+        <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer" class="outer">
+        <div id="header-title" class="inner">
+            <h1 id="logo-wrap">
+                <a href="../../../index.html" id="logo">Jasmine</a>
+            </h1>
+            
+            <h2 id="subtitle-wrap">
+                <span id="subtitle">Fear always springs from ignorance.</span>
+            </h2>
+            
+        </div>
+
+        <div id="header-inner" class="inner">
+
+            <nav id="main-nav">
+                <a id="main-nav-toggle" class="fab fa-bars nav-icon"></a>
+                
+                <a class="main-nav-link" href="../../../index.html">Home</a>
+                
+                <a class="main-nav-link" href="../../../archives">Archives</a>
+                
+            </nav>
+
+            <nav id="sub-nav">
+                
+                <a class="fab fa-github nav-icon" href="../../../https:/github.com/lev-gc"
+                   title="GitHub"></a>
+                
+                <!-- search -->
+                <a id="nav-search-btn" class="far fa-search nav-icon" title="Search"></a>
+            </nav>
+
+            <div id="search-form-wrap">
+                <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://lev-gc.github.io"></form>
+            </div>
+
+        </div>
+
+    </div>
+</header>
+
+        <div class="outer">
+            <section id="main"><article id="post-tools/install-shadowsocks-in-linux/install-shadowsocks-in-linux" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="" class="article-date">
+  <time datetime="2017-05-03T09:00:00.000Z" itemprop="datePublished">2017-05-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Linux上搭建Shadowsocks
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><blockquote>
+<p>​为了搭建通畅的网络通道，首先需要一台境外的服务器/VPS，安装Linux系统（CentOS或者Ubuntu都行），配置不需要很高，最基础的就能用，重点是自己的常用设备和该服务器的网络连接延时要低，Linode等都有提供测试节点速度，可以先测下速度再决定买哪里的服务器。</p>
+</blockquote>
+<h2 id="服务器端配置"><a href="#服务器端配置" class="headerlink" title="服务器端配置"></a>服务器端配置</h2><ul>
+<li><p>需要安装的是python版本的<code>shadowsocks</code>，因此首先需要安装<code>python</code>及其包管理工具<code>pip</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Debian / Ubuntu:</span></span><br><span class="line">apt-get install python-pip</span><br><span class="line"><span class="comment"># CentOS:</span></span><br><span class="line">yum install python-setuptools &amp;&amp; easy_install pip</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install shadowsocks</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>​安装好后需要修改配置文件，创建/编辑配置文件 <code>vim /etc/shadowsocks.json</code></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">&quot;server&quot;</span>: <span class="string">&quot;my_server_ip&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;local_address&quot;</span>: <span class="string">&quot;127.0.0.1&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;local_port&quot;</span>: <span class="number">1080</span>,</span><br><span class="line">    <span class="attr">&quot;port_password&quot;</span>: &#123;</span><br><span class="line">      <span class="attr">&quot;8380&quot;</span>: <span class="string">&quot;password0&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;8381&quot;</span>: <span class="string">&quot;password1&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;8382&quot;</span>: <span class="string">&quot;password2&quot;</span>,</span><br><span class="line">      <span class="attr">&quot;8383&quot;</span>: <span class="string">&quot;password3&quot;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">&quot;timeout&quot;</span>: <span class="number">300</span>,</span><br><span class="line">    <span class="attr">&quot;method&quot;</span>: <span class="string">&quot;aes-256-cfb&quot;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>具体各项配置说明</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">Field</th>
+<th align="left">Explanation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">server</td>
+<td align="left">the ip of your server</td>
+</tr>
+<tr>
+<td align="left">local_address</td>
+<td align="left">the address your local listens [127.0.0.1]</td>
+</tr>
+<tr>
+<td align="left">local_port</td>
+<td align="left">local port</td>
+</tr>
+<tr>
+<td align="left">port_password</td>
+<td align="left">password used for encryption</td>
+</tr>
+<tr>
+<td align="left">timeout</td>
+<td align="left">in seconds</td>
+</tr>
+<tr>
+<td align="left">method</td>
+<td align="left">encryption method, default: “aes-256-cfb”</td>
+</tr>
+<tr>
+<td align="left">fast_open</td>
+<td align="left">use TCP_FASTOPEN, true / false</td>
+</tr>
+<tr>
+<td align="left">workers</td>
+<td align="left">number of workers, available on Unix/Linux</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>配置完后保存，启动Shadowsocks服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># start:</span></span><br><span class="line">ssserver -c /etc/shadowsocks.json -d start</span><br><span class="line"><span class="comment"># stop:</span></span><br><span class="line">ssserver -d stop</span><br><span class="line"><span class="comment"># restart:</span></span><br><span class="line">ssserver -c /etc/shadowsocks.json -d restart</span><br><span class="line"><span class="comment"># port listening:</span></span><br><span class="line">netstat -lnp</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如需设置开机自启动，只需把上面的启动命令加到 <code>vi /etc/rc.local</code> 里即可。</p>
+</li>
+</ul>
+<h2 id="客户端配置"><a href="#客户端配置" class="headerlink" title="客户端配置"></a>客户端配置</h2><p>客户端直接到 <a target="_blank" rel="noopener" href="https://github.com/shadowsocks">GitHub</a> 上下载，安装好后编辑服务器，填上服务器地址和 <code>/etc/shadowsocks.json</code> 配置文件里写的对应端口和密码等就能使用了，关于PAC可以直接选择<strong>从GFWList更新本地PAC</strong>，这里的<code>GWFList</code>是GitHub上一个开源项目，专门收集惨遭GFW毒手的ip，理论上是较全的PAC文件了。</p>
+<h2 id="加速"><a href="#加速" class="headerlink" title="加速"></a>加速</h2><h3 id="一、增加系统文件描述符的最大限数"><a href="#一、增加系统文件描述符的最大限数" class="headerlink" title="一、增加系统文件描述符的最大限数"></a>一、增加系统文件描述符的最大限数</h3><ul>
+<li><p><code>vi /etc/security/limits.conf</code></p>
+<p>添加下面两行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">soft nofile 51200</span><br><span class="line">hard nofile 51200</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>保存后执行一下命令：<code>ulimit -n 51200</code></p>
+</li>
+</ul>
+<h3 id="二、使用ServerSpeeder进行TCP加速"><a href="#二、使用ServerSpeeder进行TCP加速" class="headerlink" title="二、使用ServerSpeeder进行TCP加速"></a>二、使用ServerSpeeder进行TCP加速</h3><p><a target="_blank" rel="noopener" href="https://github.com/91yun/serverspeeder/">ServerSpeeder</a></p>
+<p>需要注意的是ServerSpeeder并非自持所有的内核，如非适用的内核可选择更换。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># install:</span></span><br><span class="line">wget -N --no-check-certificate https://github.com/91yun/serverspeeder/raw/master/serverspeeder.sh &amp;&amp; bash serverspeeder.sh</span><br><span class="line"><span class="comment"># uninstall:</span></span><br><span class="line">chattr -i /serverspeeder/etc/apx* &amp;&amp; /serverspeeder/bin/serverSpeeder.sh uninstall -f</span><br><span class="line"><span class="comment"># status:</span></span><br><span class="line">/serverspeeder/bin/serverSpeeder.sh status</span><br><span class="line"><span class="comment"># start/stop/restart:</span></span><br><span class="line">/serverspeeder/bin/serverSpeeder.sh start/stop/restart</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/tools/install-shadowsocks-in-linux/install-shadowsocks-in-linux/" data-id="cklqcjd44000r3wn7gvqqay0b" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../tags/Linux/" rel="tag">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../tags/Network/" rel="tag">Network</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../../server/tomcat/server-ports-in-tomcat/server-ports-in-tomcat/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Tomcat的端口作用
+        
+      </div>
+    </a>
+  
+  
+    <a href="../../../java/introduction-of-lombok/introduction-of-lombok/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Lombok介绍</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+            
+            <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="../../../tags/CI/" style="font-size: 10px;">CI</a> <a href="../../../tags/DataBase/" style="font-size: 10px;">DataBase</a> <a href="../../../tags/Design-Pattern/" style="font-size: 10px;">Design Pattern</a> <a href="../../../tags/DevOps/" style="font-size: 15px;">DevOps</a> <a href="../../../tags/Docker/" style="font-size: 15px;">Docker</a> <a href="../../../tags/ElasticSearch/" style="font-size: 10px;">ElasticSearch</a> <a href="../../../tags/Git/" style="font-size: 15px;">Git</a> <a href="../../../tags/JDK/" style="font-size: 12.5px;">JDK</a> <a href="../../../tags/Java/" style="font-size: 20px;">Java</a> <a href="../../../tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="../../../tags/Lint/" style="font-size: 12.5px;">Lint</a> <a href="../../../tags/Linux/" style="font-size: 17.5px;">Linux</a> <a href="../../../tags/Maven/" style="font-size: 10px;">Maven</a> <a href="../../../tags/Network/" style="font-size: 10px;">Network</a> <a href="../../../tags/Performance/" style="font-size: 10px;">Performance</a> <a href="../../../tags/Ruby/" style="font-size: 10px;">Ruby</a> <a href="../../../tags/Server/" style="font-size: 10px;">Server</a> <a href="../../../tags/middleware/" style="font-size: 12.5px;">middleware</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2015/05/">May 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="../../../middleware/nacos/nacos-installation-guide/nacos-installation-guide/">Nacos安装指引</a>
+          </li>
+        
+          <li>
+            <a href="../../../java/about-javadoc/about-javadoc/">Java注释说明</a>
+          </li>
+        
+          <li>
+            <a href="../../../devops/git/about-git-lfs/about-git-lfs/">Git LFS简介</a>
+          </li>
+        
+          <li>
+            <a href="../../../devops/git/git-commit-standardization/git-commit-standardization/">Git Commit规范化</a>
+          </li>
+        
+          <li>
+            <a href="../../../linux/root_directory_of_linux/root_directory_of_linux/">Linux目录说明</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+            
+        </div>
+        <footer id="footer">
+	
+	<div class="outer">
+		<div id="footer-info" class="inner">
+			&copy; 2021 Elvis Chan<br>
+		</div>
+	</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="../../../fancybox/jquery.fancybox.css">
+
+  
+<script src="../../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="../../../js/script.js"></script>
+
+
+
+
+</div>
+
+<!-- Load canvas-nest -->
+
+
+<script src="../../../js/canvas-nest.js"></script>
+
+
+</body>
+</html>

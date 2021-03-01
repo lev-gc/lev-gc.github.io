@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    
+
+    
+    <title>
+        
+        Lombok介绍 |
+        
+        Jasmine
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="简介Lombok是一个能通过添加简单的注解来代替一些必须有但会让代码整体变得臃肿的代码，然后在编译的时候才把注解转换成对应代码的工具。 GitHub项目：Lombok 项目官网：HomePage 部分注解说明   注解 说明    @Getter&#x2F;@Setter 可以用来标注Class或者Field，会为非静态Field提供Getter和Setter方法   @ToString 生成toStrin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lombok介绍">
+<meta property="og:url" content="https://lev-gc.github.io/java/introduction-of-lombok/introduction-of-lombok/">
+<meta property="og:site_name" content="Jasmine">
+<meta property="og:description" content="简介Lombok是一个能通过添加简单的注解来代替一些必须有但会让代码整体变得臃肿的代码，然后在编译的时候才把注解转换成对应代码的工具。 GitHub项目：Lombok 项目官网：HomePage 部分注解说明   注解 说明    @Getter&#x2F;@Setter 可以用来标注Class或者Field，会为非静态Field提供Getter和Setter方法   @ToString 生成toStrin">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-03-14T11:32:50.000Z">
+<meta property="article:modified_time" content="2017-03-14T11:32:50.000Z">
+<meta property="article:author" content="Elvis Chan">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+    
+    
+    <link rel="icon" href="/css/images/favicon.png">
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+    
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+
+    
+<link rel="stylesheet" href="../../../css/style.css">
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+<div id="container">
+    <div id="wrap">
+        <header id="header">
+    <div id="banner"></div>
+    <div id="header-outer" class="outer">
+        <div id="header-title" class="inner">
+            <h1 id="logo-wrap">
+                <a href="../../../index.html" id="logo">Jasmine</a>
+            </h1>
+            
+            <h2 id="subtitle-wrap">
+                <span id="subtitle">Fear always springs from ignorance.</span>
+            </h2>
+            
+        </div>
+
+        <div id="header-inner" class="inner">
+
+            <nav id="main-nav">
+                <a id="main-nav-toggle" class="fab fa-bars nav-icon"></a>
+                
+                <a class="main-nav-link" href="../../../index.html">Home</a>
+                
+                <a class="main-nav-link" href="../../../archives">Archives</a>
+                
+            </nav>
+
+            <nav id="sub-nav">
+                
+                <a class="fab fa-github nav-icon" href="../../../https:/github.com/lev-gc"
+                   title="GitHub"></a>
+                
+                <!-- search -->
+                <a id="nav-search-btn" class="far fa-search nav-icon" title="Search"></a>
+            </nav>
+
+            <div id="search-form-wrap">
+                <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://lev-gc.github.io"></form>
+            </div>
+
+        </div>
+
+    </div>
+</header>
+
+        <div class="outer">
+            <section id="main"><article id="post-java/introduction-of-lombok/introduction-of-lombok" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="" class="article-date">
+  <time datetime="2017-03-14T11:32:50.000Z" itemprop="datePublished">2017-03-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Lombok介绍
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Lombok是一个能通过添加简单的注解来代替一些必须有但会让代码整体变得臃肿的代码，然后在编译的时候才把注解转换成对应代码的工具。</p>
+<p>GitHub项目：<a target="_blank" rel="noopener" href="https://github.com/rzwitserloot/lombok">Lombok</a></p>
+<p>项目官网：<a target="_blank" rel="noopener" href="https://projectlombok.org/">HomePage</a></p>
+<h2 id="部分注解说明"><a href="#部分注解说明" class="headerlink" title="部分注解说明"></a>部分注解说明</h2><table>
+<thead>
+<tr>
+<th align="left">注解</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">@Getter/@Setter</td>
+<td align="left">可以用来标注Class或者Field，会为非静态Field提供Getter和Setter方法</td>
+</tr>
+<tr>
+<td align="left">@ToString</td>
+<td align="left">生成toString方法，默认会输出Class名和按顺序用逗号分隔输出Field</td>
+</tr>
+<tr>
+<td align="left">@EqualsAndHashCode</td>
+<td align="left">默认为所有非transient和非static的Field生成Equals和HashCode方法，也能指定Field</td>
+</tr>
+<tr>
+<td align="left">@NonNull</td>
+<td align="left">标注Field不能为null，会在Setter方法和构造方法里添加非空判断</td>
+</tr>
+<tr>
+<td align="left">@NoArgsConstructor</td>
+<td align="left">注解在Class上，生成一个无参构造方法</td>
+</tr>
+<tr>
+<td align="left">@RequiredArgsConstructor</td>
+<td align="left">注解在Class上，生成一个包含常量和标注了@NonNull的Field的参数的构造方法</td>
+</tr>
+<tr>
+<td align="left">@AllArgsConstructor</td>
+<td align="left">注解在Class上，生成一个全参的构造方法</td>
+</tr>
+<tr>
+<td align="left">@Data</td>
+<td align="left">包括@ToString、@EqualsAndHashCode、所有Field的@Getter、所有非final的Field的@Setter、@RequiredArgsConstructor几个注解的组合</td>
+</tr>
+<tr>
+<td align="left">@Log系列注解</td>
+<td align="left">使用不同类型的Log包来为标注的Class生成静态常量log</td>
+</tr>
+</tbody></table>
+<p>以上为比较常用的一些注解，当然还有其他的注解，以及部分注解可以通过添加参数或者修改配置文件的方式来修改生成代码的效果，具体可以到官网查阅。</p>
+<h2 id="一些个人看法"><a href="#一些个人看法" class="headerlink" title="一些个人看法"></a>一些个人看法</h2><p>在某种程度上，Lombok是一个比较方便的工具，可以简化一些臃肿的代码，但是这并不是一个完美的工具，需要慎用。</p>
+<ul>
+<li>本工具的价值体现在编译前代码的简洁性上，对编译后的代码只会是有增无减，因此并不会为代码的运行效率带来提升，甚至会造成下降；</li>
+<li>在使用IDE进行开发时依赖于Lombok插件，如果没有安装插件代码会提示报错；</li>
+<li>并不便于开发人员阅读代码，尤其是不熟悉本工具的开发人员更是容易对代码产生疑惑；</li>
+<li>配置文件的生效方式类似于<code>EditorConfig</code>，如不做好管控容易造成混乱；</li>
+<li>即使是有多种参数和配置文件，也不一定能生成完全符合想法的代码，滥用注解会让代码更加凌乱；</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lev-gc.github.io/java/introduction-of-lombok/introduction-of-lombok/" data-id="cklqcjd3t000b3wn7ctu17brd" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="../../../tags/Java/" rel="tag">Java</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="../../../tools/install-shadowsocks-in-linux/install-shadowsocks-in-linux/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Linux上搭建Shadowsocks
+        
+      </div>
+    </a>
+  
+  
+    <a href="../../maven/labels-of-maven-pom/labels-of-maven-pom/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Maven POM文件常用标签解释</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+            
+            <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="../../../tags/CI/" style="font-size: 10px;">CI</a> <a href="../../../tags/DataBase/" style="font-size: 10px;">DataBase</a> <a href="../../../tags/Design-Pattern/" style="font-size: 10px;">Design Pattern</a> <a href="../../../tags/DevOps/" style="font-size: 15px;">DevOps</a> <a href="../../../tags/Docker/" style="font-size: 15px;">Docker</a> <a href="../../../tags/ElasticSearch/" style="font-size: 10px;">ElasticSearch</a> <a href="../../../tags/Git/" style="font-size: 15px;">Git</a> <a href="../../../tags/JDK/" style="font-size: 12.5px;">JDK</a> <a href="../../../tags/Java/" style="font-size: 20px;">Java</a> <a href="../../../tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="../../../tags/Lint/" style="font-size: 12.5px;">Lint</a> <a href="../../../tags/Linux/" style="font-size: 17.5px;">Linux</a> <a href="../../../tags/Maven/" style="font-size: 10px;">Maven</a> <a href="../../../tags/Network/" style="font-size: 10px;">Network</a> <a href="../../../tags/Performance/" style="font-size: 10px;">Performance</a> <a href="../../../tags/Ruby/" style="font-size: 10px;">Ruby</a> <a href="../../../tags/Server/" style="font-size: 10px;">Server</a> <a href="../../../tags/middleware/" style="font-size: 12.5px;">middleware</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/02/">February 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2019/01/">January 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/11/">November 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/04/">April 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/10/">October 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/08/">August 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/07/">July 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/05/">May 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/03/">March 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2016/02/">February 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="../../../archives/2015/05/">May 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="../../../middleware/nacos/nacos-installation-guide/nacos-installation-guide/">Nacos安装指引</a>
+          </li>
+        
+          <li>
+            <a href="../../about-javadoc/about-javadoc/">Java注释说明</a>
+          </li>
+        
+          <li>
+            <a href="../../../devops/git/about-git-lfs/about-git-lfs/">Git LFS简介</a>
+          </li>
+        
+          <li>
+            <a href="../../../devops/git/git-commit-standardization/git-commit-standardization/">Git Commit规范化</a>
+          </li>
+        
+          <li>
+            <a href="../../../linux/root_directory_of_linux/root_directory_of_linux/">Linux目录说明</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+            
+        </div>
+        <footer id="footer">
+	
+	<div class="outer">
+		<div id="footer-info" class="inner">
+			&copy; 2021 Elvis Chan<br>
+		</div>
+	</div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="../../../index.html" class="mobile-nav-link">Home</a>
+  
+    <a href="../../../archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="../../../fancybox/jquery.fancybox.css">
+
+  
+<script src="../../../fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="../../../js/script.js"></script>
+
+
+
+
+</div>
+
+<!-- Load canvas-nest -->
+
+
+<script src="../../../js/canvas-nest.js"></script>
+
+
+</body>
+</html>
