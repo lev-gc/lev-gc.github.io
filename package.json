@@ -10,18 +10,15 @@
     "clean": "hexo clean",
     "build": "hexo generate",
     "server": "hexo clean && hexo generate && hexo server",
-    "deploy": "hexo deploy",
     "c": "npm run clean",
     "b": "npm run build",
-    "s": "npm run server",
-    "d": "npm run deploy"
+    "s": "npm run server"
   },
   "hexo": {
     "version": "8.1.1"
   },
   "dependencies": {
     "hexo": "^8.1.1",
-    "hexo-deployer-git": "^4.0.0",
     "hexo-generator-archive": "^2.0.0",
     "hexo-generator-category": "^2.0.0",
     "hexo-generator-index": "^4.0.0",

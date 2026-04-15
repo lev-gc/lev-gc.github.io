@@ -1,6 +1,6 @@
 # GitHub Pages
 
-[![Build Status](https://travis-ci.org/lev-gc/lev-gc.github.io.svg?branch=source)](https://travis-ci.org/lev-gc/lev-gc.github.io)
+[![Deploy GitHub Pages](https://github.com/lev-gc/lev-gc.github.io/actions/workflows/deploy-pages.yml/badge.svg?branch=source)](https://github.com/lev-gc/lev-gc.github.io/actions/workflows/deploy-pages.yml)
 
 ## About the project
 
@@ -20,4 +20,9 @@ For Hexo:
 - clean project: `npm run clean` or `npm run c` or `hexo clean`
 - compile project: `npm run build` or `npm run b` or `hexo generate` or `hexo g`
 - start server on [localhost](http://localhost:4000/): `npm run server` or `npm run s`
-- deploy project: `npm run deploy` or `npm run d`
+
+## Deployment
+
+- deployment is handled by GitHub Actions
+- pushing to the `source` branch triggers a Pages deployment
+- if you still use Google Search Console verification, add the `GOOGLE_VERIFICATION` repository secret
