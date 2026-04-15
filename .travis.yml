@@ -2,11 +2,11 @@ language: node_js
 node_js: 20
 
 install:
-  - yarn install --frozen-lockfile
+  - npm ci
 
 script:
-  - yarn c
-  - yarn b
+  - npm run c
+  - npm run b
   - cp ./CNAME ./dist/CNAME
   - cd ./dist
   - sed -i "/<meta charset=\"UTF-8\">/a\    <meta name=\"google-site-verification\" content=\"${GOOGLE_VERIFICATION}\"/>" index.html

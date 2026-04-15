@@ -2,6 +2,7 @@
   "name": "jasmine",
   "version": "1.1.0",
   "private": true,
+  "packageManager": "npm@11.12.1",
   "engines": {
     "node": ">=20.19.0"
   },
@@ -10,10 +11,10 @@
     "build": "hexo generate",
     "server": "hexo clean && hexo generate && hexo server",
     "deploy": "hexo deploy",
-    "c": "yarn clean",
-    "b": "yarn build",
-    "s": "yarn server",
-    "d": "yarn deploy"
+    "c": "npm run clean",
+    "b": "npm run build",
+    "s": "npm run server",
+    "d": "npm run deploy"
   },
   "hexo": {
     "version": "8.1.1"
