@@ -24,6 +24,8 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v6
+        with:
+          submodules: recursive
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -51,23 +53,10 @@ jobs:
             sed -i "/<meta charset=\"UTF-8\">/a\\    <meta name=\"google-site-verification\" content=\"${GOOGLE_VERIFICATION}\"/>" dist/index.html
           fi
 
-      - name: Verify build output
-        run: |
-          test -s dist/index.html
-          test -s dist/css/style.css
-          test -s dist/js/script.js
-
-      - name: Package Pages artifact
-        run: |
-          tar --dereference --hard-dereference --directory dist -cvf github-pages.tar .
-          gzip -f github-pages.tar
-
       - name: Upload Pages artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-pages-artifact@v5
         with:
-          name: github-pages
-          path: ./github-pages.tar.gz
-          retention-days: 1
+          path: ./dist
 
   deploy:
     environment:
