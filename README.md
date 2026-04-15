@@ -12,10 +12,12 @@ Maybe some old articles.
 
 After cloning the project:
 - change directory to the root path of the project
+- use Node.js `>= 20.19.0`
 - install yarn first: `npm i -g yarn`
-- execute command `yarn`
+- execute command `yarn install`
 
 For Hexo:
-- clean project: `yarn c` or `hexo clean`
-- compile project: `yarn b` or `hexo generate` or `hexo g`
-- start server on [localhost](http://localhost:4000/): `yarn s` or `hexo server` or `hexo s`
+- clean project: `yarn clean` or `yarn c` or `hexo clean`
+- compile project: `yarn build` or `yarn b` or `hexo generate` or `hexo g`
+- start server on [localhost](http://localhost:4000/): `yarn server` or `yarn s`
+- deploy project: `yarn deploy` or `yarn d`

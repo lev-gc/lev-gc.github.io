@@ -1,8 +1,8 @@
 language: node_js
-node_js: 12.18.3
+node_js: 20
 
 install:
-  - yarn
+  - yarn install --frozen-lockfile
 
 script:
   - yarn c
