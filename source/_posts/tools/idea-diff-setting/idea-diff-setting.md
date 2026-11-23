@@ -13,6 +13,6 @@ IntelliJ IDEA的Diff视图（包括跨文件内容对比、git文件变更、git
 3. 取消勾选`Open Diff as Editor Tab`，保存设置后即可通过独立窗口查看diff；
 4. 另外Commit窗口现在默认在工具窗口打开，同样在上面的位置，找到`Version Control`分组下的`Use modal commit interface for Git and Mercurial`，勾选上即可改为通过模态窗口打开Commit窗口；
 
-![settings](./idea-git-diff.png)
+![settings](https://raw.githubusercontent.com/lev-gc/lev-gc.github.io/source/source/_posts/tools/idea-diff-setting/idea-git-diff.png)
 
 > 参考：[JetBrains官方文档：配置Diff视图的打开方式](https://www.jetbrains.com/help/idea/commit-and-push-changes.html#diff-viewer)
